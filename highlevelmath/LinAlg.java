@@ -1,16 +1,6 @@
 package highlevelmath;
 
-import java.util.Arrays;
-
 public class LinAlg {
-
-    // public static void main(String[] args){
-    //     int[][] matrix = {  {0, 3, -6, 6, 4, -5},
-    //                         {3, -7, 8, -5, 8, 9}, 
-    //                         {3, - 9, 12, -9, 6, 15}};
-    //     // highlevelmath.linalg.rowReduction(matrix);
-    //     rowReduction(matrix);
-    // }
 
     static int calcDeterminant(int[][] matrix){
         return 0;
@@ -35,39 +25,45 @@ public class LinAlg {
     *   @param matrix The matrix to row reduce
     * 
     */
-    public static int[][] rowReduction(int[][] matrix){
+    public static double[][] rowReduction(double[][] matrix){
 
         int currentColumn = 0;
         for(int rowNum = 0; rowNum < matrix.length; rowNum++){
-            int[] row = matrix[rowNum];
+            double[] row = matrix[rowNum];
             //If pivot is 0 then interchange rows with one that has a pivot in that location
-            int pivot = row[currentColumn];
+            double pivot = row[currentColumn];
             // int pivot = row[findPivotIndex(row)]
+            // System.out.println("row: " + Arrays.toString(row));
             if(pivot == 0){
                 for(int subRowNum = rowNum + 1; subRowNum < matrix.length; subRowNum++){
                     if(matrix[subRowNum][0] != 0){
                         interchangeRows(matrix, rowNum, subRowNum);
+                        row = matrix[rowNum];
+                        pivot = row[currentColumn];
                         break;
                     }
                 }
             }
             //Scale pivot row so that the first entry is 1
-            if(pivot != 1 && pivot != 0){
+            if(pivot != 0){
+                // System.out.println("pivot: " + pivot);
                 scaleSequence(row, 1/pivot);
+                // System.out.println("scaled");
             }
+            // System.out.println("row: " + Arrays.toString(row));
             //Create column of 0s below pivot
             for(int subRowNum = rowNum + 1; subRowNum < matrix.length; subRowNum++){
-                int[] subRow = matrix[subRowNum];
-                System.out.println("SubRow (initial) --> " + Arrays.toString(subRow));
-                int subPivot = matrix[subRowNum][0];
+                double[] subRow = matrix[subRowNum];
+                // System.out.println("SubRow (initial) --> " + Arrays.toString(subRow));
+                double subPivot = matrix[subRowNum][currentColumn];
                 if(subPivot != 0){
                     scaleSequence(subRow, 1/subPivot);
                     subRow = subtractSequences(matrix, subRowNum, rowNum);
                 }
-                System.out.println("SubRow (afterwards) --> " + Arrays.toString(subRow));
+                // System.out.println("SubRow (afterwards) --> " + Arrays.toString(subRow));
             }
-            System.out.println("ColumNum: " + currentColumn + " ,matrix: " + Arrays.deepToString(matrix) + "\n");
-
+            System.out.println("ColumNum: " + currentColumn);
+            print(matrix);
             //Create column of 0s above pivot
             currentColumn += 1;
         }
@@ -75,7 +71,7 @@ public class LinAlg {
         return matrix;
     }
 
-    static int findPivotIndex(int[] row){
+    public static double findPivotIndex(double[] row){
         int i = 0;
         while(i < row.length){
             if(row[i] != 0){
@@ -87,44 +83,69 @@ public class LinAlg {
     }
 
 
-    static int[] subtractSequences(int[][] matrix, int row1, int row2){
-        int[] diffs = new int[matrix[row1].length];
+    public static double[] subtractSequences(double[][] matrix, int row1, int row2){
+        double[] diffs = new double[matrix[row1].length];
         for(int i = 0; i < matrix[row1].length; i++){
             diffs[i] = matrix[row1][i] - matrix[row2][i];
         }
         return diffs;
     }
 
-    static void interchangeRows(int[][] matrix, int row1, int row2){
-        int[] firstRow = matrix[row1];
+    public static void interchangeRows(double[][] matrix, int row1, int row2){
+        double[] firstRow = matrix[row1];
         matrix[row1] = matrix[row2];
         matrix[row2] = firstRow;
-        // return matrix;
     }
 
-    static void scaleSequence(int[] rowOrColumn, int scale){
+    public static void scaleSequence(double[] rowOrColumn, double scale){
         for(int i = 0; i < rowOrColumn.length; i++){
             rowOrColumn[i] *= scale;
         }
-        // return rowOrColumn;
     }
 
-    static int[] findColumn(int[][] matrix, int columnNum){
-        int[] column = new int[matrix[0].length];
+    public static double[] findColumn(double[][] matrix, int columnNum){
+        double[] column = new double[matrix[0].length];
         for(int rowNum = 0; rowNum < matrix.length; rowNum++){
             column[rowNum] = matrix[rowNum][columnNum];
         }
         return column;
     }
 
-    public int findGCD(int big, int small) {
+    public static void print(double[] array){
+        String str = "Array: [";
+        for(double element : array){
+            str += element == array[0] ? "" : " ";
+            str += truncateDecimal(element, 2);
+        }
+        System.out.println(str + "]");
+    }
+
+    public static void print(double[][] matrix){
+        String str = "Matrix: [";
+        for(double[] row : matrix){
+            str += "[";
+            for(double element: row){
+                str += element == row[0] ? "" : " ";
+                str += truncateDecimal(element, 2);
+            }
+            str += "]";  
+        }
+        System.out.println(str + "]");
+    }
+
+    static double truncateDecimal(double value, int places){
+        double powerOfTen = Math.pow(10, places);
+        return Math.floor(value * powerOfTen)/powerOfTen;
+    }
+
+    static int findGCD(int big, int small) {
         if (big % small == 0) {
             return small;
         }
         return findGCD(small, big % small);
     }
 
-    public int findLCM(int a, int b) {
+    static int findLCM(int a, int b) {
         if (a > b) {
             return a * b / findGCD(a, b);
         } else {
@@ -132,6 +153,8 @@ public class LinAlg {
         }
 
     }
+
+    
 
 
 }
