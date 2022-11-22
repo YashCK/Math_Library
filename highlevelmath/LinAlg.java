@@ -82,62 +82,6 @@ public class LinAlg {
         return row.length - 1;
     }
 
-
-    public static double[] subtractSequences(double[][] matrix, int row1, int row2){
-        double[] diffs = new double[matrix[row1].length];
-        for(int i = 0; i < matrix[row1].length; i++){
-            diffs[i] = matrix[row1][i] - matrix[row2][i];
-        }
-        return diffs;
-    }
-
-    public static void interchangeRows(double[][] matrix, int row1, int row2){
-        double[] firstRow = matrix[row1];
-        matrix[row1] = matrix[row2];
-        matrix[row2] = firstRow;
-    }
-
-    public static void scaleSequence(double[] rowOrColumn, double scale){
-        for(int i = 0; i < rowOrColumn.length; i++){
-            rowOrColumn[i] *= scale;
-        }
-    }
-
-    public static double[] findColumn(double[][] matrix, int columnNum){
-        double[] column = new double[matrix[0].length];
-        for(int rowNum = 0; rowNum < matrix.length; rowNum++){
-            column[rowNum] = matrix[rowNum][columnNum];
-        }
-        return column;
-    }
-
-    public static void print(double[] array){
-        String str = "Array: [";
-        for(double element : array){
-            str += element == array[0] ? "" : " ";
-            str += truncateDecimal(element, 2);
-        }
-        System.out.println(str + "]");
-    }
-
-    public static void print(double[][] matrix){
-        String str = "Matrix: [";
-        for(double[] row : matrix){
-            str += "[";
-            for(double element: row){
-                str += element == row[0] ? "" : " ";
-                str += truncateDecimal(element, 2);
-            }
-            str += "]";  
-        }
-        System.out.println(str + "]");
-    }
-
-    static double truncateDecimal(double value, int places){
-        double powerOfTen = Math.pow(10, places);
-        return Math.floor(value * powerOfTen)/powerOfTen;
-    }
-
     static int findGCD(int big, int small) {
         if (big % small == 0) {
             return small;
