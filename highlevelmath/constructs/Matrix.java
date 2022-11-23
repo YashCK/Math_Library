@@ -10,6 +10,11 @@ public class Matrix {
         this.multiline = false;
     }
 
+    public Matrix(int[][] matrix){
+        this.data = recorrectMatrix(matrix);
+        this.multiline = false;
+    }
+
     public Matrix(double[][] matrix, boolean multiline){
         this.data = recorrectMatrix(matrix);
         this.multiline = multiline;
@@ -271,6 +276,29 @@ public class Matrix {
         //Find maximum row length
         int maxRowLength = 0;
         for(double[] row : matrix){
+            if(row.length > maxRowLength){
+                maxRowLength = row.length;
+            }
+        }
+        //Matrix to be returned
+        double[][] cMatrix = new double[matrix.length][maxRowLength];
+        //Fill in any empty space to make the matrix take the form of a rectangle
+        for(int row = 0; row < matrix.length; row++){
+            for(int column = 0; column < maxRowLength; column++){
+                if(column < matrix[row].length){
+                    cMatrix[row][column] = matrix[row][column];
+                } else {
+                    cMatrix[row][column] = 0;
+                }  
+            }
+        }
+        return cMatrix;
+    }
+
+    private double[][] recorrectMatrix(int[][] matrix){
+        //Find maximum row length
+        int maxRowLength = 0;
+        for(int[] row : matrix){
             if(row.length > maxRowLength){
                 maxRowLength = row.length;
             }

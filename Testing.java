@@ -83,6 +83,15 @@ public class Testing {
         // System.out.println(m2.contains(100));
         // System.out.println(m2.contains(9.0));
 
+        /*
+         * Testing Vector Class
+         */
+        double[] first = {2.0, 4.0, 6.0 , 8.0};
+        double[] second = {1.0, 3.0, 5.0, 7.0};
+        Vector v1 = new Vector();
+        Vector v2 = new Vector();
+        Vector v3 = new Vector();
+
     }
 
 }

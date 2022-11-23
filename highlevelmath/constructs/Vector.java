@@ -6,7 +6,7 @@ public class Vector extends Matrix {
 
     public Vector(double[] vector) {
         super(new double[vector.length][0]);
-        vector = this.matrix[0];
+        vector = this.data[0];
     }
 
     @Override
