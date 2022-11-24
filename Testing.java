@@ -12,7 +12,7 @@ public class Testing {
         Vector v2 = new Vector(d2);
         double[] d3 = {3, -9, 12, -9, 6, 15};
         Vector v3 = new Vector(d3);
-        Vector[] mat = { v1, v2, v3 };
+        Vector[] mat = {v1, v2, v3};
         Matrix test1 = new Matrix(mat, true);
         System.out.println(test1);
         System.out.println("Start of Row Reduction: ");

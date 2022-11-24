@@ -52,6 +52,10 @@ public class LinAlg {
                 buffer++;
             }
             //Use row replacement operations to create zeros in all positions below the pivot
+            //If Pivot Is 0 --> column += 1
+            while(matrix.get(pivotRow, column) == 0){
+                column++;
+            }
             System.out.println("Pivot: " + matrix.get(pivotRow, column));
             System.out.println("Pivot Row: " + matrix.getRow(pivotRow));
             for(int i = pivotRow + 1; i < totalRows; i++){

@@ -28,11 +28,6 @@ public class Vector {
         applyOperation(vector, function);
     }
 
-    public void multiply(Vector vector) throws OperationUndefinedException{
-        MatrixOperation function = (d1, d2) -> {return d1 * d2;};
-        applyOperation(vector, function);
-    }
-
     public void modulus(Vector vector) throws OperationUndefinedException{
         if(vector.contains(0)){
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
@@ -66,6 +61,7 @@ public class Vector {
         for(int i = 0; i < data.length; i++){
             data[i] *= factor;
         }
+        correctRounding();
     }
 
     public void interchangeCols(int col1, int col2) throws OperationUndefinedException{
@@ -135,13 +131,21 @@ public class Vector {
         this.data = newArray;
     }
 
+    public void correctRounding(){
+        double threshold = 1E-2;
+        for(int i = 0; i < data.length; i++){
+            if(Math.abs(Math.round(data[i]) - data[i]) < threshold){
+                data[i] = Math.round(data[i]);
+            }
+        }
+    }
+
     public String toString() {
         String str = "[";
         int index = 0;
         for(double element : data){
             str += (index == 0) ? "" : ", ";
-            // str += truncateDecimal(element, 2);
-            str += element;
+            str += truncateDecimal(element, 2);
             index++;
         }
         str += "]";

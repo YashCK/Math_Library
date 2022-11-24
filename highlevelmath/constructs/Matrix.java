@@ -260,6 +260,12 @@ public class Matrix {
         }
     }
 
+    public void correctRounding(){
+        for(Vector v : data){
+            v.correctRounding();
+        }
+    }
+
     protected void applyOperation(Matrix matrix, MatrixOperation Operation) throws OperationUndefinedException{
         if(data.length != matrix.getNumRows()){
             throw new OperationUndefinedException("This operation cannot be applied to matrices with different numbers of rows.");
