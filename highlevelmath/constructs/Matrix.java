@@ -18,6 +18,30 @@ public class Matrix {
         this.multiline = multiline;
     }
 
+    public Matrix(double[][] matrix){
+        Vector[] array = new Vector[matrix.length];
+        int i = 0;
+        for(double[] row : matrix){
+            Vector v = new Vector(row);
+            array[i] = v;
+            i++;
+        }
+        this.data = array;
+        this.multiline = false;
+    }
+
+    public Matrix(double[][] matrix, boolean multiline){
+        Vector[] array = new Vector[matrix.length];
+        int i = 0;
+        for(double[] row : matrix){
+            Vector v = new Vector(row);
+            array[i] = v;
+            i++;
+        }
+        this.data = array;
+        this.multiline = true;
+    }
+
     //Operations between Matrices
     public void add(Matrix matrix) throws OperationUndefinedException{
         MatrixOperation function = (d1, d2) -> {return d1 + d2;};
