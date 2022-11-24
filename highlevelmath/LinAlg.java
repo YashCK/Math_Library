@@ -16,10 +16,6 @@ public class LinAlg {
     //     ;
     // }
 
-    static int[] getPivots(int[][] matrix){
-        return matrix[0];
-    }
-
     /*
     * This function reduces the matrix passed in to its RREF state.
     *   - All nonzero rows are above any rows of all zeros.
@@ -73,7 +69,7 @@ public class LinAlg {
         //Reduces Matrix to RREF State
         // int column = totalCols - 1;
         for(int row = totalRows - 1; row > -1; row--){
-            //Find pivot in the row if it exists | Otherwise reduce row by 1
+            //Find pivots
             int column = 0;
             double val = matrix.get(row, column);
             while(val == 0){
@@ -100,8 +96,42 @@ public class LinAlg {
                 //Row R = Row R - Row Pivot
                 matrix.subtractRows(r, row);
             }
-            System.out.println(matrix);
         }
+    }
+
+    public static double[] getPivots(Matrix matrix) throws OperationUndefinedException{
+        double[] pivots = new double[matrix.getNumRows()];
+        int num = 0;
+        int totalCols = matrix.getNumCols();
+        for(int row = matrix.getNumRows() - 1; row > -1; row --){
+            int column = 0;
+            double val = matrix.get(row, column);
+            while(val == 0){
+                column++;
+                if(column >= totalCols){
+                    row--;
+                    break;
+                } else if(row < 0){
+                    break;
+                }
+                val = matrix.get(row, column);
+            }
+            System.out.println(val);
+            pivots[num] = val;
+            num++;
+        }
+        if(num < pivots.length){
+            double[] newPivots = new double[num];
+            int i = 0;
+            for(double elem : pivots){
+                if(elem != 0){
+                    newPivots[i] = elem;
+                }
+                i++;
+            }
+            return newPivots;
+        }
+        return pivots;
     }
 
     static int findGCD(int big, int small) {

@@ -3,20 +3,23 @@ import highlevelmath.constructs.*;
 
 public class Testing {
     public static void main(String[] args) throws OperationUndefinedException{
-        // double[][] mat = {  {0, 3, -6, 6, 4, -5},
-        //                     {3, -7, 8, -5, 8, 9}, 
-        //                     {3, - 9, 12, -9, 6, 15}};
-        double[] d1 = {0, 3, -6, 6, 4, -5};
-        Vector v1 = new Vector(d1);
-        double[] d2 = {3, -7, 8, -5, 8, 9};
-        Vector v2 = new Vector(d2);
-        double[] d3 = {3, -9, 12, -9, 6, 15};
-        Vector v3 = new Vector(d3);
-        Vector[] mat = {v1, v2, v3};
+        double[][] mat = {  {0, 3, -6, 6, 4, -5},
+                            {3, -7, 8, -5, 8, 9}, 
+                            {3, - 9, 12, -9, 6, 15}};
+        // double[] d1 = {0, 3, -6, 6, 4, -5};
+        // Vector v1 = new Vector(d1);
+        // double[] d2 = {3, -7, 8, -5, 8, 9};
+        // Vector v2 = new Vector(d2);
+        // double[] d3 = {3, -9, 12, -9, 6, 15};
+        // Vector v3 = new Vector(d3);
+        // Vector[] mat = {v1, v2, v3};
         Matrix test1 = new Matrix(mat, true);
         System.out.println(test1);
         System.out.println("Start of Row Reduction: ");
         LinAlg.rowReduction(test1);
+        test1.set(2, 4, 9.9);
+        System.out.println(test1);
+        LinAlg.getPivots(test1);
 
         /*
          * Testing Matrix Class
