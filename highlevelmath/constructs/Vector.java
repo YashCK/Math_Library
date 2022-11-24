@@ -123,6 +123,18 @@ public class Vector {
     }
 
     //Other Methods
+    public void recorrect(int num){
+        double[] newArray = new double[data.length + num];
+        for(int i = 0; i < data.length + num; i++){
+            if(i < data.length){
+                newArray[i] = data[i];
+            } else {
+                newArray[i] = 0;
+            }
+        }
+        this.data = newArray;
+    }
+
     public String toString() {
         String str = "[";
         int index = 0;

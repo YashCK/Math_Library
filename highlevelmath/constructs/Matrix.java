@@ -117,7 +117,7 @@ public class Matrix {
         if(row1 >= data.length || row2 >= data.length){
             throw new OperationUndefinedException("The rows are out of range.");
         }
-        double[] firstRow = getRow(row1);
+        Vector firstRow = getRow(row1);
         setRow(row1, getRow(row2));
         setRow(row2, firstRow);
     }
@@ -126,8 +126,8 @@ public class Matrix {
         if(col1 >= data[0].length || col2 >= data[0].length){
             throw new OperationUndefinedException("The columns are out of range.");
         }
-        double[] firstCol = getColumn(col1);
-        double[] secondCol = getColumn(col2);
+        Vector firstCol = getColumn(col1);
+        Vector secondCol = getColumn(col2);
         setColumn(col1, secondCol);
         setColumn(col2, firstCol);
     }
@@ -152,8 +152,8 @@ public class Matrix {
 
     // Setter Methods
     public void setRow(int rowNum, double[] newRow) throws OperationUndefinedException{
-        if(newRow.length >= data[0].length){
-            throw new OperationUndefinedException("The row length is out of range.");
+        if(newRow.length != data[0].length){
+            throw new OperationUndefinedException("The new row length is out of range.");
         }
         newRow = recorrectArray(newRow, true);
         for(int col = 0; col < data[rowNum].length; col++){
@@ -161,9 +161,19 @@ public class Matrix {
         }
     }
 
+    public void setRow(int rowNum, Vector newRow) throws OperationUndefinedException{
+        if(newRow.getLength() != data[0].length){
+            throw new OperationUndefinedException("The vector length is out of range.");
+        }
+        newRow.recorrect(data[0].length - newRow.getLength());
+        for(int col = 0; col < data[rowNum].length; col++){
+            data[rowNum][col] = newRow.get(col);
+        }
+    }
+
     public void setRow(int rowNum, int[] newRow) throws OperationUndefinedException{
         if(newRow.length >= data[0].length){
-            throw new OperationUndefinedException("The row length is out of range.");
+            throw new OperationUndefinedException("The new row length is out of range.");
         }
         double[] newArr = recorrectArray(newRow, true);
         for(int col = 0; col < data[rowNum].length; col++){
@@ -173,19 +183,31 @@ public class Matrix {
 
     public void setColumn(int colNum, double[] newCol) throws OperationUndefinedException{
         if(newCol.length >= data.length){
-            throw new OperationUndefinedException("The column length is out of range.");
+            throw new OperationUndefinedException("The new column length is out of range.");
         }
+        newCol = recorrectArray(newCol, false);
         for(int row = 0; row < data.length; row++){
             data[row][colNum] = newCol[row];
         }
     }
 
+    public void setColumn(int colNum, Vector newCol) throws OperationUndefinedException{
+        if(newCol.getLength() >= data.length){
+            throw new OperationUndefinedException("The vector length is out of range.");
+        }
+        newCol.recorrect(data.length - newCol.getLength());
+        for(int row = 0; row < data.length; row++){
+            data[row][colNum] = newCol.get(row);
+        }
+    }
+
     public void setColumn(int colNum, int[] newCol) throws OperationUndefinedException{
         if(newCol.length >= data.length){
-            throw new OperationUndefinedException("The column length is out of range.");
+            throw new OperationUndefinedException("The new column length is out of range.");
         }
+        double[] newArr = recorrectArray(newCol, true);
         for(int row = 0; row < data.length; row++){
-            data[row][colNum] = (double)newCol[row];
+            data[row][colNum] = newArr[row];
         }
     }
 
@@ -212,7 +234,7 @@ public class Matrix {
     }
 
     //Getter Methods
-    public double[] getRow(int rowNum) throws OperationUndefinedException{
+    public Vector getRow(int rowNum) throws OperationUndefinedException{
         if(rowNum >= data.length){
             throw new OperationUndefinedException("The row number is out of range.");
         }
@@ -220,10 +242,10 @@ public class Matrix {
         for(int columnNum = 0; columnNum < data[0].length; columnNum++){
             row[columnNum] = data[rowNum][columnNum];
         }
-        return row;
+        return new Vector(row);
     }
 
-    public double[] getColumn(int columnNum) throws OperationUndefinedException{
+    public Vector getColumn(int columnNum) throws OperationUndefinedException{
         if(columnNum >= data[0].length){
             throw new OperationUndefinedException("The col number is out of range.");
         }
@@ -231,7 +253,7 @@ public class Matrix {
         for(int rowNum = 0; rowNum < data.length; rowNum++){
             column[rowNum] = data[rowNum][columnNum];
         }
-        return column;
+        return new Vector(column);
     }
 
     public double get(int row, int col) throws OperationUndefinedException{

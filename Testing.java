@@ -84,16 +84,16 @@ public class Testing {
         /*
          * Testing Vector Class
          */
-        double[] first = {2.0, 4.0, 6.0 , 8.0};
-        double[] second = {1.0, 3.0, 5.0, 7.0};
-        double[] third = {1, 2, 3};
-        Vector v1 = new Vector(first);
-        Vector v2 = new Vector(second);
-        Vector v3 = new Vector(third);
-        Vector v4 = new Vector(first);
-        System.out.println("Vector 1: " + v1);
-        System.out.println("Vector 2: " + v2);
-        System.out.println("Vector 3: " + v3);
+        // double[] first = {2.0, 4.0, 6.0 , 8.0};
+        // double[] second = {1.0, 3.0, 5.0, 7.0};
+        // double[] third = {1, 2, 3};
+        // Vector v1 = new Vector(first);
+        // Vector v2 = new Vector(second);
+        // Vector v3 = new Vector(third);
+        // Vector v4 = new Vector(first);
+        // System.out.println("Vector 1: " + v1);
+        // System.out.println("Vector 2: " + v2);
+        // System.out.println("Vector 3: " + v3);
         // v1.add(v2);
         // v1.subtract(v2);
         // v1.multiply(v2);
