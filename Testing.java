@@ -15,11 +15,14 @@ public class Testing {
         // Vector[] mat = {v1, v2, v3};
         Matrix test1 = new Matrix(mat, true);
         System.out.println(test1);
-        System.out.println("Start of Row Reduction: ");
-        LinAlg.rowReduction(test1);
-        test1.set(2, 4, 9.9);
-        System.out.println(test1);
-        LinAlg.getPivots(test1);
+        // System.out.println("Start of Row Reduction: ");
+        // LinAlg.rowReduction(test1);
+        // test1.set(2, 4, 9.9);
+        // System.out.println(test1);
+        // LinAlg.getPivots(test1);
+        double[] d1 = {0, 3, -6, 6, 4, -5};
+        Vector vtest = new Vector(d1);
+        LinAlg.gaussianElimination(test1, vtest);
 
         /*
          * Testing Matrix Class

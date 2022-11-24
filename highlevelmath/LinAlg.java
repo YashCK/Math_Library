@@ -11,10 +11,19 @@ public class LinAlg {
         return 0;
     }
     
-    // static int[] gaussianElimination(Matrix matrix, Vector b){
-    //     // return matrix.get(0, 0);
-    //     ;
-    // }
+    public static Vector gaussianElimination(Matrix matrix, Vector b) throws OperationUndefinedException{
+        double[] solutions = new double[matrix.getNumRows()];
+        boolean[] freeVars = new boolean[matrix.getNumRows()];
+        rowReduction(matrix);
+        for(int row = 0; row < matrix.getNumRows(); row++){
+            int ind = getPivotIndex(matrix.getRow(row));
+            solutions[ind] = matrix.get(row, ind);
+            for(int col = ind + 1; col < matrix.getNumCols(); col++){
+                solutions[ind] = -matrix.get(row, col);
+            }
+        }
+        return new Vector(solutions);
+    }
 
     /*
     * This function reduces the matrix passed in to its RREF state.
@@ -102,23 +111,14 @@ public class LinAlg {
     public static double[] getPivots(Matrix matrix) throws OperationUndefinedException{
         double[] pivots = new double[matrix.getNumRows()];
         int num = 0;
-        int totalCols = matrix.getNumCols();
         for(int row = matrix.getNumRows() - 1; row > -1; row --){
-            int column = 0;
-            double val = matrix.get(row, column);
-            while(val == 0){
-                column++;
-                if(column >= totalCols){
-                    row--;
-                    break;
-                } else if(row < 0){
-                    break;
-                }
-                val = matrix.get(row, column);
+            double val = matrix.get(row, getPivotIndex(matrix.getRow(row)));
+            if(val != -1){
+                pivots[num] = val;
+                num++;
+            } else {
+                break;
             }
-            System.out.println(val);
-            pivots[num] = val;
-            num++;
         }
         if(num < pivots.length){
             double[] newPivots = new double[num];
@@ -132,6 +132,18 @@ public class LinAlg {
             return newPivots;
         }
         return pivots;
+    }
+
+    public static int getPivotIndex(Vector v) throws OperationUndefinedException{
+        int ind = 0;
+        double val = v.get(ind);
+        while(val == 0){
+            ind++;
+            if(ind > v.getLength())
+                return -1;
+            val = v.get(ind);
+        }
+        return ind;
     }
 
     static int findGCD(int big, int small) {

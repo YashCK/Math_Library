@@ -46,6 +46,34 @@ public class Matrix {
         this.multiline = multiline;
     }
 
+    public Matrix(Vector[] matrix, boolean asColumn, boolean multiline){
+        int maxRowLength = 0;
+        for(Vector v : matrix){
+            if(v.getLength() > maxRowLength){
+                maxRowLength = v.getLength();
+            }
+        }
+        try {
+            Vector[] newMat = new Vector[maxRowLength];
+            if(asColumn){
+                for(int col = 0; col < matrix.length; col++){
+                    for(int row = 0; row < matrix[col].getLength(); row++){
+                        newMat[col].set(row, matrix[col].get(row));
+                    }
+                }
+                recorrectMatrix(newMat);
+                this.data = matrix;
+            } else {
+                recorrectMatrix(matrix);
+                this.data = matrix;
+            }
+            this.multiline = multiline;
+        } catch(OperationUndefinedException e){
+            e.printStackTrace();
+        }
+        
+    }
+
     //Operations between Matrices
     public void add(Matrix matrix) throws OperationUndefinedException{
         // MatrixOperation function = (d1, d2) -> {return d1 + d2;};
@@ -166,6 +194,7 @@ public class Matrix {
         for(int i = 0; i < data.length; i++){
             data[i].set(columnNum, data[i].get(columnNum)*factor);
         }
+        correctRounding();
     }
 
     // Setter Methods
