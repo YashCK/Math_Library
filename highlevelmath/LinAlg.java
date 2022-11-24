@@ -3,6 +3,10 @@ import highlevelmath.constructs.*;
 
 public class LinAlg {
 
+    private LinAlg() {
+        throw new IllegalStateException("Utility class");
+    }
+
     static int calcDeterminant(int[][] matrix){
         return 0;
     }
@@ -28,6 +32,7 @@ public class LinAlg {
         int totalCols = matrix.getNumCols();
         int totalRows = matrix.getNumRows();
         int pivotRow = 0;
+        //Reduces Matrix to REF State
         for(int column = 0; column < totalRows; column++){
             //Scale each row such that its first entry is 1 | provided it is not 0 initially
             int[] beginWZeros = new int[totalRows];
@@ -56,16 +61,46 @@ public class LinAlg {
             while(matrix.get(pivotRow, column) == 0){
                 column++;
             }
-            System.out.println("Pivot: " + matrix.get(pivotRow, column));
-            System.out.println("Pivot Row: " + matrix.getRow(pivotRow));
             for(int i = pivotRow + 1; i < totalRows; i++){
                 //Row X = Row X - Row Pivot
                 if(matrix.get(i, column) != 0){
                     matrix.subtractRows(i, pivotRow);
                 }
             }
-            System.out.println(matrix);
             pivotRow++;
+        }
+        System.out.println(matrix);
+        //Reduces Matrix to RREF State
+        // int column = totalCols - 1;
+        for(int row = totalRows - 1; row > -1; row--){
+            //Find pivot in the row if it exists | Otherwise reduce row by 1
+            int column = 0;
+            double val = matrix.get(row, column);
+            while(val == 0){
+                column++;
+                if(column >= totalCols){
+                    row--;
+                    break;
+                }
+                if(row < 0){
+                    break;
+                }
+                val = matrix.get(row, column);
+            }
+            if(row < 0){
+                break;
+            }
+            //Scale pivot to be 1 | Scale positions above it correspondingly
+            for(int r = row; r > -1; r--){
+                double pivot = matrix.get(r, column);
+                matrix.scaleRow(r, 1/pivot);
+            }
+            //Create column of 0s above each pivot
+            for(int r = row - 1; r > -1; r--){
+                //Row R = Row R - Row Pivot
+                matrix.subtractRows(r, row);
+            }
+            System.out.println(matrix);
         }
     }
 
