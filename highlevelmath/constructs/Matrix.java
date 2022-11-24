@@ -29,10 +29,10 @@ public class Matrix {
         applyOperation(matrix, function);
     }
 
-    public void multiply(Matrix matrix) throws OperationUndefinedException{
-        MatrixOperation function = (d1, d2) -> {return d1 * d2;};
-        applyOperation(matrix, function);
-    }
+    // public void multiply(Matrix matrix) throws OperationUndefinedException{
+    //     MatrixOperation function = (d1, d2) -> {return d1 * d2;};
+    //     applyOperation(matrix, function);
+    // }
 
     public void modulus(Matrix matrix) throws OperationUndefinedException{
         if(matrix.contains(0)){

@@ -7,10 +7,10 @@ public class LinAlg {
         return 0;
     }
     
-    static int[] gaussianElimination(Matrix matrix, Vector b){
-        // return matrix.get(0, 0);
-        ;
-    }
+    // static int[] gaussianElimination(Matrix matrix, Vector b){
+    //     // return matrix.get(0, 0);
+    //     ;
+    // }
 
     static int[] getPivots(int[][] matrix){
         return matrix[0];
@@ -25,11 +25,43 @@ public class LinAlg {
     *   - Each leading 1 is the only nonzero entry in its column.
     */
     public static void rowReduction(Matrix matrix) throws OperationUndefinedException{
-        for(int column = 0; column < matrix.getNumCols(); column++){
-            //Interchange Rows so that the row being worked on does not have a leading 0
-            if(matrix.get(0, column) != 0){
-                
+        int totalCols = matrix.getNumCols();
+        int totalRows = matrix.getNumRows();
+        int pivotRow = 0;
+        for(int column = 0; column < totalRows; column++){
+            //Scale each row such that its first entry is 1 | provided it is not 0 initially
+            int[] beginWZeros = new int[totalRows];
+            int z = 0;
+            for(int row = pivotRow; row < totalRows; row++){
+                double value = matrix.get(row, column);
+                if(value != 0){
+                    matrix.scaleRow(row, 1/value);
+                } else {
+                    //Add rows that begin with 0 to beginWZeros array
+                    beginWZeros[z] = row + 1;
+                    z++;
+                }
             }
+            //Put rows of leading 0s as the bottom rows of the matrix
+            int buffer = 0;
+            for(int r : beginWZeros){
+                if(r == 0){
+                    break;
+                }
+                matrix.interchangeRows(r - 1, totalRows - 1 - buffer);
+                buffer++;
+            }
+            //Use row replacement operations to create zeros in all positions below the pivot
+            System.out.println("Pivot: " + matrix.get(pivotRow, column));
+            System.out.println("Pivot Row: " + matrix.getRow(pivotRow));
+            for(int i = pivotRow + 1; i < totalRows; i++){
+                //Row X = Row X - Row Pivot
+                if(matrix.get(i, column) != 0){
+                    matrix.subtractRows(i, pivotRow);
+                }
+            }
+            System.out.println(matrix);
+            pivotRow++;
         }
     }
 

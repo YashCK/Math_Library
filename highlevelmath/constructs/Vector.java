@@ -140,7 +140,8 @@ public class Vector {
         int index = 0;
         for(double element : data){
             str += (index == 0) ? "" : ", ";
-            str += truncateDecimal(element, 2);
+            // str += truncateDecimal(element, 2);
+            str += element;
             index++;
         }
         str += "]";
