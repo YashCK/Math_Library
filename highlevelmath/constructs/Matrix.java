@@ -24,6 +24,7 @@ public class Matrix {
             array[i] = v;
             i++;
         }
+        recorrectMatrix(array);
         this.data = array;
         this.multiline = true;
     }
@@ -53,6 +54,35 @@ public class Matrix {
         } catch(OperationUndefinedException e){
             e.printStackTrace();
         }
+    }
+
+    public Matrix(double[][] matrix, boolean asColumn){
+        Vector[] array = new Vector[matrix.length];
+        if(asColumn){
+            int maxRowLength = 0;
+            for(double[] column : matrix){
+                if(column.length > maxRowLength){
+                    maxRowLength = column.length;
+                }
+            }
+            array = new Vector[maxRowLength];
+            double[][] newMat = new double[maxRowLength][matrix.length];
+            for(int col = 0; col < matrix.length; col++){
+                for(int row = 0; row < matrix[col].length; row++){
+                    newMat[row][col] = matrix[col][row];
+                }
+            }
+            matrix = newMat;
+        }
+        int i = 0;
+        for(double[] row : matrix){
+            Vector v = new Vector(row);
+            array[i] = v;
+            i++;
+        }
+        recorrectMatrix(array);
+        this.data = array;
+        this.multiline = true;
     }
 
     //Operations between Matrices
