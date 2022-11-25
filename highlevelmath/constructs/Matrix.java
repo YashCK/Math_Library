@@ -13,13 +13,7 @@ public class Matrix {
     public Matrix(Vector[] matrix){
         recorrectMatrix(matrix);
         this.data = matrix;
-        this.multiline = false;
-    }
-
-    public Matrix(Vector[] matrix, boolean multiline){
-        recorrectMatrix(matrix);
-        this.data = matrix;
-        this.multiline = multiline;
+        this.multiline = true;
     }
 
     public Matrix(double[][] matrix){
@@ -31,22 +25,10 @@ public class Matrix {
             i++;
         }
         this.data = array;
-        this.multiline = false;
+        this.multiline = true;
     }
 
-    public Matrix(double[][] matrix, boolean multiline){
-        Vector[] array = new Vector[matrix.length];
-        int i = 0;
-        for(double[] row : matrix){
-            Vector v = new Vector(row);
-            array[i] = v;
-            i++;
-        }
-        this.data = array;
-        this.multiline = multiline;
-    }
-
-    public Matrix(Vector[] matrix, boolean asColumn, boolean multiline){
+    public Matrix(Vector[] matrix, boolean asColumn){
         int maxRowLength = 0;
         for(Vector v : matrix){
             if(v.getLength() > maxRowLength){
@@ -67,11 +49,10 @@ public class Matrix {
                 recorrectMatrix(matrix);
                 this.data = matrix;
             }
-            this.multiline = multiline;
+            this.multiline = true;
         } catch(OperationUndefinedException e){
             e.printStackTrace();
         }
-        
     }
 
     //Operations between Matrices
