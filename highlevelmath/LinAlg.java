@@ -26,9 +26,8 @@ public class LinAlg {
         Vector[] augMat = new Vector[augCols.length - 1];
         int n = 0;
         for(Vector a : augCols){
-            if(n >= augMat.length){
+            if(n >= augMat.length)
                 break;
-            }
             augMat[n] = a;
             n++;
         }
@@ -38,11 +37,10 @@ public class LinAlg {
         int lastPivotIndex = matrix.getNumCols();
         for(int row = matrix.getNumRows() - 1; row > -1; row--){
             int ind = getPivotIndex(matrix.getRow(row));
-            double val = matrix.get(row, ind);
             solutions[ind] = b.get(row);
             for(int i = ind + 1; i < matrix.getNumCols(); i++){
                 solutions[ind] -= matrix.get(row, i);
-                solutions[ind] /= val;
+                solutions[ind] /= matrix.get(row, ind);
             }
             if(lastPivotIndex - ind > 1){
                 freeVars[ind + (lastPivotIndex - ind)/2] = true;
