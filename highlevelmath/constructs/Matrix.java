@@ -30,30 +30,30 @@ public class Matrix {
     }
 
     public Matrix(Vector[] matrix, boolean asColumn){
-        int maxRowLength = 0;
-        for(Vector v : matrix){
-            if(v.getLength() > maxRowLength){
-                maxRowLength = v.getLength();
-            }
-        }
-        try {
-            Vector[] newMat = new Vector[maxRowLength];
-            if(asColumn){
-                for(int col = 0; col < matrix.length; col++){
-                    for(int row = 0; row < matrix[col].getLength(); row++){
-                        newMat[col].set(row, matrix[col].get(row));
-                    }
+        if(asColumn){
+            int maxRowLength = 0;
+            for(Vector v : matrix){
+                if(v.getLength() > maxRowLength){
+                    maxRowLength = v.getLength();
                 }
-                recorrectMatrix(newMat);
-                this.data = matrix;
-            } else {
-                recorrectMatrix(matrix);
-                this.data = matrix;
             }
-            this.multiline = true;
-        } catch(OperationUndefinedException e){
-            e.printStackTrace();
+            try {
+                Vector[] newMat = new Vector[maxRowLength];
+                for(int r = 0; r < maxRowLength; r++){
+                    double[] rowVec = new double[matrix.length];
+                    for(int c = 0; c < matrix.length; c++){
+                        rowVec[c] = matrix[c].get(r);
+                    }
+                    newMat[r] = new Vector(rowVec);
+                }
+                matrix = newMat;
+            } catch(OperationUndefinedException e){
+                e.printStackTrace();
+            }
         }
+        recorrectMatrix(matrix);
+        this.data = matrix;
+        this.multiline = true;
     }
 
     public Matrix(double[][] matrix, boolean asColumn){
@@ -132,6 +132,16 @@ public class Matrix {
     }
 
     //Methods to Manipulate Matrix
+    public Matrix subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException{
+        double[][] sub = new double[endRow - startRow + 1][endCol - startCol + 1];
+        for(int i = startRow; i <= endRow; i++){
+            for(int j = startCol; j <= endCol; j++){
+                sub[i][j] = this.get(i, j);
+            }
+        }
+        return new Matrix(sub);
+    }
+
     public void addRows(int row1, int row2) throws OperationUndefinedException{
         if(row1 >= data.length || row2 >= data.length){
             throw new OperationUndefinedException(ROW_OUT_RANGE);

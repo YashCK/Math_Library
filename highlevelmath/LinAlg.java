@@ -1,4 +1,6 @@
 package highlevelmath;
+import java.util.Arrays;
+
 import highlevelmath.constructs.*;
 
 public class LinAlg {
@@ -11,18 +13,106 @@ public class LinAlg {
         return 0;
     }
     
-    public static Vector gaussianElimination(Matrix matrix, Vector b) throws OperationUndefinedException{
-        double[] solutions = new double[matrix.getNumRows()];
-        boolean[] freeVars = new boolean[matrix.getNumRows()];
-        rowReduction(matrix);
-        for(int row = 0; row < matrix.getNumRows(); row++){
+    public static Vector gaussianElimination(Matrix matrix, Vector b) throws NoExistingSolutionException, OperationUndefinedException{
+        // double[] solutions = new double[matrix.getNumRows()];
+        double[] solutions = new double[matrix.getNumCols()];
+        boolean[] freeVars = new boolean[matrix.getNumCols()];
+        //If no solution exists, then throw NoExistingSolutionException
+        if(hasNoSolution(matrix)){
+            throw new NoExistingSolutionException("The matrix does not have a solution. Gaussian Elimination cannot be applied.");
+        }
+        //Create augmented matrix
+        Vector[] augCols = augment(matrix, b);
+        Vector[] augMat = new Vector[augCols.length - 1];
+        int n = 0;
+        for(Vector a : augCols){
+            if(n >= augMat.length){
+                break;
+            }
+            augMat[n] = a;
+            n++;
+        }
+        b = augCols[augCols.length - 1];
+        matrix = new Matrix(augMat, true);
+        //Loop from last row to the first row | Apply backsubstitution
+        int lastPivotIndex = matrix.getNumCols();
+        for(int row = matrix.getNumRows() - 1; row > -1; row--){
             int ind = getPivotIndex(matrix.getRow(row));
-            solutions[ind] = matrix.get(row, ind);
-            for(int col = ind + 1; col < matrix.getNumCols(); col++){
-                solutions[ind] = -matrix.get(row, col);
+            double val = matrix.get(row, ind);
+            solutions[ind] = b.get(row);
+            for(int i = ind + 1; i < matrix.getNumCols(); i++){
+                solutions[ind] -= matrix.get(row, i);
+                solutions[ind] /= val;
+            }
+            if(lastPivotIndex - ind > 1){
+                freeVars[ind + (lastPivotIndex - ind)/2] = true;
+                solutions[ind + (lastPivotIndex - ind)/2] = 1;
+            }
+            lastPivotIndex = ind;
+        }
+        Vector v = new Vector(solutions);
+        v.correctRounding();
+        return v;
+    }
+
+    private static Vector[] augment(Matrix m, Vector b) throws OperationUndefinedException{
+        //Create augmented matrix
+        Vector[] aug = new Vector[m.getNumCols() + 1];
+        for(int a = 0; a < m.getNumCols(); a++){
+            aug[a] = m.getColumn(a);
+        }
+        aug[aug.length - 1] = b;
+        Matrix augmented = new Matrix(aug, true);
+        //Row reduce augmented matrix
+        rowReduction(augmented);
+        //Return Vector[] where Vectors from indices 0 to length - 2 make up the RREF matrix
+        //The last Vector in Vector[] is the b column with row operations applied upon it
+        for(int col = 0; col < augmented.getNumCols(); col++){
+            aug[col] = augmented.getColumn(col);
+        }
+        return aug;
+    }
+
+    public static boolean isLinIndependent(Matrix m) throws OperationUndefinedException{
+        return hasUniqueSolution(m);
+    }
+
+    public static boolean hasSolution(Matrix m) throws OperationUndefinedException{
+        return hasUniqueSolution(m) || hasInfiniteSolutions(m);
+    }
+
+    public static boolean hasUniqueSolution(Matrix m) throws OperationUndefinedException{
+        //At least one solution | A pivot in every row
+        for(int row = 0; row < m.getNumRows(); row++){
+            if(getPivotIndex(m.getRow(row)) == -1){
+                return false;
             }
         }
-        return new Vector(solutions);
+        //At most one solutoin | A pivot in every column
+        for(int col = 0; col < m.getNumCols(); col++){
+            if(getPivotIndex(m.getColumn(col)) == -1){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean hasInfiniteSolutions(Matrix m) throws OperationUndefinedException{
+        if(hasUniqueSolution(m)){
+            return true;
+        }
+         //At least one solution | A pivot in every row
+         for(int row = 0; row < m.getNumRows(); row++){
+            if(getPivotIndex(m.getRow(row)) == -1){
+                return false;
+            }
+        }
+        //Check if there is a free variable
+        return m.getNumRows() < m.getNumCols();
+    }
+
+    public static boolean hasNoSolution(Matrix m) throws OperationUndefinedException{
+        return !hasSolution(m);
     }
 
     /*

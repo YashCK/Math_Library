@@ -2,10 +2,13 @@ import highlevelmath.*;
 import highlevelmath.constructs.*;
 
 public class Testing {
-    public static void main(String[] args) throws OperationUndefinedException{
-        double[][] mat = {  {0, 3, -6, 6, 4, -5},
-                            {3, -7, 8, -5, 8, 9}, 
-                            {3, - 9, 12, -9, 6, 15}};
+    public static void main(String[] args) throws OperationUndefinedException, NoExistingSolutionException{
+        // double[][] mat = {  {0, 3, -6, 6, 4, -5},
+        //                     {3, -7, 8, -5, 8, 9}, 
+        //                     {3, - 9, 12, -9, 6, 15}};
+        double[][] mat2 = { {1, 6, 2, -5, -2},
+                            {0, 0, 2, -8, -1}, 
+                            {0, 0, 0, 0,  1}};
         // double[] d1 = {0, 3, -6, 6, 4, -5};
         // Vector v1 = new Vector(d1);
         // double[] d2 = {3, -7, 8, -5, 8, 9};
@@ -13,16 +16,19 @@ public class Testing {
         // double[] d3 = {3, -9, 12, -9, 6, 15};
         // Vector v3 = new Vector(d3);
         // Vector[] mat = {v1, v2, v3};
-        Matrix test1 = new Matrix(mat, true);
-        System.out.println(test1);
-        // System.out.println("Start of Row Reduction: ");
-        // LinAlg.rowReduction(test1);
-        // test1.set(2, 4, 9.9);
+        // Matrix test2 = new Matrix(mat2, true);
+        // System.out.println(test2);
+        Matrix test1 = new Matrix(mat2);
         // System.out.println(test1);
-        // LinAlg.getPivots(test1);
-        double[] d1 = {0, 3, -6, 6, 4, -5};
+        // // System.out.println("Start of Row Reduction: ");
+        // LinAlg.rowReduction(test1);
+        // // test1.set(2, 4, 9.9);
+        // // System.out.println(test1);
+        // // LinAlg.getPivots(test1);
+        double[] d1 = {-4, 3, 7};
         Vector vtest = new Vector(d1);
-        LinAlg.gaussianElimination(test1, vtest);
+        Vector sol = LinAlg.gaussianElimination(test1, vtest);
+        System.out.println("Solution: " + sol);
 
         /*
          * Testing Matrix Class
