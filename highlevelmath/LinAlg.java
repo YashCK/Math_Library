@@ -75,6 +75,10 @@ public class LinAlg {
         return hasUniqueSolution(m);
     }
 
+    // public static boolean isAlwaysConsistent(Matrix m){
+
+    // }
+
     public static boolean hasSolution(Matrix m) throws OperationUndefinedException{
         return hasUniqueSolution(m) || hasInfiniteSolutions(m);
     }
@@ -97,7 +101,7 @@ public class LinAlg {
 
     public static boolean hasInfiniteSolutions(Matrix m) throws OperationUndefinedException{
         if(hasUniqueSolution(m)){
-            return true;
+            return false;
         }
          //At least one solution | A pivot in every row
          for(int row = 0; row < m.getNumRows(); row++){
@@ -110,8 +114,12 @@ public class LinAlg {
     }
 
     public static boolean hasNoSolution(Matrix m) throws OperationUndefinedException{
-        return !hasSolution(m);
+        return !(hasUniqueSolution(m) || hasInfiniteSolutions(m));
     }
+
+    // public static int numFreeVars(Matrix m){
+    //     ;
+    // }
 
     /*
     * This function reduces the matrix passed in to its RREF state.
@@ -232,6 +240,14 @@ public class LinAlg {
             val = v.get(ind);
         }
         return ind;
+    }
+
+    public static Matrix identity(int num){
+        double[][] im = new double[num][num];
+        for(int i = 0; i < num; i++){
+            im[i][i] = 1;
+        }
+        return new Matrix(im);
     }
 
     static int findGCD(int big, int small) {

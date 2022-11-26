@@ -136,14 +136,19 @@ public class Matrix {
 
     public void multiply(Matrix matrix) throws OperationUndefinedException{
         for(int row = 0; row < data.length; row++){
-            data[row].dot(matrix.getRow(row))
+            data[row].dot(matrix.getRow(row));
         }
     }
 
     public void multiply(Vector v) throws OperationUndefinedException{
-        for(int col = 0; col < this.getNumCols(); col++){
-            this.getColumn(col).scale(v.get(col));
+        for(int row = 0; row < data.length; row++){
+            data[row].dot(v);
         }
+        // for(int col = 0; col < this.getNumCols(); col++){
+        //     Vector newCol = getColumn(col);
+        //     newCol.scale(v.get(col));
+        //     setColumn(col, newCol);
+        // }
     }
 
     /**
