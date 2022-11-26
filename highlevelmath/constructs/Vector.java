@@ -52,6 +52,16 @@ public class Vector {
     }
 
     /**
+     * Operation to dot two vectors (for vectors in Rn)
+     * @param vector Vector object to dot
+     * @throws OperationUndefinedException
+     */
+    public void dot(Vector vector) throws OperationUndefinedException{
+        MatrixOperation function = (d1, d2) -> {return d1 * d2;};
+        applyOperation(vector, function);
+    }
+
+    /**
      * Operation to take the modulus of another matrix
      * @param vector Vector object whose entires will act as the modulus divisor
      * @throws OperationUndefinedException

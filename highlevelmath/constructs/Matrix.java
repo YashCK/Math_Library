@@ -134,9 +134,17 @@ public class Matrix {
         applyOperation(matrix, function);
     }
 
-    // public void multiply(Matrix matrix) throws OperationUndefinedException{
-        // ;
-    // }
+    public void multiply(Matrix matrix) throws OperationUndefinedException{
+        for(int row = 0; row < data.length; row++){
+            data[row].dot(matrix.getRow(row))
+        }
+    }
+
+    public void multiply(Vector v) throws OperationUndefinedException{
+        for(int col = 0; col < this.getNumCols(); col++){
+            this.getColumn(col).scale(v.get(col));
+        }
+    }
 
     /**
      * Operation to take the modulus of another matrix
