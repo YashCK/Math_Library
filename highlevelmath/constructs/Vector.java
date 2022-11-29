@@ -1,5 +1,7 @@
 package highlevelmath.constructs;
 
+import java.util.concurrent.atomic.DoubleAdder;
+
 /**
  * This class creates a represntation of a vector which can be used to store data,
  * represent coordinates, or any other quantities. These are especially useful in
@@ -56,9 +58,15 @@ public class Vector {
      * @param vector Vector object to dot
      * @throws OperationUndefinedException
      */
-    public void dot(Vector vector) throws OperationUndefinedException{
-        MatrixOperation function = (d1, d2) -> {return d1 * d2;};
-        applyOperation(vector, function);
+    public double dot(Vector vector) throws OperationUndefinedException{
+        if(data.length != vector.getLength()){
+            throw new OperationUndefinedException("This operation cannot be applied to vectors of different lengths.");
+        }
+        double sum = 0;
+        for(int i = 0; i < data.length; i++){
+            sum += data[i] * vector.get(i);
+        }
+        return sum;
     }
 
     /**

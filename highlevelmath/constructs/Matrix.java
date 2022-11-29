@@ -134,21 +134,29 @@ public class Matrix {
         applyOperation(matrix, function);
     }
 
-    public void multiply(Matrix matrix) throws OperationUndefinedException{
-        for(int row = 0; row < data.length; row++){
-            data[row].dot(matrix.getRow(row));
+    public Matrix multiply(Matrix matrix) throws OperationUndefinedException{
+        if(this.getNumCols() != matrix.getNumRows()){
+            throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         }
+        double[][] newM = new double[this.getNumRows()][matrix.getNumCols()];
+        for(int row = 0; row < data.length; row++){
+            Vector v = this.getRow(row);
+            for(int col = 0; col < matrix.getNumCols(); col++){
+                newM[row][col] = v.dot(matrix.getColumn(col));
+            }
+        }
+        return new Matrix(newM);
     }
 
-    public void multiply(Vector v) throws OperationUndefinedException{
-        for(int row = 0; row < data.length; row++){
-            data[row].dot(v);
+    public Vector multiply(Vector v) throws OperationUndefinedException{
+        if(this.getNumCols() != v.getLength()){
+            throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
         }
-        // for(int col = 0; col < this.getNumCols(); col++){
-        //     Vector newCol = getColumn(col);
-        //     newCol.scale(v.get(col));
-        //     setColumn(col, newCol);
-        // }
+        double[] newV = new double[data.length];
+        for(int row = 0; row < data.length; row++){
+            newV[row] = data[row].dot(v);
+        }
+        return new Vector(newV);
     }
 
     /**

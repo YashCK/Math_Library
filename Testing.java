@@ -1,3 +1,5 @@
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+
 import highlevelmath.*;
 import highlevelmath.constructs.*;
 
@@ -18,17 +20,17 @@ public class Testing {
         // Vector[] mat = {v1, v2, v3};
         // Matrix test2 = new Matrix(mat2, true);
         // System.out.println(test2);
-        Matrix test1 = new Matrix(mat2);
+        // Matrix test1 = new Matrix(mat2);
         // System.out.println(test1);
         // // System.out.println("Start of Row Reduction: ");
         // LinAlg.rowReduction(test1);
         // // test1.set(2, 4, 9.9);
         // // System.out.println(test1);
         // // LinAlg.getPivots(test1);
-        double[] d1 = {-4, 3, 7};
-        Vector vtest = new Vector(d1);
-        Vector sol = LinAlg.gaussianElimination(test1, vtest);
-        System.out.println("Solution: " + sol);
+        // double[] d1 = {-4, 3, 7};
+        // Vector vtest = new Vector(d1);
+        // Vector sol = LinAlg.gaussianElimination(test1, vtest);
+        // System.out.println("Solution: " + sol);
 
         /*
          * Testing Matrix Class
@@ -45,14 +47,28 @@ public class Testing {
         //     {5, 6, 2, 4, 9, 11}
         // };
 
-        // Matrix m1 = new Matrix(first, true);
+        // Matrix m1 = new Matrix(first);
         // Matrix m2 = new Matrix(second);
-        // Matrix m3 = new Matrix(first);
+        // Matrix m3 = new Matrix(first, true);
         // System.out.println("Matrix 1: " + m1);
         // System.out.println("Matrix 2: " + m2);
         // System.out.println("Matrix 3: " + m3);
 
-        // m1.add(m1);
+        // System.out.println(m1.multiply(m3));
+        // System.out.println("m1 : " + m1);
+
+        // double[][] another = {{1 , 2, -1},
+        //                     {0, -5, 3}};
+        // double[] anotherV = {4, 3, 7};
+        // double[][] another = {{2, -3},
+        //                     {8, 0},
+        //                     {-5, 2}};
+        // double[] anotherV = {4, 7};
+        // Matrix a = new Matrix(another);
+        // Vector v = new Vector(anotherV);
+        // System.out.println(a.multiply(v));
+
+        // m1.add(m1);s
         // System.out.println("M1 = M1 + M1: " + m1);
         // m1.add(m2);
         // m1.subtract(m3);
@@ -125,6 +141,9 @@ public class Testing {
         // System.out.println(v1.equals(v4));
         // v1.interchangeCols(0, 3);
         // System.out.println("Vector 1: " + v1);
+        // v1.recorrect(3);
+        // v2.recorrect(3);
+        // System.out.println(v1.dot(v2));
 
     }
 
