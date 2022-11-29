@@ -349,6 +349,10 @@ public class Matrix {
         correctRounding();
     }
 
+    public Matrix copy(){
+        return new Matrix(data);
+    }
+
     // Setter Methods
     /**
      * Set a particular row number to a new Vector

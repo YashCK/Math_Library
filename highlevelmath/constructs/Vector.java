@@ -129,6 +129,10 @@ public class Vector {
         data[col2] = first;
     }
 
+    public Vector copy(){
+        return new Vector(data);
+    }
+
     //Setters
     /**
      * Sets an index of the vector to particular value
@@ -204,6 +208,14 @@ public class Vector {
             }
         }
         return false;
+    }
+
+    public double sumVals(){
+        double sum = 0;
+        for(double d : data){
+            sum += d;
+        }
+        return sum;
     }
 
     //Other Methods
