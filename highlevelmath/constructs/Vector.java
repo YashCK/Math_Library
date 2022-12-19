@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.DoubleAdder;
 public class Vector {
 
     private double[] data;
+    public final int length;
 
     //Constructors
     /**
@@ -18,6 +19,7 @@ public class Vector {
      */
     public Vector(double[] vector) {
         this.data = vector;
+        this.length = vector.length;
     }
 
     /**
@@ -30,6 +32,7 @@ public class Vector {
             array[i] = vector[i];
         }
         this.data = array;
+        this.length = vector.length;
     }
 
     //Operations between Vectors
@@ -59,7 +62,7 @@ public class Vector {
      * @throws OperationUndefinedException
      */
     public double dot(Vector vector) throws OperationUndefinedException{
-        if(data.length != vector.getLength()){
+        if(data.length != vector.length){
             throw new OperationUndefinedException("This operation cannot be applied to vectors of different lengths.");
         }
         double sum = 0;
@@ -88,7 +91,7 @@ public class Vector {
             if(o == null || getClass() != o.getClass()){
                 return false;
             }
-            if(data.length != ((Vector)o).getLength()){
+            if(data.length != ((Vector)o).length){
                 return false;
             }
             for(int i = 0; i < data.length; i++){
@@ -161,13 +164,6 @@ public class Vector {
     }
 
     //Getters
-    /**
-     * Gets the length of the vector
-     * @return The vector's length
-     */
-    public int getLength(){
-        return data.length;
-    }
 
     /**
      * Gets the value at a certain index
@@ -261,7 +257,7 @@ public class Vector {
     }
 
     protected void applyOperation(Vector vector, MatrixOperation Operation) throws OperationUndefinedException{
-        if(data.length != vector.getLength()){
+        if(data.length != vector.length){
             throw new OperationUndefinedException("This operation cannot be applied to vectors of different lengths.");
         }
         for(int i = 0; i < data.length; i++){

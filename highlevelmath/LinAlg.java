@@ -235,7 +235,7 @@ public class LinAlg {
         double val = v.get(ind);
         while(val == 0){
             ind++;
-            if(ind > v.getLength())
+            if(ind > v.length)
                 return -1;
             val = v.get(ind);
         }
