@@ -1,5 +1,7 @@
 package highlevelmath.constructs;
 
+import highlevelmath.constructs.util.*;
+
 /**
  * This class creates a represntation of a matrix that can be used to store data
  * and perform operations upon. Matrices will be especially useful for operations in
@@ -14,7 +16,7 @@ public class Matrix {
     private static final String COL_OUT_RANGE = "The columns are out of range.";
     private static final String COL_NUM_OUT_RANGE = "The col number is out of range.";
 
-    protected Vector[] data;
+    protected Vector_Old[] data;
     protected boolean multiline;
 
     public final int nrows;
@@ -24,7 +26,7 @@ public class Matrix {
      * A constructor for Matrix class
      * @param matrix An array of Vector objects that represent the rows of the matrix
      */
-    public Matrix(Vector[] matrix){
+    public Matrix(Vector_Old[] matrix){
         recorrectMatrix(matrix);
         this.data = matrix;
         this.nrows = matrix.length;
@@ -37,10 +39,10 @@ public class Matrix {
      * @param matrix A 2D array of doubles that represent the structure of the matrix
      */
     public Matrix(double[][] matrix){
-        Vector[] array = new Vector[matrix.length];
+        Vector_Old[] array = new Vector_Old[matrix.length];
         int i = 0;
         for(double[] row : matrix){
-            Vector v = new Vector(row);
+            Vector_Old v = new Vector_Old(row);
             array[i] = v;
             i++;
         }
@@ -56,22 +58,22 @@ public class Matrix {
      * @param matrix An array of Vector objects that represent the rows of the matrix
      * @param asColumn Whether to interpret each Vector as a column vector or not
      */
-    public Matrix(Vector[] matrix, boolean asColumn){
+    public Matrix(Vector_Old[] matrix, boolean asColumn){
         if(asColumn){
             int maxRowLength = 0;
-            for(Vector v : matrix){
+            for(Vector_Old v : matrix){
                 if(v.length > maxRowLength){
                     maxRowLength = v.length;
                 }
             }
             try {
-                Vector[] newMat = new Vector[maxRowLength];
+                Vector_Old[] newMat = new Vector_Old[maxRowLength];
                 for(int r = 0; r < maxRowLength; r++){
                     double[] rowVec = new double[matrix.length];
                     for(int c = 0; c < matrix.length; c++){
                         rowVec[c] = matrix[c].get(r);
                     }
-                    newMat[r] = new Vector(rowVec);
+                    newMat[r] = new Vector_Old(rowVec);
                 }
                 matrix = newMat;
             } catch(OperationUndefinedException e){
@@ -91,7 +93,7 @@ public class Matrix {
      * @param asColumn Whether to interpret each array as a column vector or not
      */
     public Matrix(double[][] matrix, boolean asColumn){
-        Vector[] array = new Vector[matrix.length];
+        Vector_Old[] array = new Vector_Old[matrix.length];
         if(asColumn){
             int maxRowLength = 0;
             for(double[] column : matrix){
@@ -99,7 +101,7 @@ public class Matrix {
                     maxRowLength = column.length;
                 }
             }
-            array = new Vector[maxRowLength];
+            array = new Vector_Old[maxRowLength];
             double[][] newMat = new double[maxRowLength][matrix.length];
             for(int col = 0; col < matrix.length; col++){
                 for(int row = 0; row < matrix[col].length; row++){
@@ -110,7 +112,7 @@ public class Matrix {
         }
         int i = 0;
         for(double[] row : matrix){
-            Vector v = new Vector(row);
+            Vector_Old v = new Vector_Old(row);
             array[i] = v;
             i++;
         }
@@ -151,7 +153,7 @@ public class Matrix {
         }
         double[][] newM = new double[this.getNumRows()][matrix.getNumCols()];
         for(int row = 0; row < data.length; row++){
-            Vector v = this.getRow(row);
+            Vector_Old v = this.getRow(row);
             for(int col = 0; col < matrix.getNumCols(); col++){
                 newM[row][col] = v.dot(matrix.getColumn(col));
             }
@@ -159,7 +161,7 @@ public class Matrix {
         return new Matrix(newM);
     }
 
-    public Vector multiply(Vector v) throws OperationUndefinedException{
+    public Vector_Old multiply(Vector_Old v) throws OperationUndefinedException{
         if(this.getNumCols() != v.length){
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
         }
@@ -167,7 +169,7 @@ public class Matrix {
         for(int row = 0; row < data.length; row++){
             newV[row] = data[row].dot(v);
         }
-        return new Vector(newV);
+        return new Vector_Old(newV);
     }
 
     /**
@@ -309,7 +311,7 @@ public class Matrix {
         if(row1 >= data.length || row2 >= data.length){
             throw new OperationUndefinedException(ROW_OUT_RANGE);
         }
-        Vector firstRow = getRow(row1);
+        Vector_Old firstRow = getRow(row1);
         setRow(row1, getRow(row2));
         setRow(row2, firstRow);
     }
@@ -325,8 +327,8 @@ public class Matrix {
         if(col1 >= data[0].length || col2 >= data[0].length){
             throw new OperationUndefinedException(COL_OUT_RANGE);
         }
-        Vector firstCol = getColumn(col1);
-        Vector secondCol = getColumn(col2);
+        Vector_Old firstCol = getColumn(col1);
+        Vector_Old secondCol = getColumn(col2);
         setColumn(col1, secondCol);
         setColumn(col2, firstCol);
     }
@@ -371,7 +373,7 @@ public class Matrix {
      * @param newRow A Vector that represents the new row
      * @throws OperationUndefinedException
      */
-    public void setRow(int rowNum, Vector newRow) throws OperationUndefinedException{
+    public void setRow(int rowNum, Vector_Old newRow) throws OperationUndefinedException{
         if(newRow.length != data[0].length){
             throw new OperationUndefinedException("The vector length is out of range.");
         }
@@ -387,7 +389,7 @@ public class Matrix {
      * @param newCol A Vector that represents the new column
      * @throws OperationUndefinedException
      */
-    public void setColumn(int colNum, Vector newCol) throws OperationUndefinedException{
+    public void setColumn(int colNum, Vector_Old newCol) throws OperationUndefinedException{
         if(newCol.length >= data.length){
             throw new OperationUndefinedException("The vector length is out of range.");
         }
@@ -447,7 +449,7 @@ public class Matrix {
      * @return A new Vector with the contents of the row chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public Vector getRow(int rowNum) throws OperationUndefinedException{
+    public Vector_Old getRow(int rowNum) throws OperationUndefinedException{
         if(rowNum >= data.length){
             throw new OperationUndefinedException(ROW_NUM_OUT_RANGE);
         }
@@ -455,7 +457,7 @@ public class Matrix {
         for(int columnNum = 0; columnNum < data[0].length; columnNum++){
             row[columnNum] = data[rowNum].get(columnNum);
         }
-        return new Vector(row);
+        return new Vector_Old(row);
     }
 
     /**
@@ -464,7 +466,7 @@ public class Matrix {
      * @return A new Vector with the contents of the column chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public Vector getColumn(int columnNum) throws OperationUndefinedException{
+    public Vector_Old getColumn(int columnNum) throws OperationUndefinedException{
         if(columnNum >= data[0].length){
             throw new OperationUndefinedException(COL_NUM_OUT_RANGE);
         }
@@ -472,7 +474,7 @@ public class Matrix {
         for(int rowNum = 0; rowNum < data.length; rowNum++){
             column[rowNum] = data[rowNum].get(columnNum);
         }
-        return new Vector(column);
+        return new Vector_Old(column);
     }
 
     /**
@@ -522,7 +524,7 @@ public class Matrix {
      * @return True if value is in the matrix, False otherwise
      */
     public boolean contains(double value){
-        for(Vector v : data){
+        for(Vector_Old v : data){
             if(v.contains(value)){
                 return true;
             }
@@ -536,7 +538,7 @@ public class Matrix {
      * @return True if value is in the matrix, False otherwise
      */
     public boolean contains(int value){
-        for(Vector v : data){
+        for(Vector_Old v : data){
             if(v.contains(value)){
                 return true;
             }
@@ -545,10 +547,10 @@ public class Matrix {
     }
 
     //Other Methods
-    private void recorrectMatrix(Vector[] matrix){
+    private void recorrectMatrix(Vector_Old[] matrix){
         //Find maximum row length
         int maxRowLength = 0;
-        for(Vector v : matrix){
+        for(Vector_Old v : matrix){
             if(v.length > maxRowLength){
                 maxRowLength = v.length;
             }
@@ -563,7 +565,7 @@ public class Matrix {
      * Will correct any roundings issues (too much precision) with values in the matrix
      */
     public void correctRounding(){
-        for(Vector v : data){
+        for(Vector_Old v : data){
             v.correctRounding();
         }
     }
@@ -585,7 +587,7 @@ public class Matrix {
     public String toString() {
         String str = "[";
         int rowNum = 0;
-        for(Vector v : data){
+        for(Vector_Old v : data){
             str += v.toString();
             if(multiline && rowNum < data.length - 1){
                 str += "\n ";

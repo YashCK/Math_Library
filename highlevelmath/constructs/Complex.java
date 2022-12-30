@@ -1,5 +1,7 @@
 package highlevelmath.constructs;
 
+import highlevelmath.constructs.util.*;
+
 public class Complex {
     
     private double real;
