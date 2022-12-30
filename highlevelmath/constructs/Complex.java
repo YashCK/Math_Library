@@ -3,20 +3,25 @@ package highlevelmath.constructs;
 public class Complex {
     
     private double real;
-    private double im;
+    private double imag;
 
     //Constructors
     public Complex(double a, double b){
         this.real = a;
-        this.im = b;
+        this.imag = b;
     }
 
     public Complex(String number) throws ConstructFormatException{
         number = number.replaceAll("\\s+", "");
         try{
             int ind = number.contains("+") ? number.indexOf("+") :  number.indexOf("-");
-            this.real = Integer.parseInt(number.substring(0, ind));
-            this.im = Integer.parseInt(number.substring(ind, number.length()));
+            if(ind == -1){
+                this.real = Double.parseDouble(number);
+                this.imag = 0;
+            } else {
+                this.real = Double.parseDouble(number.substring(0, ind));
+                this.imag = Double.parseDouble(number.substring(ind, number.length() - 1));
+            }
         } catch(NumberFormatException | StringIndexOutOfBoundsException e){
             throw new ConstructFormatException("One or more complex numbers were incorrectly forrmed");
         }
@@ -24,20 +29,20 @@ public class Complex {
 
     //Operations
     public static Complex add(Complex a, Complex b){
-        Complex c = new Complex(a.getReal() + b.getReal(), a.getIm() + b.getIm());
+        Complex c = new Complex(a.getReal() + b.getReal(), a.getImag() + b.getImag());
         c.correctRounding();
         return c;
     }
 
     public static Complex sub(Complex a, Complex b){
-        Complex c = new Complex(a.getReal() - b.getReal(), a.getIm() - b.getIm());
+        Complex c = new Complex(a.getReal() - b.getReal(), a.getImag() - b.getImag());
         c.correctRounding();
         return c;
     }
 
     public static Complex mul(Complex a, Complex b){
-        double real = a.getReal() * b.getReal() - a.getIm()*b.getIm();
-        double im = a.getReal() * b.getReal() + a.getIm()*b.getIm();
+        double real = a.getReal() * b.getReal() - a.getImag()*b.getImag();
+        double im = a.getReal() * b.getReal() + a.getImag()*b.getImag();
         Complex c = new Complex(real, im);
         return c;
     }
@@ -47,26 +52,26 @@ public class Complex {
     }
 
     public Complex scale(double val){
-        Complex c = new Complex(getReal() * val, this.getIm() * val);
+        Complex c = new Complex(getReal() * val, this.getImag() * val);
         c.correctRounding();
         return c;
     }
 
     public static Complex conjugate(Complex a){
-        return new Complex(a.getReal(), -a.getIm());
+        return new Complex(a.getReal(), -a.getImag());
     }
 
     public static Complex reciprocal(Complex a){
-        double val = a.getReal()*a.getReal() + a.getIm()*a.getIm();
-        Complex c = new Complex(a.getReal() / val, -a.getIm()/val);
+        double val = a.getReal()*a.getReal() + a.getImag()*a.getImag();
+        Complex c = new Complex(a.getReal() / val, -a.getImag()/val);
         c.correctRounding();
         return c;
     }
 
 
     //Getters
-    public double getIm() {
-        return im;
+    public double getImag() {
+        return imag;
     }
 
     public double getReal() {
@@ -75,7 +80,7 @@ public class Complex {
 
     //Setters
     public void setIm(double im) {
-        this.im = im;
+        this.imag = im;
     }
 
     public void setReal(double real) {
@@ -85,7 +90,7 @@ public class Complex {
     //Other Methods
     @Override
     public String toString() {
-        return this.real + " + " + this.im + "i";
+        return this.real + " + " + this.imag + "i";
     }
 
     @Override
@@ -93,7 +98,7 @@ public class Complex {
         if(obj == null || getClass() != obj.getClass()){
             return false;
         }
-        return this.getReal() == ((Complex)obj).getReal() && this.getIm() == ((Complex)obj).getIm();
+        return this.getReal() == ((Complex)obj).getReal() && this.getImag() == ((Complex)obj).getImag();
     }
 
     private void correctRounding(){
@@ -101,8 +106,8 @@ public class Complex {
         if(Math.abs(Math.round(this.real) - this.real) < threshold){
             this.real = Math.round(this.real);
         }
-        if(Math.abs(Math.round(this.im) - this.im) < threshold){
-            this.im = Math.round(this.im);
+        if(Math.abs(Math.round(this.imag) - this.imag) < threshold){
+            this.imag = Math.round(this.imag);
         }
     }
 

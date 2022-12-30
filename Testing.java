@@ -145,6 +145,15 @@ public class Testing {
         // v2.recorrect(3);
         // System.out.println(v1.dot(v2));
 
+        //Complex class
+        // Complex c = new Complex(5, 43);
+        // try {
+        //     Complex c = new Complex(" 4.5    + 3.558  i");
+        //     System.out.println(c);
+        // } catch (ConstructFormatException e) {
+        //     System.out.println("Error");
+        // }
+            
     }
 
 }
