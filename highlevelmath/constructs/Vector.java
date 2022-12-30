@@ -34,13 +34,13 @@ public class Vector implements Vec<Double>{
 
     @Override
     public void add(Vec<Double> vector) throws OperationUndefinedException {
-        MatrixOperation function = (d1, d2) -> {return d1 + d2;};
+        MatrixOperation<Double> function = (d1, d2) -> {return d1 + d2;};
         applyOperation(vector, function);
     }
 
     @Override
     public void subtract(Vec<Double> vector) throws OperationUndefinedException {
-        MatrixOperation function = (d1, d2) -> {return d1 - d2;};
+        MatrixOperation<Double> function = (d1, d2) -> {return d1 - d2;};
         applyOperation(vector, function);
     }
 
@@ -48,7 +48,7 @@ public class Vector implements Vec<Double>{
         if(vector.contains(0)){
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
         }
-        MatrixOperation function = (d1, d2) -> {return d1 % d2;};
+        MatrixOperation<Double> function = (d1, d2) -> {return d1 % d2;};
         applyOperation(vector, function);
     }
 
@@ -162,7 +162,7 @@ public class Vector implements Vec<Double>{
 
 
     //Other Methods
-    protected void applyOperation(Vec<Double> vector, MatrixOperation Operation) throws OperationUndefinedException{
+    protected void applyOperation(Vec<Double> vector, MatrixOperation<Double> Operation) throws OperationUndefinedException{
         if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }

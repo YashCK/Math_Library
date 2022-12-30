@@ -4,8 +4,10 @@ import highlevelmath.constructs.util.*;
 
 public class CVector implements Vec<Complex>{
 
+    private static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
+    private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
+
     private Complex[] data;
-    public final int length;
 
     /**
      * A constructor for CVector class
@@ -13,7 +15,6 @@ public class CVector implements Vec<Complex>{
      */
     public CVector(Complex[] vector){
         this.data = vector;
-        this.length = vector.length;
     }
 
     /**
@@ -27,23 +28,26 @@ public class CVector implements Vec<Complex>{
             array[i] = new Complex(vector[i]);
         }
         this.data = array;
-        this.length = vector.length;
     }
 
     //Operations
     @Override
     public void add(Vec<Complex> vector) throws OperationUndefinedException {
-        
+        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.add(c1, c2);};
+        applyOperation(vector, function);
     }
 
     @Override
     public void subtract(Vec<Complex> vector) throws OperationUndefinedException {
-
+        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.sub(c1, c2);};
+        applyOperation(vector, function);
     }
 
     @Override
     public void scale(Field<?> vector) {
-
+        for(int i = 0; i < data.length; i++){
+            data[i].scale(factor);
+        }
     }
 
     @Override
@@ -94,7 +98,9 @@ public class CVector implements Vec<Complex>{
         data[col2] = first;
     }
 
-    //Define Inner Product Function
+    public void defineInnerProduct(){
+        //
+    }
 
     @Override
     public int length() {
@@ -162,16 +168,14 @@ public class CVector implements Vec<Complex>{
         return true;
     }
 
-    protected void applyOperation(Vec<Double> vector, MatrixOperation Operation) throws OperationUndefinedException{
+    protected void applyOperation(Vec<Complex> vector, MatrixOperation<Complex> function) throws OperationUndefinedException{
         if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }
         for(int i = 0; i < data.length; i++){
-            data[i] = Operation.operation(data[i], vector.get(i));
+            data[i] = function.operation(data[i], vector.get(i));
         }
     }
-
-    //Correct Rounding
 
      /**
      * WARNING - COULD LEAD TO UNINDENTED CONSQUENCES, ESPECIALLY IN MATRICES
