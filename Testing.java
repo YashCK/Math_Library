@@ -148,7 +148,9 @@ public class Testing {
         //Complex class
         // Complex c = new Complex(5, 43);
         // try {
-        //     Complex c = new Complex(" 4.5    + 3.558  i");
+            // Complex c = new Complex(" 4.5    + 3.558  i");
+            // Complex c = new Complex("4.5");
+            // Complex c = new Complex("4.5i");
         //     System.out.println(c);
         // } catch (ConstructFormatException e) {
         //     System.out.println("Error");

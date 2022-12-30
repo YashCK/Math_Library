@@ -16,8 +16,13 @@ public class Complex {
         try{
             int ind = number.contains("+") ? number.indexOf("+") :  number.indexOf("-");
             if(ind == -1){
-                this.real = Double.parseDouble(number);
-                this.imag = 0;
+                if(number.charAt(number.length() - 1) == 'i'){
+                    this.real = 0;
+                    this.imag = Double.parseDouble(number.substring(0, number.length() - 1));
+                } else {
+                    this.real = Double.parseDouble(number);
+                    this.imag = 0;
+                }
             } else {
                 this.real = Double.parseDouble(number.substring(0, ind));
                 this.imag = Double.parseDouble(number.substring(ind, number.length() - 1));
