@@ -1,4 +1,4 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.util;
 
 /**
  * This class outlines an exception where a function was used but no Solution was available

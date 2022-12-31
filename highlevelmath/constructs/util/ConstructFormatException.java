@@ -1,4 +1,4 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.util;
 
 public class ConstructFormatException extends Exception{
     /**

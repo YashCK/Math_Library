@@ -1,4 +1,4 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.util;
 
 /**
  * This class outlines an exception where an operation upon some object was applied but was invalid
