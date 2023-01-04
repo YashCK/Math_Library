@@ -1,5 +1,5 @@
 package highlevelmath.constructs;
-
+import highlevelmath.constructs.abstract_algebra.Field;
 import highlevelmath.constructs.util.*;
 
 /**

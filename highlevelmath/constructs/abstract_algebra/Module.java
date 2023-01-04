@@ -1,5 +1,5 @@
 package highlevelmath.constructs.abstract_algebra;
 
-public interface AbelianGroup<S> extends Group<S>{
+public interface Module<R> extends Ring<R>{
     
 }

@@ -1,5 +1,5 @@
 package highlevelmath.constructs.abstract_algebra;
 
-public interface AdditiveMonoid<S> extends Magma<S>{
+public interface VectorSpace<F> extends Field<F> {
     
 }
