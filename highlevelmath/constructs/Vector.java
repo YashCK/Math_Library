@@ -1,7 +1,7 @@
 package highlevelmath.constructs;
 import highlevelmath.constructs.util.*;
 
-public class Vector implements Vec<Double>{
+public class Vector extends Vec<Double>{
 
     private static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
     private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
