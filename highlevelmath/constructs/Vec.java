@@ -9,25 +9,35 @@ public abstract class Vec<T>{
 
     private Field<?> field;
 
+    /*
+     * TO IMPLEMENT: 
+     * GET Inner Product
+     * SET Inner Product
+     */
+
     //Operations
+
     /**
      * Adds the input vector to the current Vector
      * @param vector
      * @throws OperationUndefinedException
      */
     public abstract void add(Vec<T> vector) throws OperationUndefinedException;
+   
     /**
      * Subtracts the input vector from the current Vector
      * @param vector
      * @throws OperationUndefinedException
      */
-    public abstract void subtract(Vec<T> vector) throws OperationUndefinedException;
-    /**
+     public abstract void subtract(Vec<T> vector) throws OperationUndefinedException;
+    
+     /**
      * Scales the vector by a scalar value. The default is a Real Value (doubles).
      * The scalar part of Vector MUST be of the SAME TYPE of the Vector's set Field.
      * @param vector A scalar value
      */
-    public abstract void scale(Object vector) throws OperationUndefinedException;
+    public abstract void scale(Object factor) throws OperationUndefinedException;
+    
     /**
      * Calculates the inner product between this and the input Vector.
      * The result will be a part of the scalar field the Vector is using.
@@ -38,6 +48,7 @@ public abstract class Vec<T>{
     public abstract Object inner(Vec<T> vector) throws OperationUndefinedException;
 
     //Getters
+    
     /**
      * Gets the value at a certain index
      * @param index The index that should be gotten
@@ -45,11 +56,13 @@ public abstract class Vec<T>{
      * @throws OperationUndefinedException
      */
     public abstract T get(int index) throws OperationUndefinedException;
+   
     /**
      * Gets the length of the vector
      * @return The length of the vector
      */
     public abstract int length();
+    
     /**
      * Gets the scalar Field the Vector is using
      * @return

@@ -12,4 +12,9 @@ public interface Field<S> extends EuclideanDomain<S>{
         return true;
     }
 
+    @Override
+    default boolean isCommutativeOverAddition() {
+        return true;
+    }
+
 }

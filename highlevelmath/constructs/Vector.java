@@ -1,4 +1,5 @@
 package highlevelmath.constructs;
+
 import highlevelmath.constructs.util.*;
 
 public class Vector extends Vec<Double>{
@@ -45,7 +46,7 @@ public class Vector extends Vec<Double>{
     }
 
     public void modulus(Vec<Double> vector) throws OperationUndefinedException{
-        if(vector.contains(0)){
+        if(vector.contains(0.0)){
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
         }
         MatrixOperation<Double> function = (d1, d2) -> {return d1 % d2;};
@@ -53,6 +54,17 @@ public class Vector extends Vec<Double>{
     }
 
     @Override
+    public void scale(Object factor) throws OperationUndefinedException {
+        if(!getField().isInstanceOfElement(factor)){
+            throw new OperationUndefinedException("The factor is not the same type as the scalar the Vector is using.");
+        }
+        for(int i = 0; i < data.length; i++){
+            data[i] *= factor;
+        }
+        correctRounding();
+    }
+
+
     public void scale(double factor) {
         for(int i = 0; i < data.length; i++){
             data[i] *= factor;

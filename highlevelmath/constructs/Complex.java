@@ -41,7 +41,7 @@ public class Complex {
         return c;
     }
 
-    public static Complex sub(Complex a, Complex b){
+    public static Complex subtract(Complex a, Complex b){
         Complex c = new Complex(a.getReal() - b.getReal(), a.getImag() - b.getImag());
         c.correctRounding();
         return c;
@@ -49,13 +49,17 @@ public class Complex {
 
     public static Complex mul(Complex a, Complex b){
         double real = a.getReal() * b.getReal() - a.getImag()*b.getImag();
-        double im = a.getReal() * b.getReal() + a.getImag()*b.getImag();
+        double im = a.getReal() * b.getImag() + a.getImag()*b.getReal();
         Complex c = new Complex(real, im);
         return c;
     }
 
     public static Complex div(Complex a, Complex b){
         return Complex.mul(a, Complex.reciprocal(b));
+    }
+
+    public static double norm(Complex a){
+        return Math.sqrt(a.getReal()*a.getReal() + a.getImag()*a.getImag());
     }
 
     public Complex scale(double val){

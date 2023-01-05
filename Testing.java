@@ -1,7 +1,8 @@
-import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
 import highlevelmath.*;
-import highlevelmath.constructs.*;
+import highlevelmath.constructs.Complex;
+import highlevelmath.constructs.util.NoExistingSolutionException;
+import highlevelmath.constructs.util.OperationUndefinedException;
 
 public class Testing {
     public static void main(String[] args) throws OperationUndefinedException, NoExistingSolutionException{
@@ -155,6 +156,17 @@ public class Testing {
         // } catch (ConstructFormatException e) {
         //     System.out.println("Error");
         // }
+        // Complex c1 = new Complex(6, 4);
+        // Complex c2 = new Complex(3, 5);
+        // System.out.println(c1.getReal());
+        // System.out.println(c1.getImag());
+        // System.out.println(Complex.add(c1, c2));
+        // System.out.println(Complex.subtract(c1, c2));
+        // System.out.println(Complex.mul(c1, c2));
+        // System.out.println(Complex.mul(c2, c1));
+        // System.out.println(Complex.div(c1, c2));
+        // System.out.println(Complex.mul(Complex.div(c1, c2), c2));
+        // System.out.println(Complex.conjugate(c1));
             
     }
 
