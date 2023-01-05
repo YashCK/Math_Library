@@ -1,4 +1,4 @@
-package highlevelmath.constructs.abstract_algebra;
+package highlevelmath.constructs.abstract_algebra.structures;
 
 public interface EuclideanDomain<S> extends IntegralDomain<S>{
 
