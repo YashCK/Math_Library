@@ -5,6 +5,7 @@ import java.util.List;
 
 import highlevelmath.constructs.Complex;
 import highlevelmath.constructs.abstract_algebra.structures.Field;
+import highlevelmath.constructs.util.NotInvertibleException;
 
 public class ComplexField implements Field<Complex>{
 
@@ -53,6 +54,9 @@ public class ComplexField implements Field<Complex>{
 
     @Override
     public Complex invert(Complex a) {
+        if(a.equals(new Complex(0, 0))){
+            throw new NotInvertibleException("0 is not invertible in the Complex Number Field.")
+        }
         return Complex.reciprocal(a);
     }
     

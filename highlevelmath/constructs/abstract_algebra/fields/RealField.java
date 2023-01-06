@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import highlevelmath.constructs.abstract_algebra.structures.*;
+import highlevelmath.constructs.util.NotInvertibleException;
 
 public class RealField implements Field<Double>{
 
@@ -52,6 +53,9 @@ public class RealField implements Field<Double>{
 
     @Override
     public Double invert(Double a) {
+        if(a == 0){
+            throw new NotInvertibleException("0 + 0i is not invertible in the Real Number Field.")
+        }
         return 1/a;
     }
     
