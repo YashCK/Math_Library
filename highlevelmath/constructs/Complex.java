@@ -54,8 +54,12 @@ public class Complex {
         return c;
     }
 
-    public static Complex div(Complex a, Complex b){
-        return Complex.mul(a, Complex.reciprocal(b));
+    public static Complex div(Complex a, Complex b) throws UndefinedException{
+        try {
+            return Complex.mul(a, Complex.reciprocal(b));
+        } catch (UndefinedException e) {
+            throw new UndefinedException("Cannot divide by Complex number 0 + 0i.");
+        }
     }
 
     public static double norm(Complex a){
@@ -72,7 +76,10 @@ public class Complex {
         return new Complex(a.getReal(), -a.getImag());
     }
 
-    public static Complex reciprocal(Complex a){
+    public static Complex reciprocal(Complex a) throws UndefinedException{
+        if(a.isZero()){
+            throw new UndefinedException("There is no reciprocal for Complex number 0 + 0i");
+        }
         double val = a.getReal()*a.getReal() + a.getImag()*a.getImag();
         Complex c = new Complex(a.getReal() / val, -a.getImag()/val);
         c.correctRounding();
@@ -96,6 +103,10 @@ public class Complex {
 
     public void setReal(double real) {
         this.real = real;
+    }
+
+    public boolean isZero(){
+        return this.equals(new Complex(0, 0));
     }
 
     //Other Methods

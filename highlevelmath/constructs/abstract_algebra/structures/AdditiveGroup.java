@@ -1,5 +1,7 @@
 package highlevelmath.constructs.abstract_algebra.structures;
 
+import highlevelmath.constructs.util.NotInvertibleException;
+
 public interface AdditiveGroup<S> extends Set<S>{
 
     S add(S a, S b);
@@ -8,7 +10,7 @@ public interface AdditiveGroup<S> extends Set<S>{
 
     S subtract(S a, S b);
 
-    S invert(S a);
+    S invert(S a) throws NotInvertibleException;
 
     boolean isCommutativeOverAddition();
 

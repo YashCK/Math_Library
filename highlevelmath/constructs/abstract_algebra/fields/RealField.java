@@ -52,9 +52,9 @@ public class RealField implements Field<Double>{
     }
 
     @Override
-    public Double invert(Double a) {
+    public Double invert(Double a) throws NotInvertibleException {
         if(a == 0){
-            throw new NotInvertibleException("0 + 0i is not invertible in the Real Number Field.")
+            throw new NotInvertibleException("0 + 0i is not invertible in the Real Number Field.");
         }
         return 1/a;
     }
