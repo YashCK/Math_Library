@@ -36,13 +36,13 @@ public class CVector implements Vec<Complex, Double, RealField>{
     //Operations
     @Override
     public void add(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.add(c1, c2);};
+        MatrixOperation<Complex> function = Complex::add;
         applyOperation(vector, function);
     }
 
     @Override
     public void subtract(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.subtract(c1, c2);};
+        MatrixOperation<Complex> function = Complex::subtract;
         applyOperation(vector, function);
     }
 

@@ -1,7 +1,8 @@
 package highlevelmath.constructs;
 
+import java.util.Arrays;
+
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
-import highlevelmath.constructs.abstract_algebra.structures.Field;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
@@ -11,7 +12,6 @@ public class Vector implements Vec<Double, Double, RealField>{
     private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
 
     private double[] data;
-    private Field<Double> field = new RealField();
 
     //Constructors
 
@@ -37,12 +37,12 @@ public class Vector implements Vec<Double, Double, RealField>{
 
     //Operations
     public void add(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> {return d1 + d2;};
+        MatrixOperation<Double> function = (d1, d2) -> d1 + d2;
         applyOperation(vector, function);
     }
 
     public void subtract(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> {return d1 - d2;};
+        MatrixOperation<Double> function = (d1, d2) -> d1 - d2;
         applyOperation(vector, function);
     }
 
@@ -50,16 +50,13 @@ public class Vector implements Vec<Double, Double, RealField>{
         if(vector.contains(0.0)){
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
         }
-        MatrixOperation<Double> function = (d1, d2) -> {return d1 % d2;};
+        MatrixOperation<Double> function = (d1, d2) -> d1 % d2;
         applyOperation(vector, function);
     }
 
     public void scale(Double factor) throws OperationUndefinedException {
-        if(field.isInstanceOfElement(factor)){
-            throw new OperationUndefinedException("The factor is not an element in the scalar field: RealField.");
-        }
         for(int i = 0; i < data.length; i++){
-            data[i] *= (double)factor;
+            data[i] *= factor;
         }
         correctRounding();
     }
@@ -176,12 +173,12 @@ public class Vector implements Vec<Double, Double, RealField>{
 
 
     //Other Methods
-    protected void applyOperation(Vec<Double, Double, RealField> vector, MatrixOperation<Double> Operation) throws OperationUndefinedException{
+    protected void applyOperation(Vec<Double, Double, RealField> vector, MatrixOperation<Double> operation) throws OperationUndefinedException{
         if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }
         for(int i = 0; i < data.length; i++){
-            data[i] = Operation.operation(data[i], vector.get(i));
+            data[i] = operation.operation(data[i], vector.get(i));
         }
     }
 

@@ -50,8 +50,7 @@ public class Complex {
     public static Complex mul(Complex a, Complex b){
         double real = a.getReal() * b.getReal() - a.getImag()*b.getImag();
         double im = a.getReal() * b.getImag() + a.getImag()*b.getReal();
-        Complex c = new Complex(real, im);
-        return c;
+        return new Complex(real, im);
     }
 
     public static Complex div(Complex a, Complex b) throws UndefinedException{

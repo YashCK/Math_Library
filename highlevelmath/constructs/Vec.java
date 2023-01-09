@@ -5,6 +5,10 @@ import highlevelmath.constructs.util.OperationUndefinedException;
 
 /**
  * Representation of a Vector in some Vector space V over scalar field K
+ * <pre> 
+    *T is the type of the object stored in the Vector
+    *K is the Field of scalars (of type S) that is associated with the Vector Space.
+ *  </pre>
  */
 public interface Vec<T, S, K extends Field<S>>{
 

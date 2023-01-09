@@ -13,7 +13,7 @@ public class LinAlg {
         return 0;
     }
     
-    public static Vec<?> gaussianElimination(Matrix matrix, Vector_Old b) throws NoExistingSolutionException, OperationUndefinedException{
+    public static Vec<?> gaussianElimination(Matrix matrix, Vec<?, ?, ?> b) throws NoExistingSolutionException, OperationUndefinedException{
         // double[] solutions = new double[matrix.getNumRows()];
         double[] solutions = new double[matrix.getNumCols()];
         boolean[] freeVars = new boolean[matrix.getNumCols()];
@@ -22,10 +22,10 @@ public class LinAlg {
             throw new NoExistingSolutionException("The matrix does not have a solution. Gaussian Elimination cannot be applied.");
         }
         //Create augmented matrix
-        Vector_Old[] augCols = augment(matrix, b);
-        Vector_Old[] augMat = new Vector_Old[augCols.length - 1];
+        Vec<?, ?, ?>[] augCols = augment(matrix, b);
+        Vec<?, ?, ?>[] augMat = new Vec<?, ?, ?>[augCols.length - 1];
         int n = 0;
-        for(Vector_Old a : augCols){
+        for(Vec<?, ?, ?> a : augCols){
             if(n >= augMat.length)
                 break;
             augMat[n] = a;
@@ -48,14 +48,14 @@ public class LinAlg {
             }
             lastPivotIndex = ind;
         }
-        Vector_Old v = new Vector_Old(solutions);
+        Vec<?, ?, ?> v = new Vec<?, ?, ?>(solutions);
         v.correctRounding();
         return v;
     }
 
-    private static Vector_Old[] augment(Matrix m, Vector_Old b) throws OperationUndefinedException{
+    private static Vec<?, ?, ?>[] augment(Matrix m, Vec<?, ?, ?> b) throws OperationUndefinedException{
         //Create augmented matrix
-        Vector_Old[] aug = new Vector_Old[m.getNumCols() + 1];
+        Vec<?, ?, ?>[] aug = new Vec<?, ?, ?>[m.getNumCols() + 1];
         for(int a = 0; a < m.getNumCols(); a++){
             aug[a] = m.getColumn(a);
         }
@@ -230,7 +230,7 @@ public class LinAlg {
         return pivots;
     }
 
-    public static int getPivotIndex(Vector_Old v) throws OperationUndefinedException{
+    public static int getPivotIndex(Vec<?, ?, ?> v) throws OperationUndefinedException{
         int ind = 0;
         double val = v.get(ind);
         while(val == 0){
