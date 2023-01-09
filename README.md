@@ -6,9 +6,9 @@ Current Scope
     * Vectors
       * Real and Complex Vectors
       * Operations (add, subtract, inner products, etc)
-      * Allows creation of your own vectors by implementing Vec<T> that can form some vector space V
+      * Allows creation of your own vectors by implementing Vec<T, S, K> that can form some vector space V
           * NOTE: If this is done make sure that the vectors obey the axioms of vector spaces
-            * The default scalar field are the Real Numbers (ℝ) but you can create a new Field and use it for operations 
+            * The default scalar field are the Real Numbers (ℝ) but you can create a new Field and create new Vectors that utilize those Fields
     * Matrices
       * Real and Complex Matrices
       * Operations (add, subtract, matrix multiplication, transpose, etc)
