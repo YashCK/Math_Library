@@ -1,8 +1,11 @@
 package highlevelmath.constructs;
 
-import highlevelmath.constructs.util.*;
+import highlevelmath.constructs.abstract_algebra.fields.RealField;
+import highlevelmath.constructs.util.ConstructFormatException;
+import highlevelmath.constructs.util.MatrixOperation;
+import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CVector implements Vec<Complex>{
+public class CVector implements Vec<Complex, Double, RealField>{
 
     private static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
     private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
@@ -32,27 +35,28 @@ public class CVector implements Vec<Complex>{
 
     //Operations
     @Override
-    public void add(Vec<Complex> vector) throws OperationUndefinedException {
+    public void add(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
         MatrixOperation<Complex> function = (c1, c2) -> {return Complex.add(c1, c2);};
         applyOperation(vector, function);
     }
 
     @Override
-    public void subtract(Vec<Complex> vector) throws OperationUndefinedException {
-        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.sub(c1, c2);};
+    public void subtract(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
+        MatrixOperation<Complex> function = (c1, c2) -> {return Complex.subtract(c1, c2);};
         applyOperation(vector, function);
     }
 
     @Override
-    public void scale(Field<?> vector) {
+    public void scale(Double factor) throws OperationUndefinedException {
         for(int i = 0; i < data.length; i++){
             data[i].scale(factor);
         }
     }
 
     @Override
-    public Field<?> inner(Vec<Complex> vector) {
-
+    public Double inner(Vec<Complex, Double, RealField> vector) {
+        //TO BE IMPLEMENTED
+        return 0.0;
     }
 
     //Getters
@@ -127,11 +131,11 @@ public class CVector implements Vec<Complex>{
     }
 
     @Override
-    public Vec<Complex> copy() {
+    public Vec<Complex, Double, RealField> copy() {
         return new CVector(data);
     }
 
-    Vec<Double> getRealComplement(){
+    Vec<Double, Double, RealField> getRealComplement(){
         double[] vals = new double[data.length];
         int i = 0;
         for(Complex c : data){
@@ -141,7 +145,7 @@ public class CVector implements Vec<Complex>{
         return new Vector(vals);
     }
 
-    Vec<Complex> getComplexComplement(){
+    Vec<Complex, Double, RealField> getComplexComplement(){
         Complex[] vals = new Complex[data.length];
         int i = 0;
         for(Complex c : data){
@@ -151,7 +155,7 @@ public class CVector implements Vec<Complex>{
         return new CVector(vals);
     }
 
-    Vec<Double> toRealVector() throws OperationUndefinedException{
+    Vec<Double, Double, RealField> toRealVector() throws OperationUndefinedException{
         if(isComplex()){
             throw new OperationUndefinedException("The vector is Complex. It cannot be converted to a Real vector.");
         }
@@ -168,7 +172,7 @@ public class CVector implements Vec<Complex>{
         return true;
     }
 
-    protected void applyOperation(Vec<Complex> vector, MatrixOperation<Complex> function) throws OperationUndefinedException{
+    protected void applyOperation(Vec<Complex, Double, RealField> vector, MatrixOperation<Complex> function) throws OperationUndefinedException{
         if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }
@@ -213,11 +217,11 @@ public class CVector implements Vec<Complex>{
             if(o == null || getClass() != o.getClass()){
                 return false;
             }
-            if(data.length != ((Vec<Complex>)o).length()){
+            if(data.length != ((Vec<Complex, Double, RealField>)o).length()){
                 return false;
             }
             for(int i = 0; i < data.length; i++){
-                if(data[i] != ((Vec<Complex>)o).get(i)){
+                if(data[i] != ((Vec<Complex, Double, RealField>)o).get(i)){
                     return false;
                 }
             }

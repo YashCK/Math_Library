@@ -1,13 +1,12 @@
 package highlevelmath.constructs;
-import highlevelmath.constructs.abstract_algebra.Field;
-import highlevelmath.constructs.util.*;
+
+import highlevelmath.constructs.abstract_algebra.structures.Field;
+import highlevelmath.constructs.util.OperationUndefinedException;
 
 /**
- * Representation of a Vector in some Vector space V
+ * Representation of a Vector in some Vector space V over scalar field K
  */
-public abstract class Vec<T>{
-
-    private Field<?> field;
+public interface Vec<T, S, K extends Field<S>>{
 
     /*
      * TO IMPLEMENT: 
@@ -22,21 +21,21 @@ public abstract class Vec<T>{
      * @param vector
      * @throws OperationUndefinedException
      */
-    public abstract void add(Vec<T> vector) throws OperationUndefinedException;
+    public abstract void add(Vec<T, S, K> vector) throws OperationUndefinedException;
    
     /**
      * Subtracts the input vector from the current Vector
      * @param vector
      * @throws OperationUndefinedException
      */
-     public abstract void subtract(Vec<T> vector) throws OperationUndefinedException;
+     public abstract void subtract(Vec<T, S, K> vector) throws OperationUndefinedException;
     
      /**
      * Scales the vector by a scalar value. The default is a Real Value (doubles).
      * The scalar part of Vector MUST be of the SAME TYPE of the Vector's set Field.
      * @param vector A scalar value
      */
-    public abstract void scale(Object factor) throws OperationUndefinedException;
+    public abstract void scale(S factor) throws OperationUndefinedException;
     
     /**
      * Calculates the inner product between this and the input Vector.
@@ -45,7 +44,7 @@ public abstract class Vec<T>{
      * @return Inner Product (scalar value)
      * @throws OperationUndefinedException
      */
-    public abstract Object inner(Vec<T> vector) throws OperationUndefinedException;
+    public abstract S inner(Vec<T, S, K> vector) throws OperationUndefinedException;
 
     //Getters
     
@@ -62,14 +61,6 @@ public abstract class Vec<T>{
      * @return The length of the vector
      */
     public abstract int length();
-    
-    /**
-     * Gets the scalar Field the Vector is using
-     * @return
-     */
-    public Field<?> getField(){
-        return field;
-    }
 
     //Setters
     /**
@@ -79,13 +70,6 @@ public abstract class Vec<T>{
      * @throws OperationUndefinedException
      */
     public abstract void set(int index, T value) throws OperationUndefinedException;
-    /**
-     * Sets the Scalar Field of the Vector to a new Scalar Field.
-     * @param field
-     */
-    public void changeField(Field<?> field){
-        this.field = field;
-    }
 
     //Other Methods
     /**
@@ -102,15 +86,15 @@ public abstract class Vec<T>{
      */
     public abstract boolean contains(T value);
     /**
-     * Calculates the Sum of each of the Vector's components
+     * Calculates the sum of each of the Vector's components
      * @return sum of vector's value (scalar)
      */
-    public abstract Object sumVals();
+    public abstract T sumVals();
     /**
      * Create a copy of the Vector
      * @return copy of the vector
      */
-    public abstract Vec<T> copy();
+    public abstract Vec<T, S, K> copy();
     /**
      * Checks if the current vector equals the input Object
      * @param o An object to check equals to

@@ -13,7 +13,7 @@ public class LinAlg {
         return 0;
     }
     
-    public static Vector_Old gaussianElimination(Matrix matrix, Vector_Old b) throws NoExistingSolutionException, OperationUndefinedException{
+    public static Vec<?> gaussianElimination(Matrix matrix, Vector_Old b) throws NoExistingSolutionException, OperationUndefinedException{
         // double[] solutions = new double[matrix.getNumRows()];
         double[] solutions = new double[matrix.getNumCols()];
         boolean[] freeVars = new boolean[matrix.getNumCols()];

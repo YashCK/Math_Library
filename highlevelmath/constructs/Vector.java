@@ -1,13 +1,17 @@
 package highlevelmath.constructs;
 
-import highlevelmath.constructs.util.*;
+import highlevelmath.constructs.abstract_algebra.fields.RealField;
+import highlevelmath.constructs.abstract_algebra.structures.Field;
+import highlevelmath.constructs.util.MatrixOperation;
+import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Vector extends Vec<Double>{
+public class Vector implements Vec<Double, Double, RealField>{
 
     private static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
     private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
 
     private double[] data;
+    private Field<Double> field = new RealField();
 
     //Constructors
 
@@ -32,20 +36,17 @@ public class Vector extends Vec<Double>{
     }
 
     //Operations
-
-    @Override
-    public void add(Vec<Double> vector) throws OperationUndefinedException {
+    public void add(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
         MatrixOperation<Double> function = (d1, d2) -> {return d1 + d2;};
         applyOperation(vector, function);
     }
 
-    @Override
-    public void subtract(Vec<Double> vector) throws OperationUndefinedException {
+    public void subtract(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
         MatrixOperation<Double> function = (d1, d2) -> {return d1 - d2;};
         applyOperation(vector, function);
     }
 
-    public void modulus(Vec<Double> vector) throws OperationUndefinedException{
+    public void modulus(Vec<Double, Double, RealField> vector) throws OperationUndefinedException{
         if(vector.contains(0.0)){
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
         }
@@ -53,32 +54,18 @@ public class Vector extends Vec<Double>{
         applyOperation(vector, function);
     }
 
-    @Override
-    public void scale(Object factor) throws OperationUndefinedException {
-        if(!getField().isInstanceOfElement(factor)){
-            throw new OperationUndefinedException("The factor is not the same type as the scalar the Vector is using.");
+    public void scale(Double factor) throws OperationUndefinedException {
+        if(field.isInstanceOfElement(factor)){
+            throw new OperationUndefinedException("The factor is not an element in the scalar field: RealField.");
         }
         for(int i = 0; i < data.length; i++){
-            data[i] *= factor;
+            data[i] *= (double)factor;
         }
         correctRounding();
     }
 
-
-    public void scale(double factor) {
-        for(int i = 0; i < data.length; i++){
-            data[i] *= factor;
-        }
-        correctRounding();
-    }
-
-    public double dot(Vec<Double> vector) throws OperationUndefinedException{
-       return this.inner(vector);
-    }
-
-    @Override
-    public Field<Double> inner(Vec<Double> vector) {
-        if(data.length != vector.length){
+    public double dot(Vec<Double, Double, RealField> vector) throws OperationUndefinedException{
+        if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }
         double sum = 0;
@@ -86,6 +73,11 @@ public class Vector extends Vec<Double>{
             sum += data[i] * vector.get(i);
         }
         return sum;
+    }
+
+    @Override
+    public Double inner(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
+        return this.dot(vector);
     }
 
     //General Methods
@@ -125,7 +117,7 @@ public class Vector extends Vec<Double>{
     }
 
     @Override
-    public Vec<Double> copy() {
+    public Vec<Double, Double, RealField> copy() {
         return new Vector(data);
     }
 
@@ -172,9 +164,19 @@ public class Vector extends Vec<Double>{
         data[index] = value;
     }
 
+    public CVector toComplexVector(){
+        Complex[] v = new Complex[data.length];
+        int ind = 0;
+        for(double d: data){
+            v[ind] = new Complex(d, 0);
+            ind++;
+        }
+        return new CVector(v);
+    }
+
 
     //Other Methods
-    protected void applyOperation(Vec<Double> vector, MatrixOperation<Double> Operation) throws OperationUndefinedException{
+    protected void applyOperation(Vec<Double, Double, RealField> vector, MatrixOperation<Double> Operation) throws OperationUndefinedException{
         if(data.length != vector.length()){
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         }
@@ -231,11 +233,11 @@ public class Vector extends Vec<Double>{
             if(o == null || getClass() != o.getClass()){
                 return false;
             }
-            if(data.length != ((Vec<Double>)o).length()){
+            if(data.length != ((Vec<Double, Double, RealField>)o).length()){
                 return false;
             }
             for(int i = 0; i < data.length; i++){
-                if(data[i] != ((Vec<Double>)o).get(i)){
+                if(data[i] != ((Vec<Double, Double, RealField>)o).get(i)){
                     return false;
                 }
             }
