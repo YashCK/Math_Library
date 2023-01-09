@@ -15,7 +15,7 @@ Current Scope
       * Allows creation of matrices using your own Vectors<T> as either the columns or rows of the matrix
           * NOTE: If this is done make sure that the vectors obey the axioms of vector spaces
     * Abstract Algebra
-      * Semi-Groups, Rings, Fields
+      * Semi-Groups, Monoids, Groups, Rings, Fields
     * Methods
       * Row Reduction
       * Gaussian Elimination
