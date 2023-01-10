@@ -1,8 +1,9 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CMatrix extends Mat<Complex, Double, CVector> {
+public class CMatrix extends Mat<Complex, Double, RealField, CVector> {
 
     //Constructors
 
@@ -64,19 +65,19 @@ public class CMatrix extends Mat<Complex, Double, CVector> {
     }
 
     @Override
-    public void add(Mat<Complex, Double, CVector> matrix) throws OperationUndefinedException {
+    public void add(Mat<Complex, Double, RealField, CVector> matrix) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void subtract(Mat<Complex, Double, CVector> matrix) throws OperationUndefinedException {
+    public void subtract(Mat<Complex, Double, RealField, CVector> matrix) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public Mat<Complex, Double, CVector> multiply(Mat<Complex, Double, CVector> matrix)
+    public Mat<Complex, Double, RealField, CVector> multiply(Mat<Complex, Double, RealField, CVector> matrix)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
@@ -89,44 +90,14 @@ public class CMatrix extends Mat<Complex, Double, CVector> {
     }
 
     @Override
-    public Mat<Complex, Double, CVector> subMatrix(int startRow, int endRow, int startCol, int endCol)
+    public Mat<Complex, Double, RealField, CVector> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void addRows(int row1, int row2) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void addColumns(int col1, int col2) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void subtractRows(int row1, int row2) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void subtractColumns(int col1, int col2) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void scaleColumn(int columnNum, double factor) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Mat<Complex, Double, CVector> copy() {
+    public Mat<Complex, Double, RealField, CVector> copy() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -143,6 +114,7 @@ public class CMatrix extends Mat<Complex, Double, CVector> {
         return null;
     }
 
+
     public Matrix getRealComplement(){
         //TO BE IMPLEMENTED
     }
@@ -151,7 +123,7 @@ public class CMatrix extends Mat<Complex, Double, CVector> {
         //TO BE IMPLEMENTED
     }
 
-    public Matrix toRela(){
+    public Matrix toReal(){
         //TO BE IMPLEMENTED
     }
     

@@ -1,4 +1,4 @@
-package highlevelmath.constructs.abstract_algebra.structures;
+package highlevelmath.constructs.abstract_algebra.alg_structures;
 import java.util.List;
 
 import highlevelmath.constructs.util.UndefinedException;

@@ -1,4 +1,4 @@
-package highlevelmath.constructs.abstract_algebra.structures;
+package highlevelmath.constructs.abstract_algebra.alg_structures;
 
 /**
  * A mathematical set structure which has a binary operation defined 

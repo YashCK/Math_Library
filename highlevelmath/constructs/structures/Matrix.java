@@ -1,9 +1,10 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Matrix extends Mat<Double, Double, Vector>{
+public class Matrix extends Mat<Double, Double, RealField, Vector>{
 
      /**
      * A constructor for Matrix class
@@ -89,19 +90,19 @@ public class Matrix extends Mat<Double, Double, Vector>{
     //Operations
 
     @Override
-    public void add(Mat<Double, Double, Vector> matrix) throws OperationUndefinedException {
+    public void add(Mat<Double, Double, RealField, Vector> matrix) throws OperationUndefinedException {
         MatrixOperation<Double> function = (d1, d2) -> d1 + d2;
         applyOperation(matrix, function);
     }
     
     @Override
-    public void subtract(Mat<Double, Double, Vector> matrix) throws OperationUndefinedException {
+    public void subtract(Mat<Double, Double, RealField, Vector> matrix) throws OperationUndefinedException {
         MatrixOperation<Double> function = (d1, d2) -> d1 - d2;
         applyOperation(matrix, function);
     }
 
     @Override
-    public Mat<Double, Double, Vector> multiply(Mat<Double, Double, Vector> matrix) throws OperationUndefinedException {
+    public Mat<Double, Double, RealField, Vector> multiply(Mat<Double, Double, RealField, Vector> matrix) throws OperationUndefinedException {
         if(this.ncols() != matrix.nrows())
             throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         double[][] newM = new double[this.nrows()][matrix.ncols()];
@@ -115,7 +116,8 @@ public class Matrix extends Mat<Double, Double, Vector>{
     }
 
     @Override
-    public Vector multiply(Vector v) throws OperationUndefinedException {
+    public Vector multiply(Vector v)
+            throws OperationUndefinedException {
         if(this.ncols() != v.length())
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
         double[] newV = new double[data.length];
@@ -130,7 +132,7 @@ public class Matrix extends Mat<Double, Double, Vector>{
      * @param matrix Matrix object whose entires will act as the modulus divisor
      * @throws OperationUndefinedException
      */
-    public void modulus(Mat<Double, Double, Vector> matrix) throws OperationUndefinedException{
+    public void modulus(Mat<Double, Double, RealField, Vector> matrix) throws OperationUndefinedException{
         if(matrix.contains(0.0))
             throw new OperationUndefinedException("This operation cannot be applied to input matrices with value 0.");
         MatrixOperation<Double> function = (d1, d2) -> d1 % d2;
@@ -140,7 +142,7 @@ public class Matrix extends Mat<Double, Double, Vector>{
     //Methods to Manipulate Matrix
 
     @Override
-    public Mat<Double, Double, Vector> subMatrix(int startRow, int endRow, int startCol, int endCol)
+    public Mat<Double, Double, RealField, Vector> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
         if(startRow < 0 || endRow > data.length || startCol < 0 || endCol > data[0].length())
             throw new OperationUndefinedException("A row or column parameter was out of the matrix's range.");
@@ -154,50 +156,19 @@ public class Matrix extends Mat<Double, Double, Vector>{
     }
 
     @Override
-    public void addRows(int row1, int row2) throws OperationUndefinedException {
-        if(row1 >= data.length || row2 >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        //Row 1 = Row 1 + Row 2
-        getRow(row1).add(getRow(row2));
-    }
-
-    @Override
-    public void addColumns(int col1, int col2) throws OperationUndefinedException {
-        if(col1 >= data[0].length() || col2 >= data[0].length())
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        //Col 1 = Col 1 + Col 2
-        getCol(col1).add(getCol(col2));
-    }
-
-    @Override
-    public void subtractRows(int row1, int row2) throws OperationUndefinedException {
-        if(row1 >= data.length || row2 >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        //Row 1 = Row 1 - Row 2
-        getRow(row1).subtract(getRow(row2));
-    }
-
-    @Override
-    public void subtractColumns(int col1, int col2) throws OperationUndefinedException {
-        if(col1 >= data[0].length() || col2 >= data[0].length())
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        //Col 1 = Col 1 - Col 2
-        getCol(col1).subtract(getCol(col2));
-    }
-
-    @Override
-    public void scaleColumn(int columnNum, double factor) throws OperationUndefinedException {
-        if(columnNum >= data[0].length()){
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        }
-        for(int i = 0; i < data.length; i++){
-            data[i].set(columnNum, data[i].get(columnNum)*factor);
-        }
+    public void scaleRow(int rowNum, Double factor) throws OperationUndefinedException {
+        super.scaleRow(rowNum, factor);
         correctRounding();
     }
 
     @Override
-    public Mat<Double, Double, Vector> copy() {
+    public void scaleColumn(int columnNum, Double factor) throws OperationUndefinedException {
+        super.scaleColumn(columnNum, factor);
+        correctRounding();
+    }
+
+    @Override
+    public Mat<Double, Double, RealField, Vector> copy() {
         return new Matrix(data);
     }
 

@@ -1,16 +1,12 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.Complex;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CVector implements Vec<Complex, Double, RealField>{
-
-    private static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
-    private static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
-
-    private Complex[] data;
+public class CVector extends RealVec<Complex>{
 
     /**
      * A constructor for CVector class
@@ -18,6 +14,19 @@ public class CVector implements Vec<Complex, Double, RealField>{
      */
     public CVector(Complex[] vector){
         this.data = vector;
+    }
+
+    /**
+     * A constructor for CVector class
+     * @param vector An array of double numbers that represent the real values of the vector
+     * NOTE: All the complex values will be set to 0
+     */
+    public CVector(double[] vector){
+        Complex[] array = new Complex[vector.length];
+        for(int i = 0; i < vector.length; i++){
+            array[i] = new Complex(vector[i], 0);
+        }
+        this.data = array;
     }
 
     /**
@@ -37,13 +46,13 @@ public class CVector implements Vec<Complex, Double, RealField>{
     @Override
     public void add(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
         MatrixOperation<Complex> function = Complex::add;
-        applyOperation(vector, function);
+        applyOperation((RealVec<Complex>)vector, function);
     }
 
     @Override
     public void subtract(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
         MatrixOperation<Complex> function = Complex::subtract;
-        applyOperation(vector, function);
+        applyOperation((RealVec<Complex>)vector, function);
     }
 
     @Override
@@ -65,66 +74,15 @@ public class CVector implements Vec<Complex, Double, RealField>{
         return 0.0;
     }
 
-    //Getters
-    @Override
-    public Complex get(int index) throws OperationUndefinedException {
-        if(index >= data.length){
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
-        }
-        return data[index];
-    }
-
-    //Setters
-    @Override
-    public void set(int index, Complex value) throws OperationUndefinedException {
-        if(index >= data.length){
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
-        }
-        data[index] = value;
-    }
-
     public void set(int index, double value) throws OperationUndefinedException {
-        if(index >= data.length){
+        if(index >= data.length)
             throw new OperationUndefinedException(INDEX_OUT_RANGE);
-        }
-        data[index] = new Complex(value, 0);
-    }
-
-    public void set(int index, int value) throws OperationUndefinedException {
-        if(index >= data.length){
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
-        }
         data[index] = new Complex(value, 0);
     }
     
     //General Methods
-    @Override
-    public void interchangePos(int col1, int col2) throws OperationUndefinedException {
-        if(col1 >= data.length || col2 >= data.length){
-            throw new OperationUndefinedException("A column is out of the vector's range");
-        }
-        Complex first = data[col1];
-        data[col1] = data[col2];
-        data[col2] = first;
-    }
-
     public void defineInnerProduct(){
         //
-    }
-
-    @Override
-    public int length() {
-        return data.length;
-    }
-
-    @Override
-    public boolean contains(Complex value) {
-        for(Complex val : data){
-            if(val.equals(value)){
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -141,8 +99,8 @@ public class CVector implements Vec<Complex, Double, RealField>{
         return new CVector(data);
     }
 
-    Vec<Double, Double, RealField> getRealComplement(){
-        double[] vals = new double[data.length];
+    RealVec<Double> getRealComplement(){
+        Double[] vals = new Double[data.length];
         int i = 0;
         for(Complex c : data){
             vals[i] = c.getReal();
@@ -151,40 +109,27 @@ public class CVector implements Vec<Complex, Double, RealField>{
         return new Vector(vals);
     }
 
-    Vec<Complex, Double, RealField> getComplexComplement(){
+    RealVec<Complex> getComplexComplement(){
         Complex[] vals = new Complex[data.length];
-        int i = 0;
-        for(Complex c : data){
-            vals[i] = new Complex(0, c.getImag());
-            i++;
+        for(int i = 0; i < data.length; i++){
+            vals[i] = new Complex(0, data[i].getImag());
         }
         return new CVector(vals);
     }
 
-    Vec<Double, Double, RealField> toRealVector() throws OperationUndefinedException{
-        if(isComplex()){
+    RealVec<Double> toRealVector() throws OperationUndefinedException{
+        if(isComplex())
             throw new OperationUndefinedException("The vector is Complex. It cannot be converted to a Real vector.");
-        }
         return getRealComplement();
     }
 
     //Other Methods
     boolean isComplex(){
         for(int i = 0; i < data.length; i++){
-            if(data[i].getImag() != 0){
+            if(data[i].getImag() != 0)
                 return false;
-            }
         }
         return true;
-    }
-
-    protected void applyOperation(Vec<Complex, Double, RealField> vector, MatrixOperation<Complex> function) throws OperationUndefinedException{
-        if(data.length != vector.length()){
-            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
-        }
-        for(int i = 0; i < data.length; i++){
-            data[i] = function.operation(data[i], vector.get(i));
-        }
     }
 
      /**
@@ -215,26 +160,6 @@ public class CVector implements Vec<Complex, Double, RealField>{
         }
         str += "]";
         return str;
-    }
-
-    @Override
-    public boolean equals(Object o){
-        try {
-            if(o == null || getClass() != o.getClass()){
-                return false;
-            }
-            if(data.length != ((Vec<Complex, Double, RealField>)o).length()){
-                return false;
-            }
-            for(int i = 0; i < data.length; i++){
-                if(data[i] != ((Vec<Complex, Double, RealField>)o).get(i)){
-                    return false;
-                }
-            }
-            return true;
-        } catch(OperationUndefinedException e){
-            return false;
-        }
     }
 
 }

@@ -1,4 +1,4 @@
-package highlevelmath.constructs.abstract_algebra.structures;
+package highlevelmath.constructs.abstract_algebra.alg_structures;
 
 public interface IntegralDomain<S> extends Ring<S>, Group<S>{
 

@@ -1,4 +1,4 @@
-package highlevelmath.constructs.abstract_algebra.structures;
+package highlevelmath.constructs.abstract_algebra.alg_structures;
 
 /**
  * Represents as Mathematical Set -> A collection of Objects

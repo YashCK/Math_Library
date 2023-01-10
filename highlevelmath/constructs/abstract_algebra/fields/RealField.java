@@ -3,7 +3,7 @@ package highlevelmath.constructs.abstract_algebra.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import highlevelmath.constructs.abstract_algebra.structures.*;
+import highlevelmath.constructs.abstract_algebra.alg_structures.*;
 import highlevelmath.constructs.util.NotInvertibleException;
 
 public class RealField implements Field<Double>{

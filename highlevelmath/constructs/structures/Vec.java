@@ -1,17 +1,16 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.structures;
 
-import highlevelmath.constructs.abstract_algebra.structures.Field;
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
 /**
  * Representation of a Vector in some Vector space V over scalar field K
  * <pre> 
-    *T is the type of the object stored in the Vector
+    *E is the type of the object stored in the Vector
     *K is the Field of scalars (of type S) that is associated with the Vector Space.
- *  </pre>
+ * </pre>
  */
 public interface Vec<T, S, K extends Field<S>>{
-
     /*
      * TO IMPLEMENT: 
      * GET Inner Product
@@ -25,21 +24,21 @@ public interface Vec<T, S, K extends Field<S>>{
      * @param vector
      * @throws OperationUndefinedException
      */
-    public abstract void add(Vec<T, S, K> vector) throws OperationUndefinedException;
+    void add(Vec<T, S, K> vector) throws OperationUndefinedException;
    
     /**
      * Subtracts the input vector from the current Vector
      * @param vector
      * @throws OperationUndefinedException
      */
-     public abstract void subtract(Vec<T, S, K> vector) throws OperationUndefinedException;
+     void subtract(Vec<T, S, K> vector) throws OperationUndefinedException;
     
      /**
      * Scales the vector by a scalar value. The default is a Real Value (doubles).
      * The scalar part of Vector MUST be of the SAME TYPE of the Vector's set Field.
      * @param vector A scalar value
      */
-    public abstract void scale(S factor) throws OperationUndefinedException;
+    void scale(S factor) throws OperationUndefinedException;
 
     /**
      * Calculated the standard dot product between this and the input Vector
@@ -51,7 +50,7 @@ public interface Vec<T, S, K extends Field<S>>{
      * @return a scalar value (dot product)
      * @throws OperationUndefinedException
      */
-    public abstract S dot(Vec<T, S, K> vector) throws OperationUndefinedException;
+    S dot(Vec<T, S, K> vector) throws OperationUndefinedException;
     
     /**
      * Calculates the inner product between this and the input Vector.
@@ -60,7 +59,7 @@ public interface Vec<T, S, K extends Field<S>>{
      * @return a scalar value (inner product)
      * @throws OperationUndefinedException
      */
-    public abstract S inner(Vec<T, S, K> vector) throws OperationUndefinedException;
+    S inner(Vec<T, S, K> vector) throws OperationUndefinedException;
 
     //Getters
     
@@ -70,13 +69,13 @@ public interface Vec<T, S, K extends Field<S>>{
      * @return The value at the index passed in
      * @throws OperationUndefinedException
      */
-    public abstract T get(int index) throws OperationUndefinedException;
+    T get(int index) throws OperationUndefinedException;
    
     /**
      * Gets the length of the vector
      * @return The length of the vector
      */
-    public abstract int length();
+    int length();
 
     //Setters
     /**
@@ -85,7 +84,7 @@ public interface Vec<T, S, K extends Field<S>>{
      * @param value The value to set to
      * @throws OperationUndefinedException
      */
-    public abstract void set(int index, T value) throws OperationUndefinedException;
+    void set(int index, T value) throws OperationUndefinedException;
 
     //Other Methods
     /**
@@ -94,39 +93,39 @@ public interface Vec<T, S, K extends Field<S>>{
      * @param col2 The other index or column number
      * @throws OperationUndefinedException
      */
-    public abstract void interchangePos(int col1, int col2) throws OperationUndefinedException;
+    void interchangePos(int col1, int col2) throws OperationUndefinedException;
     /**
      * Returns whether a particular value is present within the vector or not
      * @param value The value to search for
      * @return True if value is in the vector, False otherwise
      */
-    public abstract boolean contains(T value);
+    boolean contains(T value);
     /**
      * Calculates the sum of each of the Vector's components
      * @return sum of vector's value (scalar)
      */
-    public abstract T sumVals();
+    T sumVals();
     /**
      * Create a copy of the Vector
      * @return copy of the vector
      */
-    public abstract Vec<T, S, K> copy();
+    Vec<T, S, K> copy();
     /**
      * Checks if the current vector equals the input Object
      * @param o An object to check equals to
      * @return boolean representing the vectors are equal
      */
-    public abstract boolean equals(Object o);
+    boolean equals(Object o);
     /**
      * Creates the string representation of the Vector
      * @return Vector's string representation
      */
-    public abstract String toString();
+    String toString();
     /**
      * WARNING - COULD LEAD TO UNINDENTED CONSQUENCES, ESPECIALLY IN MATRICES
      * Add a certain amount of 0s at the end of a vector
      * @param num The number of 0s to add to the end or the vector
      */
-    public abstract void pad(int num);
+    void pad(int num);
 
 }
