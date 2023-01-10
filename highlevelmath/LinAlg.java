@@ -13,7 +13,7 @@ public class LinAlg {
         return 0;
     }
     
-    public static Vec<?> gaussianElimination(Matrix matrix, Vec<?, ?, ?> b) throws NoExistingSolutionException, OperationUndefinedException{
+    public static Vec<?> gaussianElimination(Matrix_Old matrix, Vec<?, ?, ?> b) throws NoExistingSolutionException, OperationUndefinedException{
         // double[] solutions = new double[matrix.getNumRows()];
         double[] solutions = new double[matrix.getNumCols()];
         boolean[] freeVars = new boolean[matrix.getNumCols()];
@@ -32,7 +32,7 @@ public class LinAlg {
             n++;
         }
         b = augCols[augCols.length - 1];
-        matrix = new Matrix(augMat, true);
+        matrix = new Matrix_Old(augMat, true);
         //Loop from last row to the first row | Apply backsubstitution
         int lastPivotIndex = matrix.getNumCols();
         for(int row = matrix.getNumRows() - 1; row > -1; row--){
@@ -53,14 +53,14 @@ public class LinAlg {
         return v;
     }
 
-    private static Vec<?, ?, ?>[] augment(Matrix m, Vec<?, ?, ?> b) throws OperationUndefinedException{
+    private static Vec<?, ?, ?>[] augment(Matrix_Old m, Vec<?, ?, ?> b) throws OperationUndefinedException{
         //Create augmented matrix
         Vec<?, ?, ?>[] aug = new Vec<?, ?, ?>[m.getNumCols() + 1];
         for(int a = 0; a < m.getNumCols(); a++){
             aug[a] = m.getColumn(a);
         }
         aug[aug.length - 1] = b;
-        Matrix augmented = new Matrix(aug, true);
+        Matrix_Old augmented = new Matrix_Old(aug, true);
         //Row reduce augmented matrix
         rowReduction(augmented);
         //Return Vector[] where Vectors from indices 0 to length - 2 make up the RREF matrix
@@ -71,7 +71,7 @@ public class LinAlg {
         return aug;
     }
 
-    public static boolean isLinIndependent(Matrix m) throws OperationUndefinedException{
+    public static boolean isLinIndependent(Matrix_Old m) throws OperationUndefinedException{
         return hasUniqueSolution(m);
     }
 
@@ -79,11 +79,11 @@ public class LinAlg {
 
     // }
 
-    public static boolean hasSolution(Matrix m) throws OperationUndefinedException{
+    public static boolean hasSolution(Matrix_Old m) throws OperationUndefinedException{
         return hasUniqueSolution(m) || hasInfiniteSolutions(m);
     }
 
-    public static boolean hasUniqueSolution(Matrix m) throws OperationUndefinedException{
+    public static boolean hasUniqueSolution(Matrix_Old m) throws OperationUndefinedException{
         //At least one solution | A pivot in every row
         for(int row = 0; row < m.getNumRows(); row++){
             if(getPivotIndex(m.getRow(row)) == -1){
@@ -99,7 +99,7 @@ public class LinAlg {
         return true;
     }
 
-    public static boolean hasInfiniteSolutions(Matrix m) throws OperationUndefinedException{
+    public static boolean hasInfiniteSolutions(Matrix_Old m) throws OperationUndefinedException{
         if(hasUniqueSolution(m)){
             return false;
         }
@@ -113,7 +113,7 @@ public class LinAlg {
         return m.getNumRows() < m.getNumCols();
     }
 
-    public static boolean hasNoSolution(Matrix m) throws OperationUndefinedException{
+    public static boolean hasNoSolution(Matrix_Old m) throws OperationUndefinedException{
         return !(hasUniqueSolution(m) || hasInfiniteSolutions(m));
     }
 
@@ -129,7 +129,7 @@ public class LinAlg {
     *   - The leading entry in each nonzero row is 1.
     *   - Each leading 1 is the only nonzero entry in its column.
     */
-    public static void rowReduction(Matrix matrix) throws OperationUndefinedException{
+    public static void rowReduction(Matrix_Old matrix) throws OperationUndefinedException{
         int totalCols = matrix.getNumCols();
         int totalRows = matrix.getNumRows();
         int pivotRow = 0;
@@ -204,7 +204,7 @@ public class LinAlg {
         }
     }
 
-    public static double[] getPivots(Matrix matrix) throws OperationUndefinedException{
+    public static double[] getPivots(Matrix_Old matrix) throws OperationUndefinedException{
         double[] pivots = new double[matrix.getNumRows()];
         int num = 0;
         for(int row = matrix.getNumRows() - 1; row > -1; row --){
@@ -242,12 +242,12 @@ public class LinAlg {
         return ind;
     }
 
-    public static Matrix identity(int num){
+    public static Matrix_Old identity(int num){
         double[][] im = new double[num][num];
         for(int i = 0; i < num; i++){
             im[i][i] = 1;
         }
-        return new Matrix(im);
+        return new Matrix_Old(im);
     }
 
     static int findGCD(int big, int small) {

@@ -40,12 +40,24 @@ public interface Vec<T, S, K extends Field<S>>{
      * @param vector A scalar value
      */
     public abstract void scale(S factor) throws OperationUndefinedException;
+
+    /**
+     * Calculated the standard dot product between this and the input Vector
+     * The result will be part of the scalar field the Vector is using.
+     * <p>
+     * This method is used to calculated matrix multiplication
+     * </p>
+     * @param vector
+     * @return a scalar value (dot product)
+     * @throws OperationUndefinedException
+     */
+    public abstract S dot(Vec<T, S, K> vector) throws OperationUndefinedException;
     
     /**
      * Calculates the inner product between this and the input Vector.
      * The result will be a part of the scalar field the Vector is using.
      * @param vector
-     * @return Inner Product (scalar value)
+     * @return a scalar value (inner product)
      * @throws OperationUndefinedException
      */
     public abstract S inner(Vec<T, S, K> vector) throws OperationUndefinedException;
@@ -110,5 +122,11 @@ public interface Vec<T, S, K extends Field<S>>{
      * @return Vector's string representation
      */
     public abstract String toString();
+    /**
+     * WARNING - COULD LEAD TO UNINDENTED CONSQUENCES, ESPECIALLY IN MATRICES
+     * Add a certain amount of 0s at the end of a vector
+     * @param num The number of 0s to add to the end or the vector
+     */
+    public abstract void pad(int num);
 
 }

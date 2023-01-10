@@ -54,6 +54,12 @@ public class CVector implements Vec<Complex, Double, RealField>{
     }
 
     @Override
+    public Double dot(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
+        //TO BE IMPLEMENTED
+        return 0.0;
+    }
+
+    @Override
     public Double inner(Vec<Complex, Double, RealField> vector) {
         //TO BE IMPLEMENTED
         return 0.0;

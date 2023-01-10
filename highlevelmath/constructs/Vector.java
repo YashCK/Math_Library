@@ -1,7 +1,5 @@
 package highlevelmath.constructs;
 
-import java.util.Arrays;
-
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
@@ -61,10 +59,9 @@ public class Vector implements Vec<Double, Double, RealField>{
         correctRounding();
     }
 
-    public double dot(Vec<Double, Double, RealField> vector) throws OperationUndefinedException{
-        if(data.length != vector.length()){
+    public Double dot(Vec<Double, Double, RealField> vector) throws OperationUndefinedException{
+        if(data.length != vector.length())
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
-        }
         double sum = 0;
         for(int i = 0; i < data.length; i++){
             sum += data[i] * vector.get(i);
