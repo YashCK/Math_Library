@@ -239,4 +239,8 @@ public class Matrix extends Mat<Double, Double, Vector>{
         return Math.floor(value * powerOfTen)/powerOfTen;
     }
 
+    public CMatrix toComplex(){
+        //TO BE IMPLEMENTED
+    }
+
 }

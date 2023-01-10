@@ -179,6 +179,14 @@ public class Vector implements Vec<Double, Double, RealField>{
         }
     }
 
+    public CVector toComplex(){
+        Complex[] cv = new Complex[data.length];
+        for(int i = 0; i < data.length; i++){
+            cv[i] = new Complex(data[i], 0);
+        }
+        return new CVector(cv);
+    }
+
     /**
      * Will correct any roundings issues (too much precision) with values in the matrix
      */
