@@ -3,7 +3,7 @@ package highlevelmath.constructs.structures;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CMatrix extends Mat<Complex, Double, RealField, CVector> {
+public class CMatrix extends RealMatx<Complex> {
 
     //Constructors
 
@@ -65,39 +65,40 @@ public class CMatrix extends Mat<Complex, Double, RealField, CVector> {
     }
 
     @Override
-    public void add(Mat<Complex, Double, RealField, CVector> matrix) throws OperationUndefinedException {
+    public void add(Mat<Complex, Double, RealField> matrix) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void subtract(Mat<Complex, Double, RealField, CVector> matrix) throws OperationUndefinedException {
+    public void subtract(Mat<Complex, Double, RealField> matrix) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public Mat<Complex, Double, RealField, CVector> multiply(Mat<Complex, Double, RealField, CVector> matrix)
+    public Mat<Complex, Double, RealField> multiply(Mat<Complex, Double, RealField> matrix)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CVector multiply(CVector v) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Mat<Complex, Double, RealField, CVector> subMatrix(int startRow, int endRow, int startCol, int endCol)
+    public Vec<Complex, Double, RealField> multiply(Vec<Complex, Double, RealField> v)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Mat<Complex, Double, RealField, CVector> copy() {
+    public Mat<Complex, Double, RealField> subMatrix(int startRow, int endRow, int startCol, int endCol)
+            throws OperationUndefinedException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Mat<Complex, Double, RealField> copy() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,7 +1,6 @@
 package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
 /**
@@ -11,20 +10,10 @@ import highlevelmath.constructs.util.OperationUndefinedException;
   * <pre>
     *T is the type of the object stored in the Matrix
     *F is the Field of scalars of type S that is associated with the Vector Space.
-    *V is the type of Vector of each row and column of the Matrix
+    *Vec<T, S, F>is the type of Vector of each row and column of the Matrix
  *  </pre>
  */
-public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
-
-// public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
-
-    protected static final String ROW_OUT_RANGE = "The rows are out of range.";
-    protected static final String ROW_NUM_OUT_RANGE = "The row number is out of range.";
-    protected static final String COL_OUT_RANGE = "The columns are out of range.";
-    protected static final String COL_NUM_OUT_RANGE = "The col number is out of range.";
-
-    protected V[] data;
-    protected static boolean multiline = true;
+public interface Mat<T, S, F extends Field<S>> {
 
     //Operations between Matrices
 
@@ -34,7 +23,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param matrix Matrix object that should be added
      * @throws OperationUndefinedExceptfion
      */
-    public abstract void add(Mat<T, S, F, V> matrix) throws OperationUndefinedException;
+    public abstract void add(Mat<T, S, F> matrix) throws OperationUndefinedException;
 
     /**
      * Operation to subtract two matrices to one another
@@ -42,7 +31,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param matrix Matrix object that should be subtracted
      * @throws OperationUndefinedException
      */
-    public abstract void subtract(Mat<T, S, F, V> matrix) throws OperationUndefinedException;
+    public abstract void subtract(Mat<T, S, F> matrix) throws OperationUndefinedException;
 
     /**
      * Operation to multiply two matrices by one another
@@ -50,7 +39,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return a new Matrix that is the product of the two previous matrices
      * @throws OperationUndefinedException
      */
-    public abstract Mat<T, S, F, V> multiply(Mat<T, S, F, V> matrix) throws OperationUndefinedException;
+    public abstract Mat<T, S, F> multiply(Mat<T, S, F> matrix) throws OperationUndefinedException;
 
     /**
      * Operation to multiply a matrix by a vector
@@ -58,7 +47,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return a new Vector that is the product of the matrix and vector parameter
      * @throws OperationUndefinedException
      */
-    public abstract V multiply(V v) throws OperationUndefinedException;
+    public abstract Vec<T, S, F>multiply(Vec<T, S, F> v) throws OperationUndefinedException;
 
     //Methods to Manipulate Matrix
 
@@ -72,9 +61,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return Matrix that represents sub-matrix satisying defined parameters
      * @throws OperationUndefinedException
      */
-    // public abstract Mat<T, S, F, V> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException;
-    public abstract Mat<T, S, F, V> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException;
-
+    public abstract Mat<T, S, F> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException;
 
     /**
      * Adds row 2 to row 1 of the matrix
@@ -83,12 +70,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param row2 The row that will be added
      * @throws OperationUndefinedException
      */
-    public void addRows(int row1, int row2) throws OperationUndefinedException{
-        if(row1 >= data.length || row2 >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        //Row 1 = Row 1 + Row 2
-        getRow(row1).add(getRow(row2));
-    }
+    void addRows(int row1, int row2) throws OperationUndefinedException;
 
     /**
      * Adds column 2 to column 1 of the matrix
@@ -97,12 +79,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param col2 The column that will be added
      * @throws OperationUndefinedException
      */
-    public void addColumns(int col1, int col2) throws OperationUndefinedException{
-        if(col1 >= data[0].length() || col2 >= data[0].length())
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        //Col 1 = Col 1 + Col 2
-        getCol(col1).add(getCol(col2));
-    }
+    void addColumns(int col1, int col2) throws OperationUndefinedException;
 
     /**
      * Subtracts row 2 from row 1 of the matrix
@@ -111,13 +88,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param row2 The row that will be subtracted
      * @throws OperationUndefinedException
      */
-    public void subtractRows(int row1, int row2) throws OperationUndefinedException{
-        if(row1 >= data.length || row2 >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        //Row 1 = Row 1 - Row 2
-        getRow(row1).subtract(getRow(row2));
-    }
-
+    void subtractRows(int row1, int row2) throws OperationUndefinedException;
     /**
      * Subtracts column 2 from column 1 of the matrix
      *  - (Column positions start with 0)
@@ -125,12 +96,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param col2 The column that will be subtracted
      * @throws OperationUndefinedException
      */
-    public void subtractColumns(int col1, int col2) throws OperationUndefinedException{
-        if(col1 >= data[0].length() || col2 >= data[0].length())
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        //Col 1 = Col 1 - Col 2
-        getCol(col1).subtract(getCol(col2));
-    }
+    void subtractColumns(int col1, int col2) throws OperationUndefinedException;
 
     /**
      * Interchange two rows of the matrix
@@ -139,14 +105,8 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param row2 A row number that will exchange positions with another row
      * @throws OperationUndefinedException
      */
-    public void interchangeRows(int row1, int row2) throws OperationUndefinedException{
-        if(row1 >= data.length || row2 >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        V firstRow = getRow(row1);
-        setRow(row1, getRow(row2));
-        setRow(row2, firstRow);
-    }
-    
+    void interchangeRows(int row1, int row2) throws OperationUndefinedException;
+
     /**
      * Interchange two columns of the matrix
      *   - (Column positions start with 0)
@@ -154,15 +114,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param col2 A column number that will exchange positions with another column
      * @throws OperationUndefinedException
      */
-    public  void interchangeCols(int col1, int col2) throws OperationUndefinedException{
-        if(col1 >= data[0].length() || col2 >= data[0].length()){
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        }
-        V firstCol = getCol(col1);
-        V secondCol = getCol(col2);
-        setCol(col1, secondCol);
-        setCol(col2, firstCol);
-    }
+    void interchangeCols(int col1, int col2) throws OperationUndefinedException;
 
     /**
      * Scale a row of the matrix by a factor
@@ -170,11 +122,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param factor The factor by which the row is scaled
      * @throws OperationUndefinedException
      */
-    public void scaleRow(int rowNum, S factor) throws OperationUndefinedException {
-        if(rowNum >= data.length)
-            throw new OperationUndefinedException(ROW_OUT_RANGE);
-        data[rowNum].scale(factor);
-    }
+    void scaleRow(int rowNum, S factor) throws OperationUndefinedException;
 
     /**
      * Scale a column of the matrix by a factor
@@ -182,14 +130,13 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param factor The factor by which the column is scaled
      * @throws OperationUndefinedException
      */
-    public void scaleColumn(int columnNum, S factor) throws OperationUndefinedException{
-        if(columnNum >= data[0].length()){
-            throw new OperationUndefinedException(COL_OUT_RANGE);
-        }
-        getCol(columnNum).scale(factor);
-    }
+    void scaleColumn(int columnNum, S factor) throws OperationUndefinedException;
 
-    public abstract Mat<T, S, F, V> copy();
+    /**
+     * Copy the contents of the matrix into a new Matrix
+     * @return a new Matrix
+     */
+    public abstract Mat<T, S, F> copy();
 
     //Getter Methods
 
@@ -197,17 +144,13 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * Get the number of rows
      * @return number of rows in the matrix
      */
-    public int nrows(){
-        return data.length;
-    }
+    int nrows();
 
     /**
      * Get the number of columns
      * @return number of columns in the matrix
      */
-    public int ncols(){
-        return data[0].length();
-    }
+    int ncols();
 
     /**
      * Get a particular row from the matrix
@@ -215,7 +158,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return A new Vector with the contents of the row chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public abstract V getRow(int num) throws OperationUndefinedException;
+    public abstract Vec<T, S, F> getRow(int num) throws OperationUndefinedException;
 
     /**
      * Get a particular column from the matrix
@@ -223,7 +166,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return A new Vector with the contents of the column chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public abstract V getCol(int num) throws OperationUndefinedException;
+    public abstract Vec<T, S, F> getCol(int num) throws OperationUndefinedException;
     
     /**
      * Get the value at a particular index of the matrix
@@ -233,22 +176,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return The value at the index
      * @throws OperationUndefinedException
      */
-    public T get(int row, int col) throws OperationUndefinedException{
-        if(row >= data.length){
-            throw new OperationUndefinedException(ROW_NUM_OUT_RANGE);
-        } else if(col > data[0].length()){
-            throw new OperationUndefinedException(COL_NUM_OUT_RANGE);
-        }
-        return data[row].get(col);
-    }
-
-    /**
-     * Get the multline attribute which configures how the string representation of a matrix is represented
-     * @return boolean of whether the class prints matricies on multiple lines or not
-     */
-    public static boolean getMultiline(){
-        return multiline;
-    }
+    T get(int row, int col) throws OperationUndefinedException;
 
     /**
      * Returns whether a particular value is present within the matrix or not
@@ -256,14 +184,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @return True if value is in the matrix, False otherwise
      * @throws OperationUndefinedException
      */
-    public boolean contains(T value) throws OperationUndefinedException{
-        for(V v : data){
-            if(v.contains(value)){
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean contains(T value) throws OperationUndefinedException;
 
     //Setter Methods
 
@@ -273,14 +194,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param newRow A Vector that represents the new row
      * @throws OperationUndefinedException
      */
-    public void setRow(int rowNum, V newRow) throws OperationUndefinedException{
-        if(newRow.length() != data[0].length())
-            throw new OperationUndefinedException("The vector length is out of range.");
-        newRow.pad(data[0].length() - newRow.length());
-        for(int col = 0; col < data[rowNum].length(); col++){
-            data[rowNum].set(col, newRow.get(col));
-        }
-    }
+    void setRow(int rowNum, Vec<T, S, F>newRow) throws OperationUndefinedException;
 
     /**
      * Set a particular column number to a new Vector
@@ -288,14 +202,7 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param newCol A Vector that represents the new column
      * @throws OperationUndefinedException
      */
-    public void setCol(int colNum, V newCol) throws OperationUndefinedException{
-        if(newCol.length() >= data.length)
-            throw new OperationUndefinedException("The vector length is out of range.");
-        newCol.pad(data.length - newCol.length());
-        for(int row = 0; row < data.length; row++){
-            data[row].set(colNum, newCol.get(row));
-        }
-    }
+    void setCol(int colNum, Vec<T, S, F>newCol) throws OperationUndefinedException;
 
     /**
      * Sets a particular index of the matrix to a new value
@@ -305,90 +212,13 @@ public abstract class Mat<T, S, F extends Field<S>, V extends Vec<T, S, F>> {
      * @param value The value the position should be set to
      * @throws OperationUndefinedException
      */
-    public void set(int row, int column, T value) throws OperationUndefinedException{
-        if(row >= data.length){
-            throw new OperationUndefinedException(ROW_NUM_OUT_RANGE);
-        } else if(column > data[0].length()){
-            throw new OperationUndefinedException(COL_NUM_OUT_RANGE);
-        }
-        data[row].set(column, value);
-    }
-
-    /**
-     * The multline attribute configures whether the string representation of a matrix
-     * should all be displayed on one line, or across many lines (multiline output)
-     * @param multiline The state the multiline attribute should be set to
-     */
-    public static void setMultiline(boolean mline){
-        multiline = mline;
-    }
+    void set(int row, int column, T value) throws OperationUndefinedException;
 
     //Other Methods
-    protected void recorrectMatrix(V[] matrix){
-        //Find maximum row length
-        int maxRowLength = 0;
-        for(V v : matrix){
-            if(v.length() > maxRowLength)
-                maxRowLength = v.length();
-        }
-        //Fill in any empty space to make the matrix take the form of a rectangle
-        for(int row = 0; row < matrix.length; row++){
-            matrix[row].pad(maxRowLength - matrix[row].length());
-        }
-    }
-
-    protected void applyOperation(Mat<T, S, F, V> matrix, MatrixOperation<T> op) throws OperationUndefinedException{
-        sameDimensions(matrix);
-        for(int row = 0; row < data.length; row++){
-            for(int col = 0; col < data[0].length(); col++){
-                data[row].set(col, op.operation(data[row].get(col), matrix.get(row, col)));
-            }
-        }
-    }
-
-    protected void sameDimensions(Mat<T, S, F, V> matrix) throws OperationUndefinedException {
-        if(data.length != matrix.nrows()){
-            throw new OperationUndefinedException("This operation cannot be applied to matrices with different numbers of rows.");
-        } else if(data[0].length() != matrix.ncols()){
-            throw new OperationUndefinedException("This operation cannot be applied to matrices with different numbers of columns.");
-        }
-    }
+    @Override
+    boolean equals(Object o);
 
     @Override
-    public boolean equals(Object o){
-        try {
-            if(o == null || getClass() != o.getClass()){
-                return false;
-            }
-            if(data.length != ((Mat<T, S, F, V>)o).ncols() || data[0].length() != ((Mat<T, S, F, V>)o).ncols()){
-                return false;
-            }
-            for(int row = 0; row < data.length; row++){
-                for(int col = 0; col < data[0].length(); col++){
-                    if(data[row].get(col) != ((Mat<T, S, F, V>)o).get(row, col)){
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } catch(OperationUndefinedException e){
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-        String str = "[";
-        int rowNum = 0;
-        for(V v : data){
-            str += v.toString();
-            if(multiline && rowNum < data.length - 1){
-                str += "\n ";
-            }
-            rowNum++;
-        }
-        str += "]";
-        return str;
-    }
+    String toString();
     
 }

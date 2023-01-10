@@ -60,11 +60,11 @@ public class Testing {
 
         // double[][] another = {{1 , 2, -1},
         //                     {0, -5, 3}};
-        // double[] anotherV = {4, 3, 7};
+        // double[] anotherVec<T, S, F>= {4, 3, 7};
         // double[][] another = {{2, -3},
         //                     {8, 0},
         //                     {-5, 2}};
-        // double[] anotherV = {4, 7};
+        // double[] anotherVec<T, S, F>= {4, 7};
         // Matrix a = new Matrix(another);
         // Vector v = new Vector(anotherV);
         // System.out.println(a.multiply(v));
