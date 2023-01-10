@@ -3,8 +3,8 @@ package highlevelmath.constructs.abstract_algebra.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import highlevelmath.constructs.Complex;
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
+import highlevelmath.constructs.structures.Complex;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.UndefinedException;
 

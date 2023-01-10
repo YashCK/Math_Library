@@ -1,6 +1,6 @@
 
 import highlevelmath.*;
-import highlevelmath.constructs.Complex;
+import highlevelmath.constructs.structures.Complex;
 import highlevelmath.constructs.util.NoExistingSolutionException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 

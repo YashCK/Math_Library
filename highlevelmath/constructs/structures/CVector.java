@@ -1,6 +1,5 @@
 package highlevelmath.constructs.structures;
 
-import highlevelmath.constructs.Complex;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.MatrixOperation;

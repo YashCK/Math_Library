@@ -1,6 +1,7 @@
-package highlevelmath.constructs;
+package highlevelmath.constructs.structures;
 
-import highlevelmath.constructs.util.*;
+import highlevelmath.constructs.util.ConstructFormatException;
+import highlevelmath.constructs.util.UndefinedException;
 
 public class Complex {
     
