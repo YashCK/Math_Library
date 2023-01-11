@@ -140,7 +140,7 @@ public abstract class Matx<T, S> {
     public void interchangeRows(int row1, int row2) throws OperationUndefinedException {
         if(row1 >= data.length || row2 >= data.length)
             throw new OperationUndefinedException(ROW_OUT_RANGE);
-        Vec<T, S> firstRow = (Vec<T, S>)getRow(row1);
+        Vec<T, S> firstRow = getRow(row1);
         setRow(row1, getRow(row2));
         setRow(row2, firstRow);
     }
@@ -267,9 +267,8 @@ public abstract class Matx<T, S> {
      * Returns whether a particular value is present within the matrix or not
      * @param value The value to search for | MUST be the type of values stored in the Vector
      * @return True if value is in the matrix, False otherwise
-     * @throws OperationUndefinedException
      */
-    public boolean contains(T value) throws OperationUndefinedException {
+    public boolean contains(T value) {
         for(Vec<T, S> v : data){
             if(v.contains(value)){
                 return true;
