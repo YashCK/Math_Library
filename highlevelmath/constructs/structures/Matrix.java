@@ -147,10 +147,8 @@ public class Matrix extends Matx<Double, Double>{
     @Override
     public Matx<Double, Double> copy() {
         Vector[] copy = new Vector[data.length];
-        int i = 0;
-        for(Vec<Double, Double> v : data){
-            copy[i] = (Vector)v;
-            i++;
+        for(int i = 0; i < data.length; i++){
+            copy[i] = (Vector)data[i];
         }
         return new Matrix(copy);
     }

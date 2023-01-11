@@ -113,8 +113,8 @@ public class CVector extends Vec<Complex, Double>{
     }
 
     boolean isComplex(){
-        for(int i = 0; i < data.length; i++){
-            if(data[i].getImag() != 0)
+        for(Complex c : data){
+            if(c.getImag() != 0)
                 return false;
         }
         return true;
