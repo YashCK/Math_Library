@@ -1,10 +1,11 @@
 package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Vector extends RealVec<Double>{
+public class Vector extends Vec<Double, Double>{
 
     //Constructors
 
@@ -13,6 +14,7 @@ public class Vector extends RealVec<Double>{
      * @param vector An array of doubles that represent the values of the vector
      */
     public Vector(Double[] vector){
+        super();
         this.data = vector;
     }
 
@@ -21,6 +23,7 @@ public class Vector extends RealVec<Double>{
      * @param vector An array of ints that represent the values of the vector
      */
     public Vector(int[] vector) {
+        super();
         Double[] array = new Double[vector.length];
         for(int i = 0; i < vector.length; i++){
             array[i] = (double)vector[i];
@@ -29,17 +32,7 @@ public class Vector extends RealVec<Double>{
     }
 
     //Operations
-    public void add(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> d1 + d2;
-        applyOperation((RealVec<Double>)vector, function);
-    }
-
-    public void subtract(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> d1 - d2;
-        applyOperation((RealVec<Double>)vector, function);
-    }
-
-    public void modulus(RealVec<Double> vector) throws OperationUndefinedException{
+    public void modulus(Vec<Double, Double> vector) throws OperationUndefinedException{
         if(vector.contains(0.0))
             throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
         MatrixOperation<Double> function = (d1, d2) -> d1 % d2;
@@ -53,7 +46,7 @@ public class Vector extends RealVec<Double>{
         correctRounding();
     }
 
-    public Double dot(Vec<Double, Double, RealField> vector) throws OperationUndefinedException{
+    public Double dot(Vec<Double, Double> vector) throws OperationUndefinedException{
         if(data.length != vector.length())
             throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
         double sum = 0;
@@ -64,27 +57,28 @@ public class Vector extends RealVec<Double>{
     }
 
     @Override
-    public Double inner(Vec<Double, Double, RealField> vector) throws OperationUndefinedException {
+    public Double inner(Vec<Double, Double> vector) throws OperationUndefinedException {
         return this.dot(vector);
     }
 
     //General Methods
 
     @Override
-    public Double sumVals() {
-        double sum = 0;
-        for(double d : data){
-            sum += d;
-        }
-        return sum;
-    }
-
-    @Override
-    public Vec<Double, Double, RealField> copy() {
+    public Vec<Double, Double> copy() {
         return new Vector(data);
     }
 
     //Other Methods
+
+    @Override
+    protected Field<Double> setElementField() {
+        return new RealField();
+    }
+
+    @Override
+    protected Field<Double> setScalarField() {
+        return new RealField();
+    }
 
     public CVector toComplex(){
         Complex[] cv = new Complex[data.length];
@@ -92,18 +86,6 @@ public class Vector extends RealVec<Double>{
             cv[i] = new Complex(data[i], 0);
         }
         return new CVector(cv);
-    }
-
-    /**
-     * Will correct any roundings issues (too much precision) with values in the matrix
-     */
-    public void correctRounding(){
-        double threshold = 1E-2;
-        for(int i = 0; i < data.length; i++){
-            if(Math.abs(Math.round(data[i]) - data[i]) < threshold){
-                data[i] = (double) Math.round(data[i]);
-            }
-        }
     }
 
     /**
@@ -134,6 +116,18 @@ public class Vector extends RealVec<Double>{
         }
         str += "]";
         return str;
+    }
+
+    /**
+     * Will correct any roundings issues (too much precision) with values in the matrix
+    */
+    public void correctRounding(){
+        double threshold = 1E-2;
+        for(int i = 0; i < data.length; i++){
+            if(Math.abs(Math.round(data[i]) - data[i]) < threshold){
+                data[i] = (double) Math.round(data[i]);
+            }
+        }
     }
 
     protected double truncateDecimal(double value, int places){

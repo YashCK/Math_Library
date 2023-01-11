@@ -116,7 +116,7 @@ public class Matrix extends RealMatx<Double>{
     }
 
     @Override
-    public Vec<Double, Double, RealField> multiply(Vec<Double, Double, RealField> v)
+    public Vec_Old<Double, Double, RealField> multiply(Vec_Old<Double, Double, RealField> v)
             throws OperationUndefinedException {
         if(this.ncols() != v.length())
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
@@ -159,7 +159,7 @@ public class Matrix extends RealMatx<Double>{
     public Mat<Double, Double, RealField> copy() {
         Vector[] copy = new Vector[data.length];
         int i = 0;
-        for(RealVec<Double> v : data){
+        for(Vec<Double> v : data){
             copy[i] = (Vector)v;
             i++;
         }
@@ -194,7 +194,7 @@ public class Matrix extends RealMatx<Double>{
      * Will correct any roundings issues (too much precision) with values in the matrix
      */
     public void correctRounding(){
-        for(RealVec<Double> v : data){
+        for(Vec<Double> v : data){
             ((Vector)v).correctRounding();
         }
     }

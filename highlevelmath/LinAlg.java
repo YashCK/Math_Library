@@ -22,8 +22,8 @@ public class LinAlg {
             throw new NoExistingSolutionException("The matrix does not have a solution. Gaussian Elimination cannot be applied.");
         }
         //Create augmented matrix
-        Vec<?, ?, ?>[] augCols = augment(matrix, b);
-        Vec<?, ?, ?>[] augMat = new Vec<?, ?, ?>[augCols.length - 1];
+        Vec_Old<?, ?, ?>[] augCols = augment(matrix, b);
+        Vec_Old<?, ?, ?>[] augMat = new Vec<?, ?, ?>[augCols.length - 1];
         int n = 0;
         for(Vec<?, ?, ?> a : augCols){
             if(n >= augMat.length)
@@ -53,9 +53,9 @@ public class LinAlg {
         return v;
     }
 
-    private static Vec<?, ?, ?>[] augment(Matrix_Old m, Vec<?, ?, ?> b) throws OperationUndefinedException{
+    private static Vec_Old<?, ?, ?>[] augment(Matrix_Old m, Vec<?, ?, ?> b) throws OperationUndefinedException{
         //Create augmented matrix
-        Vec<?, ?, ?>[] aug = new Vec<?, ?, ?>[m.getNumCols() + 1];
+        Vec_Old<?, ?, ?>[] aug = new Vec<?, ?, ?>[m.getNumCols() + 1];
         for(int a = 0; a < m.getNumCols(); a++){
             aug[a] = m.getColumn(a);
         }

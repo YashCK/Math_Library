@@ -1,17 +1,19 @@
 package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
+import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.ConstructFormatException;
-import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CVector extends RealVec<Complex>{
+public class CVector extends Vec<Complex, Double>{
 
     /**
      * A constructor for CVector class
      * @param vector An array of Complex numbers that represent the values of the vector
      */
     public CVector(Complex[] vector){
+        super();
         this.data = vector;
     }
 
@@ -21,6 +23,7 @@ public class CVector extends RealVec<Complex>{
      * NOTE: All the complex values will be set to 0
      */
     public CVector(double[] vector){
+        super();
         Complex[] array = new Complex[vector.length];
         for(int i = 0; i < vector.length; i++){
             array[i] = new Complex(vector[i], 0);
@@ -34,6 +37,7 @@ public class CVector extends RealVec<Complex>{
      *  - Each string must take the format of either a + bi, a - bi, a, or bi
      */
     public CVector(String[] vector) throws ConstructFormatException{
+        super();
         Complex[] array = new Complex[vector.length];
         for(int i = 0; i < vector.length; i++){
             array[i] = new Complex(vector[i]);
@@ -43,18 +47,6 @@ public class CVector extends RealVec<Complex>{
 
     //Operations
     @Override
-    public void add(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Complex> function = Complex::add;
-        applyOperation((RealVec<Complex>)vector, function);
-    }
-
-    @Override
-    public void subtract(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
-        MatrixOperation<Complex> function = Complex::subtract;
-        applyOperation((RealVec<Complex>)vector, function);
-    }
-
-    @Override
     public void scale(Double factor) throws OperationUndefinedException {
         for(int i = 0; i < data.length; i++){
             data[i].scale(factor);
@@ -62,43 +54,24 @@ public class CVector extends RealVec<Complex>{
     }
 
     @Override
-    public Double dot(Vec<Complex, Double, RealField> vector) throws OperationUndefinedException {
-        //TO BE IMPLEMENTED
-        return 0.0;
+    public Double dot(Vec<Complex, Double> vector) throws OperationUndefinedException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public Double inner(Vec<Complex, Double, RealField> vector) {
-        //TO BE IMPLEMENTED
-        return 0.0;
-    }
-
-    public void set(int index, double value) throws OperationUndefinedException {
-        if(index >= data.length)
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
-        data[index] = new Complex(value, 0);
+    public Double inner(Vec<Complex, Double> vector) throws OperationUndefinedException {
+        // TODO Auto-generated method stub
+        return null;
     }
     
     //General Methods
-    public void defineInnerProduct(){
-        //
-    }
-
     @Override
-    public Complex sumVals() {
-        Complex sum = new Complex(0, 0);
-        for(Complex d : data){
-            sum = Complex.add(sum,  d);
-        }
-        return sum;
-    }
-
-    @Override
-    public Vec<Complex, Double, RealField> copy() {
+    public Vec<Complex, Double> copy() {
         return new CVector(data);
     }
 
-    RealVec<Double> getRealComplement(){
+    Vector getRealComplement(){
         Double[] vals = new Double[data.length];
         int i = 0;
         for(Complex c : data){
@@ -108,7 +81,7 @@ public class CVector extends RealVec<Complex>{
         return new Vector(vals);
     }
 
-    RealVec<Complex> getComplexComplement(){
+    CVector getComplexComplement(){
         Complex[] vals = new Complex[data.length];
         for(int i = 0; i < data.length; i++){
             vals[i] = new Complex(0, data[i].getImag());
@@ -116,13 +89,29 @@ public class CVector extends RealVec<Complex>{
         return new CVector(vals);
     }
 
-    RealVec<Double> toRealVector() throws OperationUndefinedException{
+    Vector toRealVector() throws OperationUndefinedException{
         if(isComplex())
             throw new OperationUndefinedException("The vector is Complex. It cannot be converted to a Real vector.");
         return getRealComplement();
     }
 
+    public void set(int index, double value) throws OperationUndefinedException {
+        if(index >= data.length)
+            throw new OperationUndefinedException(INDEX_OUT_RANGE);
+        data[index] = new Complex(value, 0);
+    }
+
     //Other Methods
+    @Override
+    protected Field<Complex> setElementField() {
+        return new ComplexField();
+    }
+
+    @Override
+    protected Field<Double> setScalarField() {
+        return new RealField();
+    }
+
     boolean isComplex(){
         for(int i = 0; i < data.length; i++){
             if(data[i].getImag() != 0)

@@ -47,7 +47,7 @@ public interface Mat<T, S, F extends Field<S>> {
      * @return a new Vector that is the product of the matrix and vector parameter
      * @throws OperationUndefinedException
      */
-    public abstract Vec<T, S, F>multiply(Vec<T, S, F> v) throws OperationUndefinedException;
+    public abstract Vec_Old<T, S, F>multiply(Vec_Old<T, S, F> v) throws OperationUndefinedException;
 
     //Methods to Manipulate Matrix
 
@@ -158,7 +158,7 @@ public interface Mat<T, S, F extends Field<S>> {
      * @return A new Vector with the contents of the row chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public abstract Vec<T, S, F> getRow(int num) throws OperationUndefinedException;
+    public abstract Vec_Old<T, S, F> getRow(int num) throws OperationUndefinedException;
 
     /**
      * Get a particular column from the matrix
@@ -166,7 +166,7 @@ public interface Mat<T, S, F extends Field<S>> {
      * @return A new Vector with the contents of the column chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public abstract Vec<T, S, F> getCol(int num) throws OperationUndefinedException;
+    public abstract Vec_Old<T, S, F> getCol(int num) throws OperationUndefinedException;
     
     /**
      * Get the value at a particular index of the matrix
@@ -194,7 +194,7 @@ public interface Mat<T, S, F extends Field<S>> {
      * @param newRow A Vector that represents the new row
      * @throws OperationUndefinedException
      */
-    void setRow(int rowNum, Vec<T, S, F>newRow) throws OperationUndefinedException;
+    void setRow(int rowNum, Vec_Old<T, S, F>newRow) throws OperationUndefinedException;
 
     /**
      * Set a particular column number to a new Vector
@@ -202,7 +202,7 @@ public interface Mat<T, S, F extends Field<S>> {
      * @param newCol A Vector that represents the new column
      * @throws OperationUndefinedException
      */
-    void setCol(int colNum, Vec<T, S, F>newCol) throws OperationUndefinedException;
+    void setCol(int colNum, Vec_Old<T, S, F>newCol) throws OperationUndefinedException;
 
     /**
      * Sets a particular index of the matrix to a new value

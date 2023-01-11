@@ -84,7 +84,7 @@ public class CMatrix extends RealMatx<Complex> {
     }
 
     @Override
-    public Vec<Complex, Double, RealField> multiply(Vec<Complex, Double, RealField> v)
+    public Vec_Old<Complex, Double, RealField> multiply(Vec_Old<Complex, Double, RealField> v)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
