@@ -61,5 +61,12 @@ public class ComplexField implements Field<Complex>{
             throw new NotInvertibleException("0 is not invertible in the Complex Number Field.");
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass()!= this.getClass())
+            return false;
+        return true;
+    }
     
 }

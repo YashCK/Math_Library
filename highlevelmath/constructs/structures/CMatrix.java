@@ -1,9 +1,11 @@
 package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
+import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CMatrix extends RealMatx<Complex> {
+public class CMatrix extends Matx<Complex, Double> {
 
     //Constructors
 
@@ -65,67 +67,65 @@ public class CMatrix extends RealMatx<Complex> {
     }
 
     @Override
-    public void add(Mat<Complex, Double, RealField> matrix) throws OperationUndefinedException {
+    public Matx<Complex, Double> multiply(Matx<Complex, Double> matrix) throws OperationUndefinedException {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void subtract(Mat<Complex, Double, RealField> matrix) throws OperationUndefinedException {
+    public Vec<Complex, Double> multiply(Vec<Complex, Double> v) throws OperationUndefinedException {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public Mat<Complex, Double, RealField> multiply(Mat<Complex, Double, RealField> matrix)
+    public Matx<Complex, Double> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Vec_Old<Complex, Double, RealField> multiply(Vec_Old<Complex, Double, RealField> v)
-            throws OperationUndefinedException {
+    public Matx<Complex, Double> copy() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Mat<Complex, Double, RealField> subMatrix(int startRow, int endRow, int startCol, int endCol)
-            throws OperationUndefinedException {
+    public Vec<Complex, Double> getRow(int num) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Mat<Complex, Double, RealField> copy() {
+    public Vec<Complex, Double> getCol(int num) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CVector getRow(int num) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
-        return null;
+    protected Field<Complex> setElementField() {
+        return new ComplexField();
     }
 
     @Override
-    public CVector getCol(int num) throws OperationUndefinedException {
+    protected Field<Double> setScalarField() {
+        return new RealField();
+    }
+
+    public Vector getRealComplement(){
         // TODO Auto-generated method stub
         return null;
     }
 
-
-    public Matrix getRealComplement(){
-        //TO BE IMPLEMENTED
+    public Vector getComplexComplement(){
+        // TODO Auto-generated method stub
+        return null;
     }
-
-    public CMatrix getComplexComplement(){
-        //TO BE IMPLEMENTED
-    }
-
-    public Matrix toReal(){
-        //TO BE IMPLEMENTED
+    
+    public Vector toReal(){
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

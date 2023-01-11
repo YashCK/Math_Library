@@ -1,10 +1,11 @@
 package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Matrix extends RealMatx<Double>{
+public class Matrix extends Matx<Double, Double>{
 
      /**
      * A constructor for Matrix class
@@ -90,19 +91,7 @@ public class Matrix extends RealMatx<Double>{
     //Operations
 
     @Override
-    public void add(Mat<Double, Double, RealField> matrix) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> d1 + d2;
-        applyOperation((RealMatx<Double>)matrix, function);
-    }
-    
-    @Override
-    public void subtract(Mat<Double, Double, RealField> matrix) throws OperationUndefinedException {
-        MatrixOperation<Double> function = (d1, d2) -> d1 - d2;
-        applyOperation((RealMatx<Double>)matrix, function);
-    }
-
-    @Override
-    public Mat<Double, Double, RealField> multiply(Mat<Double, Double, RealField> matrix) throws OperationUndefinedException {
+    public Matx<Double, Double> multiply(Matx<Double, Double> matrix) throws OperationUndefinedException {
         if(this.ncols() != matrix.nrows())
             throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         Double[][] newM = new Double[this.nrows()][matrix.ncols()];
@@ -116,7 +105,7 @@ public class Matrix extends RealMatx<Double>{
     }
 
     @Override
-    public Vec_Old<Double, Double, RealField> multiply(Vec_Old<Double, Double, RealField> v)
+    public Vec<Double, Double> multiply(Vec<Double, Double> v)
             throws OperationUndefinedException {
         if(this.ncols() != v.length())
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
@@ -132,7 +121,7 @@ public class Matrix extends RealMatx<Double>{
      * @param matrix Matrix object whose entires will act as the modulus divisor
      * @throws OperationUndefinedException
      */
-    public void modulus(RealMatx<Double> matrix) throws OperationUndefinedException{
+    public void modulus(Matx<Double, Double> matrix) throws OperationUndefinedException{
         if(matrix.contains(0.0))
             throw new OperationUndefinedException("This operation cannot be applied to input matrices with value 0.");
         MatrixOperation<Double> function = (d1, d2) -> d1 % d2;
@@ -142,7 +131,7 @@ public class Matrix extends RealMatx<Double>{
     //Methods to Manipulate Matrix
 
     @Override
-    public Mat<Double, Double, RealField> subMatrix(int startRow, int endRow, int startCol, int endCol)
+    public Matx<Double, Double> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
         if(startRow < 0 || endRow > data.length || startCol < 0 || endCol > data[0].length())
             throw new OperationUndefinedException("A row or column parameter was out of the matrix's range.");
@@ -156,10 +145,10 @@ public class Matrix extends RealMatx<Double>{
     }
 
     @Override
-    public Mat<Double, Double, RealField> copy() {
+    public Matx<Double, Double> copy() {
         Vector[] copy = new Vector[data.length];
         int i = 0;
-        for(Vec<Double> v : data){
+        for(Vec<Double, Double> v : data){
             copy[i] = (Vector)v;
             i++;
         }
@@ -190,11 +179,21 @@ public class Matrix extends RealMatx<Double>{
     }
 
     //Other Methods
+    @Override
+    protected Field<Double> setElementField() {
+        return new RealField();
+    }
+
+    @Override
+    protected Field<Double> setScalarField() {
+        return new RealField();
+    }
+
     /**
      * Will correct any roundings issues (too much precision) with values in the matrix
      */
     public void correctRounding(){
-        for(Vec<Double> v : data){
+        for(Vec<Double, Double> v : data){
             ((Vector)v).correctRounding();
         }
     }
@@ -205,7 +204,11 @@ public class Matrix extends RealMatx<Double>{
     }
 
     public CMatrix toComplex(){
-        //TO BE IMPLEMENTED
+        CVector[] cv = new CVector[data.length];
+        for(int i = 0; i < data.length; i++){
+            cv[i] = ((Vector)data[i]).toComplex();
+        }
+        return new CMatrix(cv);
     }
 
 }

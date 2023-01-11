@@ -58,6 +58,13 @@ public class RealField implements Field<Double>{
         }
         return 1/a;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass()!= this.getClass())
+            return false;
+        return true;
+    }
     
 
 }
