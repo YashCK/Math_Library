@@ -198,6 +198,19 @@ public abstract class Matx<T, S> {
      */
     public abstract Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException;
 
+    public void transpose(){
+        Matx<T, S> copy = copy();
+        try {
+            for(int row = 0; row < data.length; row++){
+                for(int col = 0; col < data[0].length(); col++){
+                    data[row].set(col, copy.get(col, row));
+                }
+            }
+        } catch (OperationUndefinedException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Copy the contents of the matrix into a new Matrix
      * @return a new Matrix

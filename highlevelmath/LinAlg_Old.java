@@ -237,31 +237,4 @@ public class LinAlg_Old<T, S> {
         return ind;
     }
 
-    public static Matrix_Old identity(int num){
-        double[][] im = new double[num][num];
-        for(int i = 0; i < num; i++){
-            im[i][i] = 1;
-        }
-        return new Matrix_Old(im);
-    }
-
-    static int findGCD(int big, int small) {
-        if (big % small == 0) {
-            return small;
-        }
-        return findGCD(small, big % small);
-    }
-
-    static int findLCM(int a, int b) {
-        if (a > b) {
-            return a * b / findGCD(a, b);
-        } else {
-            return a * b / findGCD(b, a);
-        }
-
-    }
-
-    
-
-
 }
