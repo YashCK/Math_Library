@@ -3,6 +3,7 @@ package highlevelmath.constructs.structures;
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.MatrixOperation;
+import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
 public class Vector extends Vec<Double, Double>{
@@ -78,6 +79,15 @@ public class Vector extends Vec<Double, Double>{
     @Override
     protected Field<Double> setScalarField() {
         return new RealField();
+    }
+
+    @Override
+    public Double scalarInverse(Double e) {
+        try {
+            return this.element.invert(e);
+        } catch (NotInvertibleException e1) {
+            return this.scalar.getZero();
+        }
     }
 
     public CVector toComplex(){

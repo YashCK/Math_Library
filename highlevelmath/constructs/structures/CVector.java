@@ -4,9 +4,10 @@ import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.ConstructFormatException;
+import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CVector extends Vec<Complex, Double>{
+public class CVector extends Vec<Complex, Complex>{
 
     /**
      * A constructor for CVector class
@@ -47,27 +48,33 @@ public class CVector extends Vec<Complex, Double>{
 
     //Operations
     @Override
-    public void scale(Double factor) throws OperationUndefinedException {
+    public void scale(Complex factor) throws OperationUndefinedException {
+        for(int i = 0; i < data.length; i++){
+            data[i] = Complex.mul(data[i], factor);
+        }
+    }
+
+    public void scale(double factor) throws OperationUndefinedException {
         for(int i = 0; i < data.length; i++){
             data[i].scale(factor);
         }
     }
 
     @Override
-    public Double dot(Vec<Complex, Double> vector) throws OperationUndefinedException {
+    public Complex dot(Vec<Complex, Complex> vector) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Double inner(Vec<Complex, Double> vector) throws OperationUndefinedException {
+    public Complex inner(Vec<Complex, Complex> vector) throws OperationUndefinedException {
         // TODO Auto-generated method stub
         return null;
     }
     
     //General Methods
     @Override
-    public Vec<Complex, Double> copy() {
+    public Vec<Complex, Complex> copy() {
         return new CVector(data);
     }
 
@@ -102,14 +109,24 @@ public class CVector extends Vec<Complex, Double>{
     }
 
     //Other Methods
+
+    @Override
+    public Complex scalarInverse(Complex e) {
+        try {
+            return this.element.invert(e);
+        } catch (NotInvertibleException e1) {
+            return this.scalar.getZero();
+        }
+    }
+
     @Override
     protected Field<Complex> setElementField() {
         return new ComplexField();
     }
 
     @Override
-    protected Field<Double> setScalarField() {
-        return new RealField();
+    protected Field<Complex> setScalarField() {
+        return new ComplexField();
     }
 
     boolean isComplex(){

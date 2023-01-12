@@ -5,7 +5,7 @@ import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CMatrix extends Matx<Complex, Double> {
+public class CMatrix extends Matx<Complex, Complex> {
 
     //Constructors
 
@@ -142,32 +142,32 @@ public class CMatrix extends Matx<Complex, Double> {
     }
 
     @Override
-    public Matx<Complex, Double> multiply(Matx<Complex, Double> matrix) throws OperationUndefinedException {
+    public Matx<Complex, Complex> multiply(Matx<Complex, Complex> matrix) throws OperationUndefinedException {
         if(this.ncols() != matrix.nrows())
             throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         Complex[][] newM = new Complex[this.nrows()][matrix.ncols()];
         for(int row = 0; row < data.length; row++){
             CVector v = this.getRow(row);
             for(int col = 0; col < matrix.ncols(); col++){
-                newM[row][col] = new Complex(v.dot(matrix.getCol(col)), 0);
+                newM[row][col] = v.dot(matrix.getCol(col));
             }
         }
         return new CMatrix(newM);
     }
 
     @Override
-    public Vec<Complex, Double> multiply(Vec<Complex, Double> v) throws OperationUndefinedException {
+    public Vec<Complex, Complex> multiply(Vec<Complex, Complex> v) throws OperationUndefinedException {
         if(this.ncols() != v.length())
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
         Complex[] newV = new Complex[data.length];
         for(int row = 0; row < data.length; row++){
-            newV[row] = new Complex(data[row].dot(v), 0);
+            newV[row] = data[row].dot(v);
         }
         return new CVector(newV);
     }
 
     @Override
-    public Matx<Complex, Double> subMatrix(int startRow, int endRow, int startCol, int endCol)
+    public Matx<Complex, Complex> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
         if(startRow < 0 || endRow > data.length || startCol < 0 || endCol > data[0].length())
             throw new OperationUndefinedException("A row or column parameter was out of the matrix's range.");
@@ -181,7 +181,7 @@ public class CMatrix extends Matx<Complex, Double> {
     }
 
     @Override
-    public Matx<Complex, Double> copy() {
+    public Matx<Complex, Complex> copy() {
         CVector[] copy = new CVector[data.length];
         for(int i = 0; i < data.length; i++){
             copy[i] = (CVector)data[i];
@@ -217,8 +217,8 @@ public class CMatrix extends Matx<Complex, Double> {
     }
 
     @Override
-    protected Field<Double> setScalarField() {
-        return new RealField();
+    protected Field<Complex> setScalarField() {
+        return new ComplexField();
     }
 
     public Matrix getRealComplement(){
@@ -244,7 +244,7 @@ public class CMatrix extends Matx<Complex, Double> {
     }
 
     public boolean isComplex(){
-        for(Vec<Complex, Double> c: data){
+        for(Vec<Complex, Complex> c: data){
             if(!((CVector)c).isComplex())
                 return false;
         }

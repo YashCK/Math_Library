@@ -150,6 +150,8 @@ public abstract class Vec<T, S> {
 
     protected abstract Field<S> setScalarField();
 
+    public abstract S scalarInverse(T element);
+
     /**
      * WARNING - COULD LEAD TO UNINDENTED CONSQUENCES, ESPECIALLY IN MATRICES
      * Add a certain amount of 0s at the end of a vector
