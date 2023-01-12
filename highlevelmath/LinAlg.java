@@ -9,6 +9,7 @@ import highlevelmath.constructs.structures.Matx;
 import highlevelmath.constructs.structures.Vec;
 import highlevelmath.constructs.util.ArrFactory;
 import highlevelmath.constructs.util.MatxFactory;
+import highlevelmath.constructs.util.OperationUndefinedException;
 import highlevelmath.constructs.util.TwoArrFactory;
 import highlevelmath.constructs.util.VecFactory;
 
@@ -47,83 +48,94 @@ public class LinAlg<T, S, V extends Vec<T, S>, M extends Matx<T,S>> {
     *   - The leading entry in each nonzero row is 1.
     *   - Each leading 1 is the only nonzero entry in its column.
     */
-
+    /**
+     * This function reduces the matrix passed in to its REF state
+     * @param matrix the matrix to be row reduced
+     */
     public void ref(M matrix){
-        int totalCols = matrix.ncols();
-        int totalRows = matrix.nrows();
-        int pivotRow = 0;
-        //Reduces Matrix to REF State
-        for(int column = 0; column < totalRows; column++){
-            //Scale each row such that its first entry is 1 | provided it is not 0 initially
-            int[] beginWZeros = new int[totalRows];
-            int z = 0;
-            for(int row = pivotRow; row < totalRows; row++){
-                double value = matrix.get(row, column);
-                if(value != 0){
-                    matrix.scaleRow(row, 1/value);
-                } else {
-                    //Add rows that begin with 0 to beginWZeros array
-                    beginWZeros[z] = row + 1;
-                    z++;
+        try {
+            int totalCols = matrix.ncols();
+            int totalRows = matrix.nrows();
+            int pivotRow = 0;
+            //Reduces Matrix to REF State
+            for(int column = 0; column < totalRows; column++){
+                //Scale each row such that its first entry is 1 | provided it is not 0 initially
+                int[] beginWZeros = new int[totalRows];
+                int z = 0;
+                for(int row = pivotRow; row < totalRows; row++){
+                    T value = matrix.get(row, column);
+                    if(!value.equals(e.getZero())){
+                        matrix.scaleRow(row, matrix.getRow(row).scalarInverse(value));
+                    } else {
+                        //Add rows that begin with 0 to beginWZeros array
+                        beginWZeros[z] = row + 1;
+                        z++;
+                    }
                 }
-            }
-            //Put rows of leading 0s as the bottom rows of the matrix
-            int buffer = 0;
-            for(int r : beginWZeros){
-                if(r == 0){
-                    break;
+                //Put rows of leading 0s as the bottom rows of the matrix
+                int buffer = 0;
+                for(int r : beginWZeros){
+                    if(r == 0){
+                        break;
+                    }
+                    matrix.interchangeRows(r - 1, totalRows - 1 - buffer);
+                    buffer++;
                 }
-                matrix.interchangeRows(r - 1, totalRows - 1 - buffer);
-                buffer++;
-            }
-            //Use row replacement operations to create zeros in all positions below the pivot
-            //If Pivot Is 0 --> column += 1
-            while(matrix.get(pivotRow, column) == 0){
-                column++;
-            }
-            for(int i = pivotRow + 1; i < totalRows; i++){
-                //Row X = Row X - Row Pivot
-                if(matrix.get(i, column) != 0){
-                    matrix.subtractRows(i, pivotRow);
+                //Use row replacement operations to create zeros in all positions below the pivot
+                //If Pivot Is 0 --> column += 1
+                while(matrix.get(pivotRow, column).equals(e.getZero())){
+                    column++;
                 }
+                for(int i = pivotRow + 1; i < totalRows; i++){
+                    //Row X = Row X - Row Pivot
+                    if(!matrix.get(i, column).equals(e.getZero())){
+                        matrix.subtractRows(i, pivotRow);
+                    }
+                }
+                pivotRow++;
             }
-            pivotRow++;
+            System.out.println(matrix);
+        } catch (OperationUndefinedException e) {
+            e.printStackTrace();
         }
-        System.out.println(matrix);
     }
 
     public void rref(M matrix){
-        ref(matrix);
-        //Reduces Matrix to RREF State
-        // int column = totalCols - 1;
-        for(int row = totalRows - 1; row > -1; row--){
-            //Find pivots
-            int column = 0;
-            double val = matrix.get(row, column);
-            while(val == 0){
-                column++;
-                if(column >= totalCols){
-                    row--;
-                    break;
+        try {
+            ref(matrix);
+            //Reduces Matrix to RREF State
+            // int column = totalCols - 1;
+            for(int row = matrix.nrows() - 1; row > -1; row--){
+                //Find pivots
+                int column = 0;
+                T val = matrix.get(row, column);
+                while(val.equals(e.getZero())){
+                    column++;
+                    if(column >= matrix.ncols()){
+                        row--;
+                        break;
+                    }
+                    if(row < 0){
+                        break;
+                    }
+                    val = matrix.get(row, column);
                 }
                 if(row < 0){
                     break;
                 }
-                val = matrix.get(row, column);
+                //Scale pivot to be 1 | Scale positions above it correspondingly
+                for(int r = row; r > -1; r--){
+                    T pivot = matrix.get(r, column);
+                    matrix.scaleRow(r, matrix.getRow(row).scalarInverse(pivot));
+                }
+                //Create column of 0s above each pivot
+                for(int r = row - 1; r > -1; r--){
+                    //Row R = Row R - Row Pivot
+                    matrix.subtractRows(r, row);
+                }
             }
-            if(row < 0){
-                break;
-            }
-            //Scale pivot to be 1 | Scale positions above it correspondingly
-            for(int r = row; r > -1; r--){
-                double pivot = matrix.get(r, column);
-                matrix.scaleRow(r, 1/pivot);
-            }
-            //Create column of 0s above each pivot
-            for(int r = row - 1; r > -1; r--){
-                //Row R = Row R - Row Pivot
-                matrix.subtractRows(r, row);
-            }
+        } catch (OperationUndefinedException e) {
+            e.printStackTrace();
         }
     }
 

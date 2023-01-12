@@ -1,15 +1,10 @@
-
-import java.util.Arrays;
-
 import highlevelmath.*;
 import highlevelmath.constructs.structures.Complex;
 import highlevelmath.constructs.structures.Matrix;
 import highlevelmath.constructs.structures.Vector;
-import highlevelmath.constructs.util.ArrFactory;
-import highlevelmath.constructs.util.TwoArrFactory;
 import highlevelmath.constructs.util.NoExistingSolutionException;
 import highlevelmath.constructs.util.OperationUndefinedException;
-import highlevelmath.constructs.util.VecFactory;
+
 
 public class Testing {
     public static void main(String[] args) throws OperationUndefinedException, NoExistingSolutionException{
