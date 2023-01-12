@@ -1,17 +1,42 @@
 
+import java.util.Arrays;
+
 import highlevelmath.*;
 import highlevelmath.constructs.structures.Complex;
+import highlevelmath.constructs.structures.Matrix;
+import highlevelmath.constructs.structures.Vector;
+import highlevelmath.constructs.util.ArrFactory;
+import highlevelmath.constructs.util.TwoArrFactory;
 import highlevelmath.constructs.util.NoExistingSolutionException;
 import highlevelmath.constructs.util.OperationUndefinedException;
+import highlevelmath.constructs.util.VecFactory;
 
 public class Testing {
     public static void main(String[] args) throws OperationUndefinedException, NoExistingSolutionException{
-        // double[][] mat = {  {0, 3, -6, 6, 4, -5},
-        //                     {3, -7, 8, -5, 8, 9}, 
-        //                     {3, - 9, 12, -9, 6, 15}};
-        double[][] mat2 = { {1, 6, 2, -5, -2},
-                            {0, 0, 2, -8, -1}, 
-                            {0, 0, 0, 0,  1}};
+
+        // VecFactory<Double, Vector> v = Vector::new;
+        // Double[] first = {2.0, 4.0, 6.0 , 8.0};
+        // System.out.println(v.create(first));
+        // ArrFactory<Vector> arrV = Vector[]::new;
+        // Vector[] t1 = arrV.create(3);
+        // System.out.println(Arrays.toString(t1));
+
+        // ArrayFactory<Double> ad = Double[]::new;
+        // DoubleArrayFactory<Double> abc = (rows, cols) -> new Double[rows][cols];
+        // TwoArrFactory<Double> abc = (r, c) -> new Double[r][c];
+
+        LinAlg<Double, Double, Vector, Matrix> linalg = new LinAlg<>(Vector::new, Matrix::new, Double[]::new, Vector[]::new, Matrix[]::new, (r, c) -> new Double[r][c]);
+
+        Matrix m1 = linalg.identity(2);
+
+        System.out.println(m1);
+
+        // Double[][] mat = {  {0.0, 3.0, -6.0, 6.0, 4.0, -5.0},
+        //                     {3.0, -7.0, 8.0, -5.0, 8.0, 9.0}, 
+        //                     {3.0, - 9.0, 12.0, -9.0, 6.0, 15.0}};
+        // double[][] mat2 = { {1, 6, 2, -5, -2},
+        //                     {0, 0, 2, -8, -1}, 
+        //                     {0, 0, 0, 0,  1}};
         // double[] d1 = {0, 3, -6, 6, 4, -5};
         // Vector v1 = new Vector(d1);
         // double[] d2 = {3, -7, 8, -5, 8, 9};
@@ -19,6 +44,8 @@ public class Testing {
         // double[] d3 = {3, -9, 12, -9, 6, 15};
         // Vector v3 = new Vector(d3);
         // Vector[] mat = {v1, v2, v3};
+        // Matrix tm1 = new Matrix(mat, false);
+        // System.out.println(tm1);
         // Matrix test2 = new Matrix(mat2, true);
         // System.out.println(test2);
         // Matrix test1 = new Matrix(mat2);
@@ -123,9 +150,9 @@ public class Testing {
         /*
          * Testing Vector Class
          */
-        // double[] first = {2.0, 4.0, 6.0 , 8.0};
-        // double[] second = {1.0, 3.0, 5.0, 7.0};
-        // double[] third = {1, 2, 3};
+        // Double[] first = {2.0, 4.0, 6.0 , 8.0};
+        // Double[] second = {1.0, 3.0, 5.0, 7.0};
+        // Double[] third = {1.0, 2.0, 3.0};
         // Vector v1 = new Vector(first);
         // Vector v2 = new Vector(second);
         // Vector v3 = new Vector(third);
@@ -135,7 +162,7 @@ public class Testing {
         // System.out.println("Vector 3: " + v3);
         // v1.add(v2);
         // v1.subtract(v2);
-        // v1.multiply(v2);
+        // v1.dot(v2);
         // v1.modulus(v2);
         // v1.modulus(v3);
         // System.out.println(v1.equals(v2));

@@ -107,22 +107,24 @@ public class Vector extends Vec<Double, Double>{
 
     @Override
     public String toString() {
-        String str = "[";
+        StringBuilder bld  = new StringBuilder();
+        bld.append("[");
         int index = 0;
-        for(double element : data){
-            str += (index == 0) ? "" : ", ";
-            str += truncateDecimal(element, 2);
+        for(Double element : data){
+            if(index != 0)
+                bld.append(", ");
+            bld.append(truncateDecimal(element, 2));
             index++;
         }
-        str += "]";
-        return str;
+        bld.append("]");
+        return bld.toString();
     }
 
     /**
      * Will correct any roundings issues (too much precision) with values in the matrix
     */
     public void correctRounding(){
-        double threshold = 1E-2;
+        Double threshold = 1E-2;
         for(int i = 0; i < data.length; i++){
             if(Math.abs(Math.round(data[i]) - data[i]) < threshold){
                 data[i] = (double) Math.round(data[i]);

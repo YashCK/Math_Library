@@ -393,17 +393,17 @@ public abstract class Matx<T, S> {
 
     @Override
     public String toString() {
-        String str = "[";
+        StringBuilder bld = new StringBuilder();
+        bld.append("[");
         int rowNum = 0;
         for(Vec<T, S> v : data){
-            str += v.toString();
-            if(multiline && rowNum < data.length - 1){
-                str += "\n ";
-            }
+            bld.append(v.toString());
+            if(multiline && rowNum < data.length - 1)
+                bld.append("\n");
             rowNum++;
         }
-        str += "]";
-        return str;
+        bld.append("]");
+        return bld.toString();
     }
 
 
