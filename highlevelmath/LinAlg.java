@@ -1,9 +1,5 @@
 package highlevelmath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.structures.Matx;
 import highlevelmath.constructs.structures.Vec;

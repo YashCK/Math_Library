@@ -385,6 +385,9 @@ public abstract class Matx<T, S> {
     @Override
     public boolean equals(Object o) {
         try {
+            if(this == o){
+                return true;
+            }
             if(o == null || getClass() != o.getClass()){
                 return false;
             }

@@ -2,7 +2,6 @@ package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
-import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;

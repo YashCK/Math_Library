@@ -24,7 +24,7 @@ public class Testing {
 
         Matrix m1 = linalg.identity(2);
 
-        System.out.println(m1);
+        // System.out.println(m1);
 
         // Double[][] mat = {  {0.0, 3.0, -6.0, 6.0, 4.0, -5.0},
         //                     {3.0, -7.0, 8.0, -5.0, 8.0, 9.0}, 
@@ -39,7 +39,7 @@ public class Testing {
         // double[] d3 = {3, -9, 12, -9, 6, 15};
         // Vector v3 = new Vector(d3);
         // Vector[] mat = {v1, v2, v3};
-        // Matrix tm1 = new Matrix(mat, false);
+        // Matrix tm1 = new Matrix(mat, true);
         // System.out.println(tm1);
         // Matrix test2 = new Matrix(mat2, true);
         // System.out.println(test2);
@@ -147,16 +147,17 @@ public class Testing {
          */
         // Double[] first = {2.0, 4.0, 6.0 , 8.0};
         // Double[] second = {1.0, 3.0, 5.0, 7.0};
-        // Double[] third = {1.0, 2.0, 3.0};
+        // // Double[] third = {1.0, 2.0, 3.0};
         // Vector v1 = new Vector(first);
         // Vector v2 = new Vector(second);
-        // Vector v3 = new Vector(third);
-        // Vector v4 = new Vector(first);
+        // // Vector v3 = new Vector(third);
+        // // Vector v4 = new Vector(first);
         // System.out.println("Vector 1: " + v1);
-        // System.out.println("Vector 2: " + v2);
-        // System.out.println("Vector 3: " + v3);
-        // v1.add(v2);
+        // // System.out.println("Vector 2: " + v2);
+        // // System.out.println("Vector 3: " + v3);
+        // // v1.add(v2);
         // v1.subtract(v2);
+        // System.out.println("Vector 1: " + v1);
         // v1.dot(v2);
         // v1.modulus(v2);
         // v1.modulus(v3);
