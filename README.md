@@ -6,14 +6,15 @@ Current Scope
     * Vectors
       * Real and Complex Vectors
       * Operations (add, subtract, inner products, etc)
-      * Allows creation of your own vectors by implementing Vec<T, S, K> that can form some vector space V
+      * Allows creation of your own vectors by extending Vec<T, S> that can form some vector space V
           * NOTE: If this is done make sure that the vectors obey the axioms of vector spaces
-            * The default scalar field are the Real Numbers (ℝ) but you can create a new Field and create new Vectors that utilize those Fields
+            * T is the type of the element in the Vector
+            * S is the type of the scalar associated with its Vector Space
     * Matrices
       * Real and Complex Matrices
       * Operations (add, subtract, matrix multiplication, transpose, etc)
-      * Allows creation of matrices using your own Vectors<T> as either the columns or rows of the matrix
-          * NOTE: If this is done make sure that the vectors obey the axioms of vector spaces
+      * Allows creation of matrices by extending Matx<T, S>
+          * Same NOTE as creation of Vectors
     * Abstract Algebra
       * Semi-Groups, Monoids, Groups, Rings, Fields
     * Methods
