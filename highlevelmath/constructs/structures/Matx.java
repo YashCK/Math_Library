@@ -408,6 +408,12 @@ public abstract class Matx<T, S> {
     }
 
     @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         StringBuilder bld = new StringBuilder();
         bld.append("[");
