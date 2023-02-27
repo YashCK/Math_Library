@@ -6,56 +6,69 @@ import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class CVector extends Vec<Complex, Complex>{
+import java.util.Arrays;
+
+public class CVector extends Vec<Complex, Complex> {
 
     /**
      * A constructor for CVector class
-     * @param vector An array of Complex numbers that represent the values of the vector
+     *
+     * @param values the Complex numbers that represent the elements of the vector
      */
-    public CVector(Complex[] vector){
+    public CVector(Complex... values) {
         super();
-        this.data = vector;
+        data = Arrays.copyOf(values, values.length);
     }
 
     /**
      * A constructor for CVector class
+     *
      * @param vector An array of double numbers that represent the real values of the vector
-     * NOTE: All the complex values will be set to 0
+     *               NOTE: All the complex values will be set to 0
      */
-    public CVector(double[] vector){
+    public CVector(Double[] vector) {
         super();
-        Complex[] array = new Complex[vector.length];
-        for(int i = 0; i < vector.length; i++){
-            array[i] = new Complex(vector[i], 0);
+        for (int i = 0; i < vector.length; i++) {
+            data[i] = new Complex(vector[i], 0);
         }
-        this.data = array;
     }
 
     /**
      * A constructor for CVector class
-     * @param vector An array of Strings that represent the values of the vector
-     *  - Each string must take the format of either a + bi, a - bi, a, or bi
+     *
+     * @param values the double numbers that represent the elements of the vector
      */
-    public CVector(String[] vector) throws ConstructFormatException{
+    public CVector(double... values) {
         super();
-        Complex[] array = new Complex[vector.length];
-        for(int i = 0; i < vector.length; i++){
-            array[i] = new Complex(vector[i]);
+        for (int i = 0; i < values.length; i++) {
+            data[i] = new Complex(values[i], 0);
         }
-        this.data = array;
+    }
+
+    /**
+     * A constructor for CVector class
+     *
+     * @param values the String representations of the Complex numbers that represent the elements of the vector
+     *               - Each string must take the format of either a + bi, a - bi, a, or bi
+     */
+    public CVector(String... values) throws ConstructFormatException {
+        super();
+        for (int i = 0; i < values.length; i++) {
+            data[i] = new Complex(values[i]);
+        }
     }
 
     //Operations
     @Override
     public void scale(Complex factor) throws OperationUndefinedException {
-        for(int i = 0; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             data[i] = Complex.mul(data[i], factor);
         }
     }
 
     public void scale(double factor) throws OperationUndefinedException {
-        for(int i = 0; i < data.length; i++){
-            data[i].scale(factor);
+        for (Complex datum : data) {
+            datum.scale(factor);
         }
     }
 
@@ -70,40 +83,40 @@ public class CVector extends Vec<Complex, Complex>{
         // TODO Auto-generated method stub
         return null;
     }
-    
+
     //General Methods
     @Override
     public Vec<Complex, Complex> copy() {
         return new CVector(data);
     }
 
-    Vector getRealComplement(){
-        Double[] vals = new Double[data.length];
-        int i = 0;
-        for(Complex c : data){
-            vals[i] = c.getReal();
-            i++;
+    Vector getRealComplement() {
+        Double[] values = new Double[data.length];
+        for (int i = 0; i < data.length; i++) {
+            values[i] = data[i].getReal();
         }
-        return new Vector(vals);
+        return new Vector(values);
     }
 
-    CVector getComplexComplement(){
-        Complex[] vals = new Complex[data.length];
-        for(int i = 0; i < data.length; i++){
-            vals[i] = new Complex(0, data[i].getImag());
+    CVector getComplexComplement() {
+        Complex[] values = new Complex[data.length];
+        for (int i = 0; i < data.length; i++) {
+            values[i] = new Complex(0, data[i].getImag());
         }
-        return new CVector(vals);
+        return new CVector(values);
     }
 
-    Vector toRealVector() throws OperationUndefinedException{
-        if(isComplex())
+    Vector toRealVector() throws OperationUndefinedException {
+        if (isComplex()) {
             throw new OperationUndefinedException("The vector is Complex. It cannot be converted to a Real vector.");
+        }
         return getRealComplement();
     }
 
     public void set(int index, double value) throws OperationUndefinedException {
-        if(index >= data.length)
+        if (index >= data.length) {
             throw new OperationUndefinedException(INDEX_OUT_RANGE);
+        }
         data[index] = new Complex(value, 0);
     }
 
@@ -128,23 +141,19 @@ public class CVector extends Vec<Complex, Complex>{
         return new ComplexField();
     }
 
-    boolean isComplex(){
-        for(Complex c : data){
-            if(c.getImag() != 0)
+    boolean isComplex() {
+        for (Complex c : data) {
+            if (c.getImag() != 0)
                 return false;
         }
         return true;
     }
 
-     /**
-     * WARNING - COULD LEAD TO UNINDENTED CONSQUENCES, ESPECIALLY IN MATRICES
-     * Add a certain amount of 0s at the end of a vector
-     * @param num The number of 0s to add to the end or the vector
-     */
-    public void pad(int num){
+    @Override
+    public void pad(int num) {
         Complex[] newArray = new Complex[data.length + num];
-        for(int i = 0; i < data.length + num; i++){
-            if(i < data.length){
+        for (int i = 0; i < data.length + num; i++) {
+            if (i < data.length) {
                 newArray[i] = data[i];
             } else {
                 newArray[i] = new Complex(0, 0);
@@ -155,15 +164,17 @@ public class CVector extends Vec<Complex, Complex>{
 
     @Override
     public String toString() {
-        String str = "[";
+        StringBuilder bld = new StringBuilder();
+        bld.append("[");
         int index = 0;
-        for(Complex element : data){
-            str += (index == 0) ? "" : ", ";
-            str += element.toString();
+        for (Complex element : data) {
+            if (index != 0) {
+                bld.append(", ");
+            }
+            bld.append(element.toString());
             index++;
         }
-        str += "]";
-        return str;
+        bld.append("]");
+        return bld.toString();
     }
-
 }
