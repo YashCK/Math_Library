@@ -87,11 +87,11 @@ public class CVector extends Vec<Complex, Complex> {
     //General Methods
     @Override
     public Vec<Complex, Complex> copy() {
-        return new CVector(data);
+        return new CVector(Arrays.copyOf(data, data.length));
     }
 
     Vector getRealComplement() {
-        Double[] values = new Double[data.length];
+        double[] values = new double[data.length];
         for (int i = 0; i < data.length; i++) {
             values[i] = data[i].getReal();
         }

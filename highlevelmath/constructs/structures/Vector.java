@@ -24,16 +24,6 @@ public class Vector extends Vec<Double, Double> {
     /**
      * A constructor for Vector class
      *
-     * @param values the array doubles which represents the elements of the vector
-     */
-    public Vector(Double[] values) {
-        super();
-        this.data = values;
-    }
-
-    /**
-     * A constructor for Vector class
-     *
      * @param values the integers that represent the elements of the vector
      */
     public Vector(int... values) {
@@ -80,7 +70,11 @@ public class Vector extends Vec<Double, Double> {
 
     @Override
     public Vec<Double, Double> copy() {
-        return new Vector(data);
+        double[] newData = new double[data.length];
+        for(int i = 0; i < data.length; i++){
+            newData[i] = data[i];
+        }
+        return new Vector(newData);
     }
 
     //Other Methods

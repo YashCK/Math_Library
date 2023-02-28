@@ -2,102 +2,87 @@ package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
-import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Matrix extends Matx<Double, Double>{
+import java.util.Arrays;
 
-     /**
+public class Matrix extends Matx<Double, Double> {
+
+    /**
      * A constructor for Matrix class
+     *
      * @param matrix An array of Vector objects that represent the rows of the matrix
      */
-    public Matrix(Vector[] matrix){
-        recorrectMatrix(matrix);
-        this.data = matrix;
+    public Matrix(Vector... matrix) {
+        rData = Arrays.copyOf(matrix, matrix.length);
+        recorrectMatrix(rData);
+        constructCData(new Vector[rData[0].length()]);
     }
 
     /**
      * A constructor for Matrix class
+     *
      * @param matrix A 2D array of doubles that represent the structure of the matrix
      */
-    public Matrix(Double[][] matrix){
-        Vector[] array = new Vector[matrix.length];
-        for(int i = 0; i < array.length; i++){
-            array[i] = new Vector(matrix[i]);
+    public Matrix(double[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            rData[i] = new Vector(matrix[i]);
         }
-        recorrectMatrix(array);
-        this.data = array;
+        recorrectMatrix(rData);
+        constructCData(new Vector[rData[0].length()]);
     }
 
     /**
      * A constructor for Matrix class
-     * @param matrix An array of Vector objects that represent the rows of the matrix
+     *
+     * @param matrix   An array of Vector objects that represent the rows of the matrix
      * @param asColumn Whether to interpret each Vector as a column vector or not
      */
-    public Matrix(Vector[] matrix, boolean asColumn){
-        if(asColumn){
-            int maxRowLength = 0;
-            for(Vector v : matrix){
-                if(v.length() > maxRowLength)
-                    maxRowLength = v.length();
-            }
-            Vector[] newMat = new Vector[maxRowLength];
-            try {
-                for(int r = 0; r < maxRowLength; r++){
-                    Double[] rowVec = new Double[matrix.length];
-                    for(int c = 0; c < matrix.length; c++){
-                        rowVec[c] = matrix[c].get(r);
-                    }
-                    newMat[r] = new Vector(rowVec);
-                }
-            } catch (OperationUndefinedException e) {
-                e.printStackTrace();
-            }
-            matrix = newMat;
+    public Matrix(boolean asColumn, Vector... matrix) {
+        if (asColumn) {
+            cData = Arrays.copyOf(matrix, matrix.length);
+            recorrectMatrix(cData);
+            constructRData(new Vector[cData[0].length()]);
+        } else {
+            rData = Arrays.copyOf(matrix, matrix.length);
+            recorrectMatrix(rData);
+            constructCData(new Vector[rData[0].length()]);
         }
-        recorrectMatrix(matrix);
-        this.data = matrix;
     }
 
     /**
      * A constructor for Matrix class
-     * @param matrix A 2D array of doubles that represent the structure of the matrix
+     *
+     * @param matrix   A 2D array of doubles that represent the structure of the matrix
      * @param asColumn Whether to interpret each array as a column vector or not
      */
-    public Matrix(Double[][] matrix, boolean asColumn){
-        Vector[] array = new Vector[matrix.length];
-        if(asColumn){
-            int maxRowLength = 0;
-            for(Double[] column : matrix){
-                if(column.length > maxRowLength)
-                    maxRowLength = column.length;
+    public Matrix(boolean asColumn, double[][] matrix) {
+        if (asColumn) {
+            for (int i = 0; i < matrix.length; i++) {
+                cData[i] = new Vector(matrix[i]);
             }
-            array = new Vector[maxRowLength];
-            Double[][] newMat = new Double[maxRowLength][matrix.length];
-            for(int col = 0; col < matrix.length; col++){
-                for(int row = 0; row < matrix[col].length; row++){
-                    newMat[row][col] = matrix[col][row];
-                }
+            recorrectMatrix(cData);
+            constructRData(new Vector[cData[0].length()]);
+        } else {
+            for (int i = 0; i < matrix.length; i++) {
+                rData[i] = new Vector(matrix[i]);
             }
-            matrix = newMat;
+            recorrectMatrix(rData);
+            constructCData(new Vector[rData[0].length()]);
         }
-        for(int i = 0; i < array.length; i++){
-            array[i] = new Vector(matrix[i]);
-        }
-        recorrectMatrix(array);
-        this.data = array;
     }
 
     //Operations
 
     @Override
     public Matx<Double, Double> multiply(Matx<Double, Double> matrix) throws OperationUndefinedException {
-        if(this.ncols() != matrix.nrows())
+        if (this.ncols() != matrix.nrows()) {
             throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
-        Double[][] newM = new Double[this.nrows()][matrix.ncols()];
-        for(int row = 0; row < data.length; row++){
-            Vector v = this.getRow(row);
-            for(int col = 0; col < matrix.ncols(); col++){
+        }
+        double[][] newM = new double[this.nrows()][matrix.ncols()];
+        for (int row = 0; row < rData.length; row++) {
+            Vec<Double, Double> v = this.getRow(row);
+            for (int col = 0; col < matrix.ncols(); col++) {
                 newM[row][col] = v.dot(matrix.getCol(col));
             }
         }
@@ -105,27 +90,28 @@ public class Matrix extends Matx<Double, Double>{
     }
 
     @Override
-    public Vec<Double, Double> multiply(Vec<Double, Double> v)
-            throws OperationUndefinedException {
-        if(this.ncols() != v.length())
+    public Vec<Double, Double> multiply(Vec<Double, Double> v) throws OperationUndefinedException {
+        if (this.ncols() != v.length()) {
             throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
-        Double[] newV = new Double[data.length];
-        for(int row = 0; row < data.length; row++){
-            newV[row] = data[row].dot(v);
+        }
+        double[] newV = new double[rData.length];
+        for (int row = 0; row < rData.length; row++) {
+            newV[row] = rData[row].dot(v);
         }
         return new Vector(newV);
     }
 
     /**
      * Operation to take the modulus of another matrix
-     * @param matrix Matrix object whose entires will act as the modulus divisor
+     *
+     * @param matrix Matrix object whose entries will act as the modulus divisor
      * @throws OperationUndefinedException
      */
-    public void modulus(Matx<Double, Double> matrix) throws OperationUndefinedException{
-        if(matrix.contains(0.0))
+    public void modulus(Matx<Double, Double> matrix) throws OperationUndefinedException {
+        if (matrix.contains(0.0)) {
             throw new OperationUndefinedException("This operation cannot be applied to input matrices with value 0.");
-        MatrixOperation<Double> function = (d1, d2) -> d1 % d2;
-        applyOperation(matrix, function);
+        }
+        applyOperation(matrix, (d1, d2) -> d1 % d2);
     }
 
     //Methods to Manipulate Matrix
@@ -133,11 +119,11 @@ public class Matrix extends Matx<Double, Double>{
     @Override
     public Matx<Double, Double> subMatrix(int startRow, int endRow, int startCol, int endCol)
             throws OperationUndefinedException {
-        if(startRow < 0 || endRow > data.length || startCol < 0 || endCol > data[0].length())
-            throw new OperationUndefinedException("A row or column parameter was out of the matrix's range.");
-        Double[][] sub = new Double[endRow - startRow + 1][endCol - startCol + 1];
-        for(int i = startRow; i <= endRow; i++){
-            for(int j = startCol; j <= endCol; j++){
+        checkBounds("rData", startRow, endRow);
+        checkBounds("cData", startCol, endCol);
+        double[][] sub = new double[endRow - startRow + 1][endCol - startCol + 1];
+        for (int i = startRow; i <= endRow; i++) {
+            for (int j = startCol; j <= endCol; j++) {
                 sub[i][j] = this.get(i, j);
             }
         }
@@ -146,34 +132,11 @@ public class Matrix extends Matx<Double, Double>{
 
     @Override
     public Matx<Double, Double> copy() {
-        Vector[] copy = new Vector[data.length];
-        for(int i = 0; i < data.length; i++){
-            copy[i] = (Vector)data[i];
+        Vector[] newMatrix = new Vector[rData.length];
+        for(int i = 0; i < rData.length; i++){
+            newMatrix[i] = (Vector) rData[i];
         }
-        return new Matrix(copy);
-    }
-
-    //Getter Methods
-    @Override
-    public Vector getRow(int num) throws OperationUndefinedException {
-        if(num >= data.length)
-            throw new OperationUndefinedException(ROW_NUM_OUT_RANGE);
-        Double[] row = new Double[data[0].length()];
-        for(int cNum = 0; cNum < data[0].length(); cNum++){
-            row[cNum] = data[num].get(cNum);
-        }
-        return new Vector(row);
-    }
-
-    @Override
-    public Vector getCol(int num) throws OperationUndefinedException {
-        if(num >= data[0].length())
-            throw new OperationUndefinedException(COL_NUM_OUT_RANGE);
-        Double[] column = new Double[data.length];
-        for(int rowNum = 0; rowNum < data.length; rowNum++){
-            column[rowNum] = data[rowNum].get(num);
-        }
-        return new Vector(column);
+        return new Matrix(newMatrix);
     }
 
     //Other Methods
@@ -190,21 +153,21 @@ public class Matrix extends Matx<Double, Double>{
     /**
      * Will correct any roundings issues (too much precision) with values in the matrix
      */
-    public void correctRounding(){
-        for(Vec<Double, Double> v : data){
-            ((Vector)v).correctRounding();
+    public void correctRounding() {
+        for (Vec<Double, Double> v : rData) {
+            ((Vector) v).correctRounding();
         }
     }
 
-    protected double truncateDecimal(double value, int places){
+    protected double truncateDecimal(double value, int places) {
         double powerOfTen = Math.pow(10, places);
-        return Math.floor(value * powerOfTen)/powerOfTen;
+        return Math.floor(value * powerOfTen) / powerOfTen;
     }
 
-    public CMatrix toComplex(){
-        CVector[] cv = new CVector[data.length];
-        for(int i = 0; i < data.length; i++){
-            cv[i] = ((Vector)data[i]).toComplex();
+    public CMatrix toComplex() {
+        CVector[] cv = new CVector[rData.length];
+        for (int i = 0; i < rData.length; i++) {
+            cv[i] = ((Vector) rData[i]).toComplex();
         }
         return new CMatrix(cv);
     }

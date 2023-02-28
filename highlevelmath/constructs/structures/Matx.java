@@ -4,6 +4,8 @@ import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
+import java.util.Arrays;
+
 /**
  * This class creates a representation of a matrix that can be used to store data
  * and perform operations upon. Matrices will be especially useful for operations in
@@ -86,7 +88,7 @@ public abstract class Matx<T, S> {
         checkBounds("rData", row1, row2);
         //Row 1 = Row 1 + Row 2
         getRow(row1).add(getRow(row2));
-        for(int col = 0; col < cData.length; col++){
+        for (int col = 0; col < cData.length; col++) {
             cData[col].set(row1, getRow(row1).get(col));
         }
     }
@@ -120,7 +122,7 @@ public abstract class Matx<T, S> {
         checkBounds("rData", row1, row2);
         //Row 1 = Row 1 - Row 2
         getRow(row1).subtract(getRow(row2));
-        for(int col = 0; col < cData.length; col++){
+        for (int col = 0; col < cData.length; col++) {
             cData[col].set(row1, getRow(row1).get(col));
         }
     }
@@ -155,7 +157,7 @@ public abstract class Matx<T, S> {
         Vec<T, S> firstRow = getRow(row1);
         setRow(row1, getRow(row2));
         setRow(row2, firstRow);
-        for(int col = 0; col < cData.length; col++){
+        for (int col = 0; col < cData.length; col++) {
             cData[col].set(row1, getRow(row1).get(col));
             cData[col].set(row2, getRow(row2).get(col));
         }
@@ -191,7 +193,7 @@ public abstract class Matx<T, S> {
     public void scaleRow(int rowNum, S factor) throws OperationUndefinedException {
         checkBounds("rData", rowNum);
         getRow(rowNum).scale(factor);
-        for(Vec<T, S> c : cData){
+        for (Vec<T, S> c : cData) {
             c.set(rowNum, getRow(rowNum).get(rowNum));
         }
     }
@@ -267,7 +269,7 @@ public abstract class Matx<T, S> {
      * @return A new Vector with the contents of the row chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public Vec<T, S> getRow(int num) throws OperationUndefinedException{
+    protected Vec<T, S> getRow(int num) throws OperationUndefinedException {
         return rData[num];
     }
 
@@ -278,8 +280,16 @@ public abstract class Matx<T, S> {
      * @return A new Vector with the contents of the column chosen from the matrix
      * @throws OperationUndefinedException
      */
-    public Vec<T, S> getCol(int num) throws OperationUndefinedException{
+    protected Vec<T, S> getCol(int num) throws OperationUndefinedException {
         return cData[num];
+    }
+
+    public Vec<T, S> copyRow(int num) throws OperationUndefinedException {
+        return rData[num].copy();
+    }
+
+    public Vec<T, S> copyCol(int num) throws OperationUndefinedException {
+        return cData[num].copy();
     }
 
     /**
@@ -326,7 +336,7 @@ public abstract class Matx<T, S> {
     /**
      * Set a particular row number to a new Vector
      *
-     * @param row The row number that should be set to a new Vector (first row is 0)
+     * @param row    The row number that should be set to a new Vector (first row is 0)
      * @param newRow A Vector that represents the new row
      * @throws OperationUndefinedException
      */
@@ -335,7 +345,7 @@ public abstract class Matx<T, S> {
             throw new OperationUndefinedException("The vector length is out of range.");
         }
         newRow.pad(cData.length - newRow.length());
-        for(Vec<T, S> c : cData){
+        for (Vec<T, S> c : cData) {
             c.set(row, newRow.get(row));
         }
         rData[row] = newRow;
@@ -344,12 +354,12 @@ public abstract class Matx<T, S> {
     /**
      * Set a particular column number to a new Vector
      *
-     * @param col The column number that should be set to a new Vector (first column is 0)
+     * @param col    The column number that should be set to a new Vector (first column is 0)
      * @param newCol A Vector that represents the new column
      * @throws OperationUndefinedException
      */
     public void setCol(int col, Vec<T, S> newCol) throws OperationUndefinedException {
-        if(newCol.length() >= rData.length){
+        if (newCol.length() >= rData.length) {
             throw new OperationUndefinedException("The vector length is out of range.");
         }
         newCol.pad(rData.length - newCol.length());
@@ -398,7 +408,7 @@ public abstract class Matx<T, S> {
                 maxRowLength = v.length();
         }
         //Fill in any empty space to make the matrix take the form of a rectangle
-        for(Vec<T, S> r : matrix){
+        for (Vec<T, S> r : matrix) {
             r.pad(maxRowLength - r.length());
         }
     }
@@ -484,6 +494,33 @@ public abstract class Matx<T, S> {
         }
         bld.append("]");
         return bld.toString();
+    }
+
+    protected void constructCData(Vec<T, S>[] emptyCData) {
+        try {
+            for (int col = 0; col < rData[0].length(); col++) {
+                for (int row = 0; row < rData.length; row++) {
+                    emptyCData[col].set(row, rData[row].get(col));
+                }
+            }
+            cData = emptyCData;
+        } catch (OperationUndefinedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void constructRData(Vec<T, S>[] emptyRData) {
+        try {
+            for (int row = 0; row < cData[0].length(); row++) {
+                for (int col = 0; col < cData.length; col++) {
+                    emptyRData[row].set(col, cData[col].get(row));
+                }
+            }
+            cData = emptyRData;
+        } catch (OperationUndefinedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }
