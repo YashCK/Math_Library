@@ -16,6 +16,7 @@ public class Vector extends Vec<Double, Double> {
      */
     public Vector(double... values) {
         super();
+        data = new Double[values.length];
         for (int i = 0; i < values.length; i++) {
             data[i] = values[i];
         }
@@ -28,19 +29,13 @@ public class Vector extends Vec<Double, Double> {
      */
     public Vector(int... values) {
         super();
+        data = new Double[values.length];
         for (int i = 0; i < values.length; i++) {
             data[i] = (double) values[i];
         }
     }
 
     //Operations
-    public void modulus(Vec<Double, Double> vector) throws OperationUndefinedException {
-        if (vector.contains(0.0)) {
-            throw new OperationUndefinedException("This operation cannot be applied to input vectors with value 0.");
-        }
-        applyOperation(vector, (d1, d2) -> d1 % d2);
-    }
-
     @Override
     public void scale(Double factor) throws OperationUndefinedException {
         for (int i = 0; i < data.length; i++) {
@@ -103,15 +98,17 @@ public class Vector extends Vec<Double, Double> {
     }
 
     public void pad(int num) {
-        Double[] newArray = new Double[data.length + num];
-        for (int i = 0; i < data.length + num; i++) {
-            if (i < data.length) {
-                newArray[i] = data[i];
-            } else {
-                newArray[i] = 0.0;
+        if(num > 0){
+            Double[] newArray = new Double[data.length + num];
+            for (int i = 0; i < data.length + num; i++) {
+                if (i < data.length) {
+                    newArray[i] = data[i];
+                } else {
+                    newArray[i] = 0.0;
+                }
             }
+            this.data = newArray;
         }
-        this.data = newArray;
     }
 
     @Override

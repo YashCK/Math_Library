@@ -141,33 +141,6 @@ public class Testing {
         // System.out.println(m2.contains(4));
         // System.out.println(m2.contains(100));
         // System.out.println(m2.contains(9.0));
-
-        /*
-         * Testing Vector Class
-         */
-        // Double[] first = {2.0, 4.0, 6.0 , 8.0};
-        // Double[] second = {1.0, 3.0, 5.0, 7.0};
-        // // Double[] third = {1.0, 2.0, 3.0};
-        // Vector v1 = new Vector(first);
-        // Vector v2 = new Vector(second);
-        // // Vector v3 = new Vector(third);
-        // // Vector v4 = new Vector(first);
-        // System.out.println("Vector 1: " + v1);
-        // // System.out.println("Vector 2: " + v2);
-        // // System.out.println("Vector 3: " + v3);
-        // // v1.add(v2);
-        // v1.subtract(v2);
-        // System.out.println("Vector 1: " + v1);
-        // v1.dot(v2);
-        // v1.modulus(v2);
-        // v1.modulus(v3);
-        // System.out.println(v1.equals(v2));
-        // System.out.println(v1.equals(v4));
-        // v1.interchangeCols(0, 3);
-        // System.out.println("Vector 1: " + v1);
-        // v1.recorrect(3);
-        // v2.recorrect(3);
-        // System.out.println(v1.dot(v2));
     }
 
 }
