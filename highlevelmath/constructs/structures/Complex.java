@@ -51,7 +51,9 @@ public class Complex {
     public static Complex mul(Complex a, Complex b){
         double real = a.getReal() * b.getReal() - a.getImag()*b.getImag();
         double im = a.getReal() * b.getImag() + a.getImag()*b.getReal();
-        return new Complex(real, im);
+        Complex c = new Complex(real, im);
+        c.correctRounding();
+        return c;
     }
 
     public static Complex div(Complex a, Complex b) throws UndefinedException{
@@ -112,7 +114,15 @@ public class Complex {
     //Other Methods
     @Override
     public String toString() {
-        return this.real + " + " + this.imag + "i";
+        StringBuilder bld = new StringBuilder();
+        bld.append(truncateDecimal(this.real, 2));
+        if(this.imag < 0) {
+            bld.append(" - ");
+        } else {
+            bld.append(" + ");
+        }
+        bld.append(truncateDecimal(Math.abs(this.imag), 2) + "i");
+        return bld.toString();
     }
 
     @Override
@@ -131,6 +141,11 @@ public class Complex {
         if(Math.abs(Math.round(this.imag) - this.imag) < threshold){
             this.imag = Math.round(this.imag);
         }
+    }
+
+    protected double truncateDecimal(double value, int places) {
+        double powerOfTen = Math.pow(10, places);
+        return Math.floor(value * powerOfTen) / powerOfTen;
     }
 
 }

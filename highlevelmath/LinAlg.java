@@ -61,7 +61,7 @@ public class LinAlg<T, S, V extends Vec<T, S>, M extends Matx<T,S>> {
                 for(int row = pivotRow; row < totalRows; row++){
                     T value = matrix.get(row, column);
                     if(!value.equals(e.getZero())){
-                        matrix.scaleRow(row, matrix.getRow(row).scalarInverse(value));
+//                        matrix.scaleRow(row, matrix.getRow(row).scalarInverse(value));
                     } else {
                         //Add rows that begin with 0 to beginWZeros array
                         beginWZeros[z] = row + 1;
@@ -122,7 +122,7 @@ public class LinAlg<T, S, V extends Vec<T, S>, M extends Matx<T,S>> {
                 //Scale pivot to be 1 | Scale positions above it correspondingly
                 for(int r = row; r > -1; r--){
                     T pivot = matrix.get(r, column);
-                    matrix.scaleRow(r, matrix.getRow(row).scalarInverse(pivot));
+//                    matrix.scaleRow(r, matrix.getRow(row).scalarInverse(pivot));
                 }
                 //Create column of 0s above each pivot
                 for(int r = row - 1; r > -1; r--){

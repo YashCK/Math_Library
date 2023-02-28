@@ -20,9 +20,9 @@ public class Testing {
         // DoubleArrayFactory<Double> abc = (rows, cols) -> new Double[rows][cols];
         // TwoArrFactory<Double> abc = (r, c) -> new Double[r][c];
 
-        LinAlg<Double, Double, Vector, Matrix> linalg = new LinAlg<>(Vector::new, Matrix::new, Double[]::new, Vector[]::new, Matrix[]::new, (r, c) -> new Double[r][c]);
+//        LinAlg<Double, Double, Vector, Matrix> linalg = new LinAlg<>(Vector::new, Matrix::new, Double[]::new, Vector[]::new, Matrix[]::new, (r, c) -> new Double[r][c]);
 
-        Matrix m1 = linalg.identity(2);
+//        Matrix m1 = linalg.identity(2);
 
         // System.out.println(m1);
 
@@ -168,29 +168,6 @@ public class Testing {
         // v1.recorrect(3);
         // v2.recorrect(3);
         // System.out.println(v1.dot(v2));
-
-        //Complex class
-        // Complex c = new Complex(5, 43);
-        // try {
-            // Complex c = new Complex(" 4.5    + 3.558  i");
-            // Complex c = new Complex("4.5");
-            // Complex c = new Complex("4.5i");
-        //     System.out.println(c);
-        // } catch (ConstructFormatException e) {
-        //     System.out.println("Error");
-        // }
-        // Complex c1 = new Complex(6, 4);
-        // Complex c2 = new Complex(3, 5);
-        // System.out.println(c1.getReal());
-        // System.out.println(c1.getImag());
-        // System.out.println(Complex.add(c1, c2));
-        // System.out.println(Complex.subtract(c1, c2));
-        // System.out.println(Complex.mul(c1, c2));
-        // System.out.println(Complex.mul(c2, c1));
-        // System.out.println(Complex.div(c1, c2));
-        // System.out.println(Complex.mul(Complex.div(c1, c2), c2));
-        // System.out.println(Complex.conjugate(c1));
-            
     }
 
 }
