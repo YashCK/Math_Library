@@ -4,7 +4,9 @@ import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
+
 import java.util.Arrays;
+
 public class Vector extends Vec<Double, Double> {
 
     //Constructors
@@ -94,7 +96,11 @@ public class Vector extends Vec<Double, Double> {
     }
 
     public CVector toComplex() {
-        return new CVector(data);
+        double[] newData = new double[data.length];
+        for(int i = 0; i < data.length; i++){
+            newData[i] = data[i];
+        }
+        return new CVector(newData);
     }
 
     public void pad(int num) {

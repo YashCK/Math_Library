@@ -11,6 +11,14 @@ import java.util.Arrays;
 public class CVector extends Vec<Complex, Complex> {
 
     /**
+     * A constructor for CVector class that initializes an empty Complex Vector
+     */
+    public CVector() {
+        super();
+        data = new Complex[0];
+    }
+
+    /**
      * A constructor for CVector class
      *
      * @param values the Complex numbers that represent the elements of the vector
@@ -23,23 +31,11 @@ public class CVector extends Vec<Complex, Complex> {
     /**
      * A constructor for CVector class
      *
-     * @param vector An array of double numbers that represent the real values of the vector
-     *               NOTE: All the complex values will be set to 0
-     */
-    public CVector(Double[] vector) {
-        super();
-        for (int i = 0; i < vector.length; i++) {
-            data[i] = new Complex(vector[i], 0);
-        }
-    }
-
-    /**
-     * A constructor for CVector class
-     *
      * @param values the double numbers that represent the elements of the vector
      */
     public CVector(double... values) {
         super();
+        data = new Complex[values.length];
         for (int i = 0; i < values.length; i++) {
             data[i] = new Complex(values[i], 0);
         }
@@ -51,10 +47,15 @@ public class CVector extends Vec<Complex, Complex> {
      * @param values the String representations of the Complex numbers that represent the elements of the vector
      *               - Each string must take the format of either a + bi, a - bi, a, or bi
      */
-    public CVector(String... values) throws ConstructFormatException {
+    public CVector(String... values) {
         super();
-        for (int i = 0; i < values.length; i++) {
-            data[i] = new Complex(values[i]);
+        try {
+            data = new Complex[values.length];
+            for (int i = 0; i < values.length; i++) {
+                data[i] = new Complex(values[i]);
+            }
+        } catch (ConstructFormatException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -151,15 +152,17 @@ public class CVector extends Vec<Complex, Complex> {
 
     @Override
     public void pad(int num) {
-        Complex[] newArray = new Complex[data.length + num];
-        for (int i = 0; i < data.length + num; i++) {
-            if (i < data.length) {
-                newArray[i] = data[i];
-            } else {
-                newArray[i] = new Complex(0, 0);
+        if(num > 0){
+            Complex[] newArray = new Complex[data.length + num];
+            for (int i = 0; i < data.length + num; i++) {
+                if (i < data.length) {
+                    newArray[i] = data[i];
+                } else {
+                    newArray[i] = new Complex(0, 0);
+                }
             }
+            this.data = newArray;
         }
-        this.data = newArray;
     }
 
     @Override

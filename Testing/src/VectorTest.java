@@ -1,3 +1,4 @@
+import highlevelmath.constructs.structures.CVector;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.OperationUndefinedException;
 import org.junit.jupiter.api.Test;
@@ -81,12 +82,22 @@ public class VectorTest {
             i++;
         }
         assertThat(v1.contains(100.0));
+        System.out.println(v1);
+        CVector cv = v1.toComplex();
+        assertThat(cv).isEqualTo(new CVector("100", "-2", "-1" , "-4.0", "0.0", "0.0"));
     }
 
     @Test
     public void generalTest(){
         double[] first = {2.0, 4.0, 6.0 , 8.0};
-        assertThat((new Vector(first)).toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0]");
+        Vector v = new Vector(first);
+        assertThat(v.toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0]");
         assertThat((new Vector()).toString()).isEqualTo("[]");
+        v.pad(-1);
+        assertThat(v.toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0]");
+        v.pad(0);
+        assertThat(v.toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0]");
+        v.pad(2);
+        assertThat(v.toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0, 0.0, 0.0]");
     }
 }
