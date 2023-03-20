@@ -2,7 +2,7 @@ package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 
-public static class Real implements Field<Real> {
+public class Real implements Field {
 
     public final double value;
 
@@ -13,7 +13,5 @@ public static class Real implements Field<Real> {
     public Real(double value){
         this.value = value;
     }
-
-
 
 }
