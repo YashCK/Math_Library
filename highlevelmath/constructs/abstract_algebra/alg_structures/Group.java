@@ -1,26 +1,26 @@
 package highlevelmath.constructs.abstract_algebra.alg_structures;
 
-import highlevelmath.constructs.util.NotInvertibleException;
-import highlevelmath.constructs.util.OperationUndefinedException;
+public interface Group<E> {
 
-public interface Group<S> extends Monoid<S> {
+    E multiply(E first, E second);
 
-    S invert(S a) throws NotInvertibleException;
+    /**
+     * Returns the multiplicative identity of the field
+     * <p> element * multiplicative identity = element <\p>
+     */
+    E getMultiplicativeIdentity();
 
-    default boolean areInverses(S a, S b){
-        return multiply(a, b).equals(getIdentity());
+    /**
+     * Inverts the element such that
+     * <p> element * invert(element) = multiplicative identity <\p>
+     */
+    E invert(E element);
+
+    /**
+     * Returns the result of dividing the elements
+     */
+    default E divide(E a, E b) {
+        return multiply(a, invert(b));
     }
 
-    default S divide(S a, S b) throws OperationUndefinedException{
-        try {
-            return multiply(a, invert(b));
-        } catch (NotInvertibleException e) {
-            throw new OperationUndefinedException("Element b is not part of this group as it is not invertible.");
-        }
-    }
-
-    boolean isCommutativeOverMultiplication();
-
-    // void defineHomomorphism(Group<F> g);
-    
 }
