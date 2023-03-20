@@ -5,8 +5,6 @@ import highlevelmath.constructs.abstract_algebra.fields.RealField;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-import java.util.Arrays;
-
 public class Vector extends Vec<Double, Double> {
 
     //Constructors
