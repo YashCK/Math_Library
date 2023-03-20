@@ -1,16 +1,16 @@
 package highlevelmath.constructs.abstract_algebra.alg_structures;
 
-public interface Ring<E> extends AdditiveGroup {
+public interface Ring<E extends Ring<E>> extends AdditiveGroup<E> {
 
     /**
      * Returns the result of multiplying the addends
      */
-    Ring multiply(Ring first);
+    E multiply(E first);
 
     /**
      * Returns the multiplicative identity of the field
      * <p> element * multiplicative identity = element <\p>
      */
-    Ring one();
+    E one();
 
 }
