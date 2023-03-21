@@ -1,4 +1,4 @@
-package highlevelmath.constructs.structures;
+package highlevelmath.constructs.abstract_algebra.fields;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.util.NotInvertibleException;
