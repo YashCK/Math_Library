@@ -1,54 +1,86 @@
 package highlevelmath.constructs.structures;
 
-import highlevelmath.constructs.abstract_algebra.alg_structures.AdditiveGroup;
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.abstract_algebra.alg_structures.MultiplicativeGroup;
-import highlevelmath.constructs.abstract_algebra.alg_structures.Ring;
+import highlevelmath.constructs.util.NotInvertibleException;
+import highlevelmath.constructs.util.UndefinedException;
 
-public class Real implements Field {
+public class Real implements Field<Real> {
 
-    public final double value;
+    private double value;
 
-    public Real(int value){
+    public Real(int value) {
         this.value = value;
     }
 
-    public Real(double value){
+    public Real(double value) {
         this.value = value;
     }
 
     @Override
-    public AdditiveGroup add(AdditiveGroup element) {
-        return null;
+    public void add(Real element) {
+        value += element.value();
     }
 
     @Override
-    public AdditiveGroup zero() {
-        return null;
+    public Real getZero() {
+        return new Real(0.0);
     }
 
     @Override
-    public AdditiveGroup negate() {
-        return null;
+    public Real negate() {
+        return new Real(-value);
     }
 
     @Override
-    public MultiplicativeGroup multiply(MultiplicativeGroup element) {
-        return null;
+    public void subtract(Real element) {
+        value -= element.value();
     }
 
     @Override
-    public Ring multiply(Ring first) {
-        return null;
+    public void multiply(Real element) {
+        value *= element.value();
     }
 
     @Override
-    public MultiplicativeGroup one() {
-        return null;
+    public Real getOne() {
+        return new Real(1.0);
     }
 
     @Override
-    public MultiplicativeGroup invert() {
-        return null;
+    public Real invert() throws NotInvertibleException {
+        if (this.value == 0.0) {
+            throw new NotInvertibleException("Zero is not invertible");
+        }
+        return new Real(1.0 / value);
+    }
+
+    @Override
+    public void divide(Real b) throws UndefinedException {
+        if (b.value() == 0.0) {
+            throw new UndefinedException("Cannot divide by zero.");
+        }
+        value /= b.value();
+    }
+
+    public double value() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return "" + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Real r) {
+            return value == r.value();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) value;
     }
 }
