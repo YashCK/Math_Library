@@ -1,7 +1,10 @@
 package highlevelmath.constructs.abstract_algebra.alg_structures;
 
+import highlevelmath.constructs.util.Associative;
+
 public interface AdditiveGroup<E extends AdditiveGroup<E>> extends Set<E> {
 
+    @Associative
     /**
      * Returns the result of adding the addends
      */
@@ -23,5 +26,7 @@ public interface AdditiveGroup<E extends AdditiveGroup<E>> extends Set<E> {
      * Returns the result of subtracting the elements
      */
     void subtract(E element);
+
+    boolean isAbelian();
 }
 

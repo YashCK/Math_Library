@@ -1,6 +1,8 @@
 package highlevelmath.constructs.abstract_algebra.fields;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
+import highlevelmath.constructs.util.Associative;
+import highlevelmath.constructs.util.Distributive;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.UndefinedException;
 
@@ -16,6 +18,7 @@ public class Real implements Field<Real> {
         this.value = value;
     }
 
+    @Associative
     @Override
     public void add(Real element) {
         value += element.value();
@@ -36,6 +39,8 @@ public class Real implements Field<Real> {
         value -= element.value();
     }
 
+    @Distributive
+    @Associative
     @Override
     public void multiply(Real element) {
         value *= element.value();

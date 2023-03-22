@@ -9,6 +9,7 @@ public interface MultiplicativeGroup<E extends MultiplicativeGroup<E>> extends S
     /**
      * Returns the result of multiplying the elements
      */
+    @Associative
     void multiply(E element);
 
     /**
@@ -22,5 +23,7 @@ public interface MultiplicativeGroup<E extends MultiplicativeGroup<E>> extends S
      * <p> element * invert(element) = multiplicative identity <\p>
      */
     E invert() throws NotInvertibleException;
+
+    boolean isAbelian();
 
 }

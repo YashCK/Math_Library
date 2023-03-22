@@ -1,9 +1,7 @@
 package highlevelmath.constructs.abstract_algebra.fields;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.ConstructFormatException;
-import highlevelmath.constructs.util.NotInvertibleException;
-import highlevelmath.constructs.util.UndefinedException;
+import highlevelmath.constructs.util.*;
 
 import java.util.Objects;
 
@@ -49,6 +47,7 @@ public class Complex implements Field<Complex> {
         }
     }
 
+    @Associative
     @Override
     public void add(Complex element) {
         real += element.real();
@@ -73,6 +72,8 @@ public class Complex implements Field<Complex> {
         correctRounding();
     }
 
+    @Distributive
+    @Associative
     @Override
     public void multiply(Complex element) {
         real = real * element.real() - imag * element.imag();

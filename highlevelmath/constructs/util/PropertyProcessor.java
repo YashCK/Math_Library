@@ -7,18 +7,14 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.Elements;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SupportedAnnotationTypes({"Commutative", "Associative", "Distributive"})
 public class PropertyProcessor extends AbstractProcessor {
-
-    private final Map<String, Set<String>> commutativeOps = new HashMap<>();
-    private final Map<String, Set<String>> associativeOps = new HashMap<>();
-    private final Map<String, Set<String>> distributiveOps = new HashMap<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -27,13 +23,13 @@ public class PropertyProcessor extends AbstractProcessor {
             //Decide what check to do depending on which annotation is being checked
             switch(annotation.getSimpleName().toString()){
                 case "Commutative" -> {
-                    generalCheck(annotation, roundEnv, this::commutativity);
+                    return generalCheck(annotation, roundEnv, "Commutative", this::commutativity);
                 }
                 case "Associative" -> {
-                    generalCheck(annotation, roundEnv, this::associativity);
+                    return generalCheck(annotation, roundEnv, "Associative", this::associativity);
                 }
                 case "Distributive" -> {
-                    generalCheck(annotation, roundEnv, this::distributivity);
+                    return generalCheck(annotation, roundEnv, "Distributive", this::distributivity);
                 }
             }
         }
@@ -41,50 +37,63 @@ public class PropertyProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void commutativity(){
-
+    private boolean commutativity(Element e){
+        ExecutableElement method = (ExecutableElement) e;
+        TypeMirror returnType = method.getReturnType();
+        List<? extends TypeMirror> typeArgs = getTypeArguments(returnType);
+        if (typeArgs.isEmpty()) {
+            return true;
+        }
+        TypeMirror firstTypeArg = typeArgs.get(0);
+        for (TypeMirror typeArg : typeArgs) {
+            if (!processingEnv.getTypeUtils().isSameType(firstTypeArg, typeArg)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private void associativity(){
-
+    private boolean associativity(Element e){
+        return false;
     }
 
-    private void distributivity(){
-
+    private boolean distributivity(Element e){
+        return false;
     }
 
-    private void generalCheck(TypeElement annotation, RoundEnvironment roundEnv, PropertyCheck specificCheck){
+    private boolean generalCheck(TypeElement annotation, RoundEnvironment roundEnv, String name, PropertyCheck specificCheck){
         //Receive all elements annotated with the current annotation.
         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
         for(Element e : annotatedElements){
             //Make sure that this annotation is only applied to methods
             if (e.getKind() != ElementKind.METHOD) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
-                        "Annotation @Associative can only be used on methods", e);
+                        "Annotation @" + name + " can only be used on methods", e);
                 continue;
             }
             //Perform check
-            ExecutableElement method = (ExecutableElement) e;
-            //Methods enclosing class, name, and operator
-            String className = ((TypeElement) method.getEnclosingElement()).getQualifiedName().toString();
-            String methodName = method.getSimpleName().toString();
-            Elements elementUtils = processingEnv.getElementUtils();
-            // Gets the operator kind associated with the method, if it exists
-            OperatorKind operatorKind = elementUtils.getOperatorKind(method);
-            String op = processingEnv.getElementUtils().
-            String op = processingEnv.getElementUtils().getBinaryOperator(method).toString();
-
-            if (!commutativeOps.containsKey(className)) {
-                commutativeOps.put(className, new HashSet<>());
+            if(!specificCheck.check(e)) {
+                //Commutativity -> Commutative
+                String trueName = name.substring(0, name.length() - 3) + "e";
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+                        trueName + " property was not satisfied", e);
+                return false;
             }
-            commutativeOps.get(className).add(op);
-            specificCheck.check();
+        }
+        return true;
+    }
+
+    private List<? extends TypeMirror> getTypeArguments(TypeMirror type) {
+        if (type.getKind() == TypeKind.DECLARED) {
+            return ((DeclaredType) type).getTypeArguments();
+        } else {
+            return Collections.emptyList();
         }
     }
 
     @FunctionalInterface
     private interface PropertyCheck {
-        void check();
+        boolean check(Element e);
     }
 
 }
