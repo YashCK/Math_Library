@@ -1,15 +1,13 @@
 package highlevelmath.constructs.util;
 
-import javax.annotation.processing.AbstractProcessor;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Associative extends AbstractProcessor {
-
-    String value();
+@Retention(RetentionPolicy.SOURCE)
+public @interface Associative {
+    String key() default "";
 
 }
