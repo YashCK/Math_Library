@@ -54,7 +54,6 @@ public class Real implements Field<Real> {
         return new Real(1.0 / value);
     }
 
-    @Override
     public void divide(Real b) throws UndefinedException {
         if (b.value() == 0.0) {
             throw new UndefinedException("Cannot divide by zero.");

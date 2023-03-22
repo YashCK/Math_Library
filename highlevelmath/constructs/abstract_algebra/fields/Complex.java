@@ -96,7 +96,6 @@ public class Complex implements Field<Complex> {
         return c;
     }
 
-    @Override
     public void divide(Complex b) throws UndefinedException {
         try {
             multiply(b.invert());
