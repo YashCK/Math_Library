@@ -184,4 +184,5 @@ public class Complex implements Field<Complex> {
     public Complex copy() {
         return new Complex(real, imag);
     }
+
 }
