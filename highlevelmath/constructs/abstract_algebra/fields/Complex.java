@@ -180,4 +180,8 @@ public class Complex implements Field<Complex> {
         return Math.floor(value * powerOfTen) / powerOfTen;
     }
 
+    @Override
+    public Complex copy() {
+        return new Complex(real, imag);
+    }
 }

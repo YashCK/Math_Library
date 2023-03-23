@@ -2,7 +2,6 @@ package highlevelmath.constructs.abstract_algebra.alg_structures;
 
 import highlevelmath.constructs.util.Associative;
 import highlevelmath.constructs.util.NotInvertibleException;
-import highlevelmath.constructs.util.UndefinedException;
 
 public interface MultiplicativeGroup<E extends MultiplicativeGroup<E>> extends Set<E> {
 
@@ -23,7 +22,5 @@ public interface MultiplicativeGroup<E extends MultiplicativeGroup<E>> extends S
      * <p> element * invert(element) = multiplicative identity <\p>
      */
     E invert() throws NotInvertibleException;
-
-    boolean isAbelian();
 
 }

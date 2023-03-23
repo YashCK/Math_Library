@@ -44,6 +44,7 @@ public class Real implements Field<Real> {
     @Override
     public void multiply(Real element) {
         value *= element.value();
+        correctRounding();
     }
 
     @Override
@@ -64,6 +65,7 @@ public class Real implements Field<Real> {
             throw new UndefinedException("Cannot divide by zero.");
         }
         value /= b.value();
+        correctRounding();
     }
 
     public double value() {
@@ -72,7 +74,7 @@ public class Real implements Field<Real> {
 
     @Override
     public String toString() {
-        return "" + value;
+        return "" + truncateDecimal(value, 2);
     }
 
     @Override
@@ -86,5 +88,25 @@ public class Real implements Field<Real> {
     @Override
     public int hashCode() {
         return (int) value;
+    }
+
+    @Override
+    public Real copy() {
+        return new Real(value);
+    }
+
+    /**
+     * Will correct any roundings issues (too much precision) with values
+     */
+    public void correctRounding() {
+        double threshold = 1E-2;
+        if (Math.abs(Math.round(value) - value) < threshold) {
+            value = Math.round(value);
+        }
+    }
+
+    protected double truncateDecimal(double d, int places) {
+        double powerOfTen = Math.pow(10, places);
+        return Math.floor(d * powerOfTen) / powerOfTen;
     }
 }

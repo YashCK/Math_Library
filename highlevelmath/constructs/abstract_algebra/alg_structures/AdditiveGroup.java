@@ -27,6 +27,5 @@ public interface AdditiveGroup<E extends AdditiveGroup<E>> extends Set<E> {
      */
     void subtract(E element);
 
-    boolean isAbelian();
 }
 

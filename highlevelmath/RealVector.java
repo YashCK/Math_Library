@@ -4,7 +4,7 @@ import highlevelmath.constructs.abstract_algebra.fields.Real;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Vector extends Vec<Real, Real> {
+public class RealVector extends Vec<Real, Real> {
 
     //Constructors
 
@@ -13,7 +13,7 @@ public class Vector extends Vec<Real, Real> {
      *
      * @param values the doubles that represent the elements of the vector
      */
-    public Vector(double... values) {
+    public RealVector(double... values) {
         data = new Real[values.length];
         for (int i = 0; i < values.length; i++) {
             data[i] = new Real(values[i]);
@@ -25,7 +25,7 @@ public class Vector extends Vec<Real, Real> {
      *
      * @param values the integers that represent the elements of the vector
      */
-    public Vector(int... values) {
+    public RealVector(int... values) {
         data = new Real[values.length];
         for (int i = 0; i < values.length; i++) {
             data[i] = new Real(values[i]);
@@ -37,7 +37,7 @@ public class Vector extends Vec<Real, Real> {
      *
      * @param values the Real numbers that represent the elements of the vector
      */
-    public Vector(Real... values) {
+    public RealVector(Real... values) {
         super();
     }
 
@@ -68,7 +68,7 @@ public class Vector extends Vec<Real, Real> {
 
     @Override
     public Vec<Real, Real> copy() {
-        return new Vector(data);
+        return new RealVector(data);
     }
 
     @Override
