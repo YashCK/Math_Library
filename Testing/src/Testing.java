@@ -1,5 +1,3 @@
-import highlevelmath.*;
-import highlevelmath.constructs.structures.Complex;
 import highlevelmath.constructs.structures.Matrix;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.NoExistingSolutionException;

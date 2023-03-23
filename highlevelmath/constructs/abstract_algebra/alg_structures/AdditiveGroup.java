@@ -1,49 +1,31 @@
 package highlevelmath.constructs.abstract_algebra.alg_structures;
 
-import highlevelmath.constructs.util.NotInvertibleException;
+import highlevelmath.constructs.util.Associative;
 
-public interface AdditiveGroup<S> extends Set<S>{
+public interface AdditiveGroup<E extends AdditiveGroup<E>> extends Set<E> {
 
-    S add(S a, S b);
+    @Associative
+    /**
+     * Returns the result of adding the addends
+     */
+    void add(E element);
 
-    S getZero();
+    /**
+     * Returns the additive identity of the field
+     * <p> element + additive identity = element </p>
+     */
+    E getZero();
 
-    S subtract(S a, S b);
+    /**
+     * Negates the element such that
+     * <p> element + negate(element) = additive identity <\p>
+     */
+    E negate();
 
-    S invert(S a) throws NotInvertibleException;
+    /**
+     * Returns the result of subtracting the elements
+     */
+    void subtract(E element);
 
-    boolean isCommutativeOverAddition();
-
-    // default S add(S a, S b, S c){
-    //     return add(add(a, b), c);
-    // }
-
-    // default S add(S a, S b, S c, S d){
-    //     return add(add(a, b), add(c, d));
-    // }
-
-    default S add(S ... args){
-        S value = null;
-        for(int i = 0; i < args.length; i++){
-            value = (value == null) ? add(args[i], args[i + 1]) : add(value, add(args[i], args[i + 1]));
-        }
-        return value;
-    }
-
-    // default S subtract(S a, S b, S c){
-    //     return subtract(subtract(a, b), c);
-    // }
-
-    // default S subtract(S a, S b, S c, S d){
-    //     return subtract(subtract(a, b), subtract(c, d));
-    // }
-
-    default S subtract(S ... args){
-        S value = null;
-        for(int i = 0; i < args.length; i++){
-            value = (value == null) ? subtract(args[i], args[i + 1]) : subtract(value, subtract(args[i], args[i + 1]));
-        }
-        return value;
-    }
-    
 }
+

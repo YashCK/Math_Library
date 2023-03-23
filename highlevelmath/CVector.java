@@ -1,22 +1,14 @@
-package highlevelmath.constructs.structures;
+package highlevelmath;
 
-import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.abstract_algebra.fields.ComplexField;
+import highlevelmath.constructs.abstract_algebra.fields.Complex;
+import highlevelmath.constructs.structures.Vec;
+import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;
-
 import java.util.Arrays;
 
 public class CVector extends Vec<Complex, Complex> {
-
-    /**
-     * A constructor for CVector class that initializes an empty Complex Vector
-     */
-    public CVector() {
-        super();
-        data = new Complex[0];
-    }
 
     /**
      * A constructor for CVector class
@@ -25,7 +17,6 @@ public class CVector extends Vec<Complex, Complex> {
      */
     public CVector(Complex... values) {
         super();
-        data = Arrays.copyOf(values, values.length);
     }
 
     /**
@@ -45,7 +36,7 @@ public class CVector extends Vec<Complex, Complex> {
      * A constructor for CVector class
      *
      * @param values the String representations of the Complex numbers that represent the elements of the vector
-     *               - Each string must take the format of either a + bi, a - bi, a, or bi
+     *               <p>Each string must take the format of either a + bi, a - bi, a, or bi</p>
      */
     public CVector(String... values) {
         super();
@@ -59,59 +50,63 @@ public class CVector extends Vec<Complex, Complex> {
         }
     }
 
-    //Operations
     @Override
     public void scale(Complex factor) throws OperationUndefinedException {
-        for (int i = 0; i < data.length; i++) {
-            data[i] = Complex.mul(data[i], factor);
+        for (Complex c : data) {
+            c.multiply(factor);
         }
     }
 
     public void scale(double factor) throws OperationUndefinedException {
-        for (Complex datum : data) {
-            datum.scale(factor);
+        for (Complex c : data) {
+            c.scale(factor);
         }
     }
 
     @Override
     public Complex dot(Vec<Complex, Complex> vector) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Complex inner(Vec<Complex, Complex> vector) throws OperationUndefinedException {
-        // TODO Auto-generated method stub
         return null;
     }
 
-    //General Methods
     @Override
     public Vec<Complex, Complex> copy() {
         return new CVector(Arrays.copyOf(data, data.length));
     }
 
-    Vector getRealComplement() {
+    public Vector getRealComplement() {
         double[] values = new double[data.length];
         for (int i = 0; i < data.length; i++) {
-            values[i] = data[i].getReal();
+            values[i] = data[i].real();
         }
         return new Vector(values);
     }
 
-    CVector getComplexComplement() {
+    public CVector getComplexComplement() {
         Complex[] values = new Complex[data.length];
         for (int i = 0; i < data.length; i++) {
-            values[i] = new Complex(0, data[i].getImag());
+            values[i] = new Complex(0, data[i].imag());
         }
         return new CVector(values);
     }
 
-    Vector toRealVector() throws OperationUndefinedException {
+    public Vector toRealVector() throws OperationUndefinedException {
         if (isComplex()) {
             throw new OperationUndefinedException("The vector is Complex. It cannot be converted to a Real vector.");
         }
         return getRealComplement();
+    }
+
+    public boolean isComplex() {
+        for (Complex c : data) {
+            if (c.imag() != 0)
+                return false;
+        }
+        return true;
     }
 
     public void set(int index, double value) throws OperationUndefinedException {
@@ -121,33 +116,13 @@ public class CVector extends Vec<Complex, Complex> {
         data[index] = new Complex(value, 0);
     }
 
-    //Other Methods
-
     @Override
-    public Complex scalarInverse(Complex e) {
+    public Complex scalarInverse(Complex element) {
         try {
-            return this.element.invert(e);
+            return element.invert();
         } catch (NotInvertibleException e1) {
-            return this.scalar.getZero();
+            return element.getZero();
         }
-    }
-
-    @Override
-    protected Field<Complex> setElementField() {
-        return new ComplexField();
-    }
-
-    @Override
-    protected Field<Complex> setScalarField() {
-        return new ComplexField();
-    }
-
-    boolean isComplex() {
-        for (Complex c : data) {
-            if (c.getImag() != 0)
-                return false;
-        }
-        return true;
     }
 
     @Override

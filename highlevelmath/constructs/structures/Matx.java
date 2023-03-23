@@ -1,22 +1,12 @@
 package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-/**
- * This class creates a representation of a matrix that can be used to store data
- * and perform operations upon. Matrices will be especially useful for operations in
- * linear algebra and similar areas.
- * <pre>
- * T is the type of the object stored in the Matrix
- * F is the Field of scalars of type S that is associated with the Vector Space.
- * Vec<T, S, F>is the type of Vector of each row and column of the Matrix
- *  </pre>
- */
-public abstract class Matx<T, S> {
+public abstract class Matx<T extends Field<T>, S extends Field<S>> {
 
     protected static final String ROW_NUM_OUT_RANGE = "The row number is out of range.";
     protected static final String COL_NUM_OUT_RANGE = "The col number is out of range.";
@@ -24,12 +14,68 @@ public abstract class Matx<T, S> {
     protected Vec<T, S>[] rData, cData;
     protected static boolean multiline = true;
 
-    public final Field<T> element;
-    public final Field<S> scalar;
+    //Constructors
 
-    Matx() {
-        element = setElementField();
-        scalar = setScalarField();
+    /**
+     * A constructor for Matrix class
+     *
+     * @param vectors An array of Vector objects that represent the rows of the matrix
+     */
+    public Matx(Vec<T, S>... vectors) {
+        if (vectors.length == 0) {
+            throw new IllegalArgumentException("At least one value is required");
+        }
+        rData = Arrays.copyOf(vectors, vectors.length);
+        recorrectMatrix(rData);
+        constructCData(new Vector[rData[0].length()]);
+    }
+
+    public Matx(T[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            rData[i] = new Vector(matrix[i]);
+        }
+        recorrectMatrix(rData);
+        constructCData(new Vector[rData[0].length()]);
+    }
+
+    /**
+     * A constructor for Matrix class
+     *
+     * @param vectors   An array of Vector objects that represent the rows of the matrix
+     * @param asColumn Whether to interpret each Vector as a column vector or not
+     */
+    public Matx(boolean asColumn, Vec<T, S>... vectors) {
+        if (asColumn) {
+            cData = Arrays.copyOf(vectors, vectors.length);
+            recorrectMatrix(cData);
+            constructRData(new Vector[cData[0].length()]);
+        } else {
+            rData = Arrays.copyOf(vectors, vectors.length);
+            recorrectMatrix(rData);
+            constructCData(new Vector[rData[0].length()]);
+        }
+    }
+
+    /**
+     * A constructor for Matrix class
+     *
+     * @param matrix   A 2D array of doubles that represent the structure of the matrix
+     * @param asColumn Whether to interpret each array as a column vector or not
+     */
+    public Matx(boolean asColumn, T[][] matrix) {
+        if (asColumn) {
+            for (int i = 0; i < matrix.length; i++) {
+                cData[i] = createVec(matrix[i]);
+            }
+            recorrectMatrix(cData);
+            constructRData(createVecArray(cData[0].length()));
+        } else {
+            for (int i = 0; i < matrix.length; i++) {
+                rData[i] = createVec(matrix[i]);
+            }
+            recorrectMatrix(rData);
+            constructCData(createVecArray(rData[0].length()));
+        }
     }
 
     //Operations between Matrices
@@ -42,7 +88,12 @@ public abstract class Matx<T, S> {
      * @throws OperationUndefinedException
      */
     public void add(Matx<T, S> matrix) throws OperationUndefinedException {
-        applyOperation(matrix, element::add);
+        sameDimensions(matrix);
+        for (int row = 0; row < rData.length; row++) {
+            for (int col = 0; col < rData[0].length(); col++) {
+                get(row, col).add(matrix.get(row, col));
+            }
+        }
     }
 
     /**
@@ -53,7 +104,12 @@ public abstract class Matx<T, S> {
      * @throws OperationUndefinedException
      */
     public void subtract(Matx<T, S> matrix) throws OperationUndefinedException {
-        applyOperation(matrix, element::subtract);
+        sameDimensions(matrix);
+        for (int row = 0; row < rData.length; row++) {
+            for (int col = 0; col < rData[0].length(); col++) {
+                get(row, col).subtract(matrix.get(row, col));
+            }
+        }
     }
 
     /**
@@ -224,7 +280,17 @@ public abstract class Matx<T, S> {
      * @return Matrix that represents sub-matrix satisfying defined parameters
      * @throws OperationUndefinedException
      */
-    public abstract Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException;
+    public Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException{
+        checkBounds("rData", startRow, endRow);
+        checkBounds("cData", startCol, endCol);
+        T[][] sub = (T[][]) new Object[endRow - startRow + 1][endCol - startCol + 1];
+        for (int i = startRow; i <= endRow; i++) {
+            for (int j = startCol; j <= endCol; j++) {
+                sub[i][j] = this.get(i, j);
+            }
+        }
+        return new Matrix(sub);
+    }
 
     public void transpose() throws OperationUndefinedException {
         Matx<T, S> copy = copy();
@@ -267,9 +333,8 @@ public abstract class Matx<T, S> {
      *
      * @param num The row number to get (first row is 0)
      * @return A new Vector with the contents of the row chosen from the matrix
-     * @throws OperationUndefinedException
      */
-    protected Vec<T, S> getRow(int num) throws OperationUndefinedException {
+    public Vec<T, S> getRow(int num) {
         return rData[num];
     }
 
@@ -278,9 +343,8 @@ public abstract class Matx<T, S> {
      *
      * @param num The column number to get (first column is 0)
      * @return A new Vector with the contents of the column chosen from the matrix
-     * @throws OperationUndefinedException
      */
-    protected Vec<T, S> getCol(int num) throws OperationUndefinedException {
+    public Vec<T, S> getCol(int num)  {
         return cData[num];
     }
 
@@ -395,10 +459,7 @@ public abstract class Matx<T, S> {
         multiline = mline;
     }
 
-    //Other Methods
-    protected abstract Field<T> setElementField();
-
-    protected abstract Field<S> setScalarField();
+    //Miscellaneous
 
     protected void recorrectMatrix(Vec<T, S>[] matrix) {
         //Find maximum row length
@@ -410,15 +471,6 @@ public abstract class Matx<T, S> {
         //Fill in any empty space to make the matrix take the form of a rectangle
         for (Vec<T, S> r : matrix) {
             r.pad(maxRowLength - r.length());
-        }
-    }
-
-    protected void applyOperation(Matx<T, S> matrix, MatrixOperation<T> op) throws OperationUndefinedException {
-        sameDimensions(matrix);
-        for (int row = 0; row < rData.length; row++) {
-            for (int col = 0; col < rData[0].length(); col++) {
-                set(row, col, op.operation(get(row, col), matrix.get(row, col)));
-            }
         }
     }
 
@@ -449,35 +501,32 @@ public abstract class Matx<T, S> {
         }
     }
 
+    protected abstract Vec<T, S> createVec(T[] values);
+
+    protected abstract Vec<T, S>[] createVecArray(int length);
+
     @Override
     public boolean equals(Object o) {
-        try {
-            if (this == o) {
-                return true;
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof Matx oMatx) {
+            if (rData.length != oMatx.nrows() || cData.length != oMatx.ncols()) {
+                return false;
             }
-            if (o instanceof Matx oMatx) {
-                if (rData.length != oMatx.nrows() || cData.length != oMatx.ncols()) {
+            for (int row = 0; row < rData.length; row++) {
+                if(!rData[row].equals(oMatx.rData[row])){
                     return false;
                 }
-                for (int row = 0; row < rData.length; row++) {
-                    for (int col = 0; col < rData[0].length(); col++) {
-                        if (!get(row, col).equals(oMatx.get(row, col))) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
             }
-            return false;
-        } catch (OperationUndefinedException e) {
-            return false;
+            return true;
         }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
-        return super.hashCode();
+        return Objects.hash(rData);
     }
 
     @Override
@@ -520,7 +569,6 @@ public abstract class Matx<T, S> {
         } catch (OperationUndefinedException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

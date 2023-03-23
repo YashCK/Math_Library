@@ -1,58 +1,55 @@
 package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.MatrixOperation;
 import highlevelmath.constructs.util.OperationUndefinedException;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
-/**
- * Representation of a Vector in some Vector space V over scalar field K
- * <pre>
- * T is the type of the object stored in the Vector.
- * S is the type of the scalar that is associated with the Vector Space.
- * </pre>
- */
-public abstract class Vec<T, S> implements Iterable<T> {
+public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Iterable<T> {
 
     protected static final String INDEX_OUT_RANGE = "The index is out of the vector's range";
     protected static final String OPER_DIFFERING_LENGTHS = "This operation cannot be applied to vectors of different lengths.";
 
     protected T[] data;
 
-    public final Field<T> element;
-    public final Field<S> scalar;
-
-    Vec() {
-        element = setElementField();
-        scalar = setScalarField();
+    public Vec(T... values) {
+        if (values.length == 0) {
+            throw new IllegalArgumentException("At least one value is required");
+        }
+        data = Arrays.copyOf(values, values.length);
     }
 
     //Operations
 
     /**
      * Adds the input vector to the current Vector
-     *
-     * @param vector
-     * @throws OperationUndefinedException
      */
     public void add(Vec<T, S> vector) throws OperationUndefinedException {
-        applyOperation(vector, element::add);
+        if (data.length != vector.length()) {
+            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
+        }
+        for (int i = 0; i < data.length; i++) {
+            data[i].add(vector.get(i));
+        }
     }
 
     /**
      * Subtracts the input vector from the current Vector
-     *
-     * @param vector
-     * @throws OperationUndefinedException
      */
     public void subtract(Vec<T, S> vector) throws OperationUndefinedException {
-        applyOperation(vector, element::subtract);
+        if (data.length != vector.length()) {
+            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
+        }
+        for (int i = 0; i < data.length; i++) {
+            data[i].subtract(vector.get(i));
+        }
     }
 
     /**
      * Scales the vector by a scalar value.
-     * The scalar part of Vector MUST be of the SAME TYPE of the Vector's set Field.
+     * <p>The scalar part of Vector MUST be of the SAME TYPE of the Vector's set Field. </p>
      *
      * @param factor A scalar value
      */
@@ -60,12 +57,10 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     /**
      * Calculates the standard dot product between this and the input Vector
-     * The result will be part of the scalar field the Vector is using.
-     * <p>
-     * This method is used to calculated matrix multiplication
-     * </p>
+     * <p>The result will be part of the scalar field the Vector is using.</p>
+     * <p>This method is used to calculated matrix multiplication</p>
      *
-     * @param vector
+     * @param vector input vector
      * @return a scalar value (dot product)
      * @throws OperationUndefinedException
      */
@@ -73,9 +68,9 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     /**
      * Calculates the inner product between this and the input Vector.
-     * The result will be a part of the scalar field the Vector is using.
+     * <p>The result will be a part of the scalar field the Vector is using. </p>
      *
-     * @param vector
+     * @param vector input vector
      * @return a scalar value (inner product)
      * @throws OperationUndefinedException
      */
@@ -90,7 +85,7 @@ public abstract class Vec<T, S> implements Iterable<T> {
      * @param pos2 The other index number
      * @throws OperationUndefinedException
      */
-    public void interchangePos(int pos1, int pos2) throws OperationUndefinedException {
+    public void interchange(int pos1, int pos2) throws OperationUndefinedException {
         if (pos1 >= data.length || pos2 >= data.length) {
             throw new OperationUndefinedException("A column is out of the vector's range");
         }
@@ -101,13 +96,11 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     /**
      * Calculates the sum of each of the Vector's components
-     *
-     * @return sum of the vector's values
      */
     public T sumValues() {
-        T sum = element.getZero();
-        for (T d : data) {
-            sum = element.add(sum, d);
+        T sum = data[0];
+        for (int i = 1; i < data.length; i++) {
+            sum.add(data[i]);
         }
         return sum;
     }
@@ -116,10 +109,6 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     /**
      * Gets the element of the vector at a particular index
-     *
-     * @param index
-     * @return the element value at specified index
-     * @throws OperationUndefinedException
      */
     public T get(int index) throws OperationUndefinedException {
         if (index >= data.length || index < 0) {
@@ -129,20 +118,10 @@ public abstract class Vec<T, S> implements Iterable<T> {
     }
 
     /**
-     * Gets the length of the vector
-     *
-     * @return the number of elements in the vector
+     * Gets the length of the vector (number of elements)
      */
     public int length() {
         return data.length;
-    }
-
-    public void defineInnerProduct() {
-        return;
-    }
-
-    public void getInnerProduct() {
-        return;
     }
 
     /**
@@ -162,8 +141,6 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     /**
      * Create a copy of the Vector
-     *
-     * @return copy of the vector
      */
     public abstract Vec<T, S> copy();
 
@@ -183,11 +160,11 @@ public abstract class Vec<T, S> implements Iterable<T> {
         data[index] = value;
     }
 
+    public void setInnerProduct() {
+        return;
+    }
+
     //Other Methods
-    protected abstract Field<T> setElementField();
-
-    protected abstract Field<S> setScalarField();
-
     public abstract S scalarInverse(T element);
 
     /**
@@ -197,15 +174,6 @@ public abstract class Vec<T, S> implements Iterable<T> {
      * @param num The number of 0s to add to the end or the vector
      */
     public abstract void pad(int num);
-
-    protected void applyOperation(Vec<T, S> vector, MatrixOperation<T> op) throws OperationUndefinedException {
-        if (data.length != vector.length()) {
-            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
-        }
-        for (int i = 0; i < data.length; i++) {
-            data[i] = op.operation(data[i], vector.get(i));
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -234,12 +202,24 @@ public abstract class Vec<T, S> implements Iterable<T> {
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
-        return super.hashCode();
+        return Objects.hash(data);
     }
 
     @Override
-    public abstract String toString();
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        bld.append("[");
+        int index = 0;
+        for (T element : data) {
+            if (index != 0) {
+                bld.append(", ");
+            }
+            bld.append(element.toString());
+            index++;
+        }
+        bld.append("]");
+        return bld.toString();
+    }
 
     @Override
     public Iterator<T> iterator() {
