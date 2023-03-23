@@ -206,7 +206,20 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
     }
 
     @Override
-    public abstract String toString();
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        bld.append("[");
+        int index = 0;
+        for (T element : data) {
+            if (index != 0) {
+                bld.append(", ");
+            }
+            bld.append(element.toString());
+            index++;
+        }
+        bld.append("]");
+        return bld.toString();
+    }
 
     @Override
     public Iterator<T> iterator() {

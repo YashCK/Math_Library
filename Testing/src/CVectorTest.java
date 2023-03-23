@@ -1,4 +1,4 @@
-import highlevelmath.constructs.structures.CVector;
+import highlevelmath.CVector;
 import highlevelmath.constructs.abstract_algebra.fields.Complex;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.ConstructFormatException;

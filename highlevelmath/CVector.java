@@ -1,6 +1,8 @@
-package highlevelmath.constructs.structures;
+package highlevelmath;
 
 import highlevelmath.constructs.abstract_algebra.fields.Complex;
+import highlevelmath.constructs.structures.Vec;
+import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.OperationUndefinedException;

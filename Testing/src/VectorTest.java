@@ -1,4 +1,4 @@
-import highlevelmath.constructs.structures.CVector;
+import highlevelmath.CVector;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.util.OperationUndefinedException;
 import org.junit.jupiter.api.Test;
