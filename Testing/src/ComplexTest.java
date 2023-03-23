@@ -58,15 +58,22 @@ public class ComplexTest {
         try {
             Complex c1 = new Complex(6, 4);
             Complex c2 = new Complex(3, 5);
-            assertThat(c1.getReal()).isEqualTo(6);
-            assertThat(c1.getImag()).isEqualTo(4);
-            assertThat(Complex.add(c1, c2).toString()).isEqualTo("9.0 + 9.0i");
-            assertThat(Complex.subtract(c1, c2).toString()).isEqualTo("3.0 - 1.0i");
-            assertThat(Complex.mul(c1, c2).toString()).isEqualTo("-2.0 + 42.0i");
-            assertThat(Complex.mul(c1, c2)).isEqualTo(Complex.mul(c2, c1));
-            assertThat(Complex.div(c1, c2).toString()).isEqualTo("1.11 - 0.52i");
-            assertThat(Complex.mul(Complex.div(c1, c2), c2).toString()).isEqualTo("6.0 + 4.0i");
-            assertThat(Complex.conjugate(c1).toString()).isEqualTo("6.0 - 4.0i");
+            assertThat(c1.real()).isEqualTo(6);
+            assertThat(c1.imag()).isEqualTo(4);
+            c1.add(c2);
+            assertThat(c1.toString()).isEqualTo("9.0 + 9.0i");
+            c1.subtract(c2);
+            assertThat(c1.toString()).isEqualTo("6.0 + 4.0i");
+            c1.multiply(c2);
+            assertThat(c1.toString()).isEqualTo("-2.0 + 42.0i");
+            c2.multiply(c1);
+            assertThat(c1.toString()).isEqualTo(c2);
+            c1.divide(c2);
+            assertThat(c1.toString()).isEqualTo("1.11 - 0.52i");
+            c1.divide(c2);
+            c1.multiply(c2);
+            assertThat(c1.toString()).isEqualTo("6.0 + 4.0i");
+            assertThat(c1.conjugate().toString()).isEqualTo("6.0 - 4.0i");
         } catch(UndefinedException e) {
             assertThat(1).isEqualTo(2);
             System.out.println("A UndefinedException was found");
@@ -78,9 +85,9 @@ public class ComplexTest {
         Complex c = new Complex(5, 6);
         assertThat(c).isEqualTo(new Complex(5, 6));
         c.setReal(4);
-        assertThat(c.getReal()).isEqualTo(4);
-        c.setIm(9);
-        assertThat(c.getImag()).isEqualTo(9);
+        assertThat(c.real()).isEqualTo(4);
+        c.setImag(9);
+        assertThat(c.imag()).isEqualTo(9);
         assertThat(c).isEqualTo(new Complex(4, 9));
         assertThat(c).isNotEqualTo(new Complex(5, 6));
     }
