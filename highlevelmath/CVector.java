@@ -83,7 +83,8 @@ public class CVector extends Vec<Complex, Complex> {
         for (int i = 0; i < data.length; i++) {
             values[i] = data[i].real();
         }
-        return new Vector(values);
+//        return new Vector(values);
+        return null;
     }
 
     public CVector getComplexComplement() {
