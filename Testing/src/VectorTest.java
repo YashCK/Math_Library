@@ -2,6 +2,7 @@ import highlevelmath.constructs.abstract_algebra.fields.Complex;
 import highlevelmath.constructs.abstract_algebra.fields.Real;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.structures.VectorBuilder;
+import highlevelmath.constructs.util.ConstructFormatException;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -10,7 +11,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 public class VectorTest {
 
     @Test
-    public void builderTest() {
+    public void builderTest() throws ConstructFormatException {
         //Real Vectors
         double[] first = {2.0, 4.0, 6.0, 8.0};
         Vector<Real> v1 = (Vector<Real>) (new VectorBuilder(first)).create();
@@ -19,20 +20,41 @@ public class VectorTest {
         System.out.println("v1: " + v1);
         System.out.println("v2: " + v2);
         System.out.println("v3: " + v3);
-
         //Complex Vectors
         int[] cFirst = {5, 6, 7, 8};
-        double[] cSecond = {2.0, 4.0, 6.0, 8.0};
-        String[] cThird = {"1.0", "1 - 5i", "-2 + 89i", "42i"};
+        Integer[] cFirst2 = {5, 6, 7, 8};
+        //Construction using ints
         VectorBuilder bld = new VectorBuilder(VectorBuilder.Type.Integer, "Complex Vector", cFirst);
         Vector<Complex> c1 = (Vector<Complex>) bld.create();
+        bld = new VectorBuilder(VectorBuilder.Type.Integer, "Complex Vector", cFirst2);
+        Vector<Complex> c2 = (Vector<Complex>) bld.create();
+        bld = new VectorBuilder(VectorBuilder.Type.Integer, "Complex Vector", 1, 2, 3, 4);
+        Vector<Complex> c3 = (Vector<Complex>) bld.create();
+        //Construction using doubles
+        double[] cSecond = {2.3, 4.7, 6.4, 8.8};
+        Double[] cSecond2 = {2.0, 4.0, 6.0, 8.0};
+        Complex cTest = new Complex(2.3, 0);
+        System.out.println("ctest: " + cTest);
         VectorBuilder bld2 = new VectorBuilder(VectorBuilder.Type.Double, "Complex Vector", cSecond);
-        Vector<Complex> c2 = (Vector<Complex>) bld2.create();
-        VectorBuilder bld3 = new VectorBuilder(VectorBuilder.Type.String, "Complex Vector", cSecond);
-        Vector<Complex> c3 = (Vector<Complex>) bld3.create();
+        Vector<Complex> c4 = (Vector<Complex>) bld2.create();
+        bld2 = new VectorBuilder(VectorBuilder.Type.Double, "Complex Vector", cSecond2);
+        Vector<Complex> c5 = (Vector<Complex>) bld2.create();
+        bld2 = new VectorBuilder(VectorBuilder.Type.Double, "Complex Vector", 1.0, 2.0, 3.0, 4.0);
+        Vector<Complex> c6 = (Vector<Complex>) bld2.create();
+        //Construction using Strings
+        String[] cThird = {"1.0", "1 - 5i", "-2 + 89i", "42.6i"};
+        VectorBuilder bld3 = new VectorBuilder(VectorBuilder.Type.String, "Complex Vector", cThird);
+        Vector<Complex> c7 = (Vector<Complex>) bld3.create();
+        bld3 = new VectorBuilder(VectorBuilder.Type.String, "Complex Vector", "1.0", "1 - 5i", "-2 + 89i", "42i");
+        Vector<Complex> c8 = (Vector<Complex>) bld3.create();
         System.out.println("c1: " + c1);
         System.out.println("c2: " + c2);
         System.out.println("c3: " + c3);
+        System.out.println("c4: " + c4);
+        System.out.println("c5: " + c5);
+        System.out.println("c6: " + c6);
+        System.out.println("c7: " + c7);
+        System.out.println("c8: " + c8);
     }
 //
 //    @Test

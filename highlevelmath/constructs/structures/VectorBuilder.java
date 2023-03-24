@@ -17,25 +17,13 @@ public class VectorBuilder {
         public <T> Vector<?> create(String vectorName, T[] values) {
             switch (this) {
                 case Integer -> {
-                    Integer[] data = new Integer[values.length];
-//                    for (int i = 0; i < values.length; i++) {
-//                        data[i] = (Integer) values[i];
-//                    }
                     return mapFactories.get(vectorName)[0].create(values);
                 }
                 case Double -> {
-                    Double[] data = new Double[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        data[i] = (Double) values[i];
-                    }
-                    return mapFactories.get(vectorName)[1].create(data);
+                    return mapFactories.get(vectorName)[1].create(values);
                 }
                 case String -> {
-                    String[] data = new String[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        data[i] = (String) values[i];
-                    }
-                    return mapFactories.get(vectorName)[2].create(data);
+                    return mapFactories.get(vectorName)[2].create(values);
                 }
             }
             return null;
@@ -66,57 +54,60 @@ public class VectorBuilder {
         v = new Vector<>(reals);
     }
 
-    public <T> VectorBuilder(Type s, String vectorName, T... values) {
+    public <T> VectorBuilder(Type s, String vectorName, T... values) throws ConstructFormatException {
         if (values.length >= 1) {
             switch (s){
                 case Integer -> {
-                    if(values instanceof Integer[] iVals){
-                        System.out.println("hey");
-//                        Integer[] data = new Integer[values.length];
-//                        for (int i = 0; i < values.length; i++) {
-//                            data[i] = (Integer) values[i];
-//                        }
-                        v = s.create(vectorName, iVals);
-                    } else {
-//                        System.out.println("hi");
-//
-//                        Integer[] integerArray = new Integer[values.length];
-//                        System.out.println("stuff: " + Arrays.toString(values));
-//                        for (int i = 0; i < values.length; i++) {
-//                            System.out.println("thing: " + values[i].toString());
-//                            integerArray[i] = Integer.valueOf((int) values[i]);
-//                        }
-//
-
-                        int[] data = new int[values.length];
-                        for (int i = 0; i < values.length; i++) {
-                            data[i] = (int) (Object) values[i];
-                            System.out.println("data[i]" + i + " " + data[i]);
-//                            data[i] = ((Number) values[i]).intValue();
-                            //((Number) values[i]).intValue()
+                    Integer[] data;
+                    if(values.getClass().equals(int[][].class)){
+                        int[] numbers = (int[]) values[0];
+                        data = new Integer[numbers.length];
+                        for (int i = 0; i < numbers.length; i++) {
+                            data[i] = numbers[i];
                         }
-                        Integer[] newData = Arrays.stream( data ).boxed().toArray(Integer[]::new);
-                        v = s.create(vectorName, newData);
+                    } else if(values.getClass().equals(int[].class) || values.getClass().equals(Integer[].class)) {
+                        data = new Integer[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            data[i] = (Integer) values[i];
+                        }
+                    } else {
+                        throw new ConstructFormatException("Either an int[], Integer[], or ints in a var args format must be supplied.");
                     }
-
-//                    Integer[] data = new Integer[values.length];
-//                    for (int i = 0; i < values.length; i++) {
-//                        data[i] = Integer.valueOf(values[i].toString());
-//                    }
-//                    v = s.create(vectorName, data);
-
+                    v = s.create(vectorName, data);
                 }
                 case Double -> {
-                    Double[] data = new Double[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        data[i] = (Double) values[i];
+                    Double[] data;
+                    if(values.getClass().equals(double[][].class)){
+                        double[] numbers = (double[]) values[0];
+                        data = new Double[numbers.length];
+                        for (int i = 0; i < numbers.length; i++) {
+                            data[i] = numbers[i];
+                        }
+                    } else if(values.getClass().equals(double[].class) || values.getClass().equals(Double[].class)) {
+                        data = new Double[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            data[i] = (Double) values[i];
+                        }
+                    } else {
+                        throw new ConstructFormatException("Either an double[], Double[], or doubles in a var args format must be supplied.");
                     }
                     v = s.create(vectorName, data);
                 }
                 case String -> {
-                    String[] data = new String[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        data[i] = (String) values[i];
+                    String[] data;
+                    if(values.getClass().equals(String[][].class)){
+                        String[] numbers = (String[]) values[0];
+                        data = new String[numbers.length];
+                        for (int i = 0; i < numbers.length; i++) {
+                            data[i] = numbers[i];
+                        }
+                    } else if(values.getClass().equals(String[].class)) {
+                        data = new String[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            data[i] = (String) values[i];
+                        }
+                    } else {
+                        throw new ConstructFormatException("Either an String[] or strings in a var args format must be supplied.");
                     }
                     v = s.create(vectorName, data);
                 }
