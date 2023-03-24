@@ -76,8 +76,9 @@ public class Complex implements Field<Complex> {
     @Associative
     @Override
     public void multiply(Complex element) {
-        real = real * element.real() - imag * element.imag();
-        imag = real * element.imag() + imag * element.real();
+        double oldReal = real;
+        real = oldReal * element.real() - imag * element.imag();
+        imag = oldReal * element.imag() + imag * element.real();
         correctRounding();
     }
 
@@ -93,7 +94,6 @@ public class Complex implements Field<Complex> {
         }
         double val = real * real + imag * imag;
         Complex c = new Complex(real / val, -imag / val);
-        c.correctRounding();
         return c;
     }
 
@@ -166,7 +166,7 @@ public class Complex implements Field<Complex> {
     }
 
     private void correctRounding(){
-        double threshold = 1E-2;
+        double threshold = 1E-3;
         if(Math.abs(Math.round(this.real) - this.real) < threshold){
             this.real = Math.round(this.real);
         }
