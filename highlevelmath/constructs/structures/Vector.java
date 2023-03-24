@@ -55,15 +55,15 @@ public class Vector<E extends Field<E>> extends Vec<E, E> {
     @Override
     public void pad(int num) {
         if (num > 0) {
-            E[] newArray = (E[]) new Object[data.length + num];
+            Object[] paddedData = new Object[data.length + num];
             for (int i = 0; i < data.length + num; i++) {
                 if (i < data.length) {
-                    newArray[i] = data[i];
+                    paddedData[i] = data[i];
                 } else {
-                    newArray[i] = data[0].getZero();
+                    paddedData[i] = data[0].getZero();
                 }
             }
-            this.data = newArray;
+            this.data = Arrays.copyOf(paddedData, paddedData.length, (Class<? extends E[]>) data.getClass());
         }
     }
 
