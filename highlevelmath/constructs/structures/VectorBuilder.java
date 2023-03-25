@@ -1,60 +1,46 @@
 package highlevelmath.constructs.structures;
 
+import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 import highlevelmath.constructs.abstract_algebra.fields.Complex;
 import highlevelmath.constructs.abstract_algebra.fields.Real;
 import highlevelmath.constructs.util.ConstructFormatException;
+import highlevelmath.constructs.util.UndefinedException;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
-public class VectorBuilder {
+public class VectorBuilder<E extends Field<E>> {
 
     public enum Type {
         Integer, Double, String;
 
-        public <T> Vector<?> create(String vectorName, T[] values) {
-            switch (this) {
-                case Integer -> {
-                    return mapFactories.get(vectorName)[0].create(values);
+        public <T> Vector<?> create(Class<?> className, T[] values) {
+            try {
+                switch (this) {
+                    case Integer -> {
+                        return mapFactories.get(className)[0].create(values);
+                    }
+                    case Double -> {
+                        return mapFactories.get(className)[1].create(values);
+                    }
+                    case String -> {
+                        return mapFactories.get(className)[2].create(values);
+                    }
                 }
-                case Double -> {
-                    return mapFactories.get(vectorName)[1].create(values);
-                }
-                case String -> {
-                    return mapFactories.get(vectorName)[2].create(values);
-                }
+                return null;
+            } catch (UndefinedException e){
+                throw new RuntimeException(e);
             }
-            return null;
         }
 
     }
 
-    private static Map<String, VectorFactory[]> mapFactories = new HashMap<>();
+    private static final Map<Class, VectorFactory[]> mapFactories = new HashMap<>();
 
-    private Type s;
-    private Vector<?> v;
+    private Vector<E> v;
 
-    public VectorBuilder(double... values) {
+    public <T> VectorBuilder(Type s, Class<E> className, T... values) throws ConstructFormatException {
         initializeFactories();
-        Real[] reals = new Real[values.length];
-        for (int i = 0; i < values.length; i++) {
-            reals[i] = new Real(values[i]);
-        }
-        v = new Vector<>(reals);
-    }
-
-    public VectorBuilder(int... values) {
-        initializeFactories();
-        Real[] reals = new Real[values.length];
-        for (int i = 0; i < values.length; i++) {
-            reals[i] = new Real(values[i]);
-        }
-        v = new Vector<>(reals);
-    }
-
-    public <T> VectorBuilder(Type s, String vectorName, T... values) throws ConstructFormatException {
         if (values.length >= 1) {
             switch (s){
                 case Integer -> {
@@ -73,7 +59,7 @@ public class VectorBuilder {
                     } else {
                         throw new ConstructFormatException("Either an int[], Integer[], or ints in a var args format must be supplied.");
                     }
-                    v = s.create(vectorName, data);
+                    v = (Vector<E>) s.create(className, data);
                 }
                 case Double -> {
                     Double[] data;
@@ -91,7 +77,7 @@ public class VectorBuilder {
                     } else {
                         throw new ConstructFormatException("Either an double[], Double[], or doubles in a var args format must be supplied.");
                     }
-                    v = s.create(vectorName, data);
+                    v = (Vector<E>) s.create(className, data);
                 }
                 case String -> {
                     String[] data;
@@ -109,37 +95,65 @@ public class VectorBuilder {
                     } else {
                         throw new ConstructFormatException("Either an String[] or strings in a var args format must be supplied.");
                     }
-                    v = s.create(vectorName, data);
+                    v = (Vector<E>) s.create(className, data);
                 }
             }
         }
     }
 
-    public Vector<?> create() {
+    public Vector<E> create() {
         return v;
     }
 
-    public void register(String vectorName, VectorFactory factory) {
-        if (!mapFactories.containsKey(vectorName)) {
+    public void register(Class<?> className, Type t, VectorFactory factory) {
+        if (!mapFactories.containsKey(className)) {
             VectorFactory[] factories = new VectorFactory[3];
-            mapFactories.put(vectorName, factories);
+            mapFactories.put(className, factories);
         }
-        switch (s) {
-            case Integer -> mapFactories.get(vectorName)[1] = factory;
-            case Double -> mapFactories.get(vectorName)[2] = factory;
-            case String -> mapFactories.get(vectorName)[3] = factory;
+        switch (t) {
+            case Integer -> mapFactories.get(className)[1] = factory;
+            case Double -> mapFactories.get(className)[2] = factory;
+            case String -> mapFactories.get(className)[3] = factory;
         }
     }
 
     private void initializeFactories() {
-        VectorFactory[] factories = new VectorFactory[3];
+        VectorFactory[] cFactories = new VectorFactory[3];
         VectorFactory<Integer> intMethod = this::complexFromInts;
-        factories[0] = intMethod;
+        cFactories[0] = intMethod;
         VectorFactory<Double> doubleMethod = this::complexFromDoubles;
-        factories[1] = doubleMethod;
+        cFactories[1] = doubleMethod;
         VectorFactory<String> stringMethod = this::complexFromStrings;
-        factories[2] = stringMethod;
-        mapFactories.put("Complex Vector", factories);
+        cFactories[2] = stringMethod;
+        mapFactories.put(Complex.class, cFactories);
+        VectorFactory[] rFactories = new VectorFactory[3];
+        VectorFactory<Integer> intMethod2 = this::realFromInts;
+        rFactories[0] = intMethod2;
+        VectorFactory<Double> doubleMethod2 = this::realFromDoubles;
+        rFactories[1] = doubleMethod2;
+        VectorFactory<String> stringMethod2 = this::realFromStrings;
+        rFactories[2] = stringMethod2;
+        mapFactories.put(Real.class, rFactories);
+    }
+
+    private Vector<Real> realFromDoubles(Double[] values) {
+        Real[] reals = new Real[values.length];
+        for (int i = 0; i < values.length; i++) {
+            reals[i] = new Real(values[i]);
+        }
+        return new Vector<>(reals);
+    }
+
+    private Vector<Real> realFromInts(Integer[] values){
+        Real[] reals = new Real[values.length];
+        for (int i = 0; i < values.length; i++) {
+            reals[i] = new Real(values[i]);
+        }
+        return new Vector<Real>(reals);
+    }
+
+    private Vector<Real> realFromStrings(String[] values) throws UndefinedException {
+        throw new UndefinedException("VectorBuilder is not defined to create Vector<Real> from strings.");
     }
 
     private Vector<Complex> complexFromInts(Integer[] values) {
@@ -172,7 +186,7 @@ public class VectorBuilder {
 
     @FunctionalInterface
     private interface VectorFactory<T> {
-        Vector<?> create(T[] data);
+        Vector<?> create(T[] data) throws UndefinedException;
     }
 
 }
