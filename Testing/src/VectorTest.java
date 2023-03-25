@@ -2,8 +2,6 @@ import highlevelmath.constructs.abstract_algebra.fields.Complex;
 import highlevelmath.constructs.abstract_algebra.fields.Real;
 import highlevelmath.constructs.structures.Vector;
 import highlevelmath.constructs.structures.VectorBuilder;
-import highlevelmath.constructs.util.ConstructFormatException;
-import highlevelmath.constructs.util.OperationUndefinedException;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -12,7 +10,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 public class VectorTest {
 
     @Test
-    public void builderTest() throws ConstructFormatException {
+    public void builderTest() {
         //Real Vectors
         double[] first = {2.0, 4.0, 6.0, 8.0};
         Vector<Real> v1 = (new VectorBuilder<>(VectorBuilder.Type.Double, Real.class, first)).create();
@@ -59,7 +57,7 @@ public class VectorTest {
     }
 
     @Test
-    public void creationTest() throws ConstructFormatException {
+    public void creationTest() {
         double[] first = {2.0, 4.0, 6.0, 8.0};
         Vector<Real> v1 = (new VectorBuilder<>(VectorBuilder.Type.Double, Real.class, first)).create();
         Vector<Real> v2 = new Vector<>(new Real(1), new Real(2.0), new Real(3), new Real(5));
@@ -70,7 +68,7 @@ public class VectorTest {
     }
 
     @Test
-    public void operationTest() throws OperationUndefinedException, ConstructFormatException {
+    public void operationTest() {
         double[] first = {2.0, 4.0, 6.0, 8.0};
         double[] second = {1.0, 3.0, 5.0, 7.0};
         double[] third = {1.0, 2.0, 3.0};
@@ -91,24 +89,24 @@ public class VectorTest {
         assertThat(v1).isEqualTo(v4);
         try {
             v1.add(v3);
-        } catch (OperationUndefinedException e) {
+        } catch (RuntimeException e) {
             assertWithMessage("Passed Exception Test");
         }
         assertThat(v1.dot(v2)).isEqualTo(new Real(100));
         try {
             v1.subtract(v3);
-        } catch (OperationUndefinedException e) {
+        } catch (RuntimeException e) {
             assertWithMessage("Passed Exception Test 2");
         }
         try {
             v1.dot(v3);
-        } catch (OperationUndefinedException e) {
+        } catch (RuntimeException e) {
             assertWithMessage("Passed Exception Test 3");
         }
     }
 
     @Test
-    public void methodsTest() throws OperationUndefinedException, ConstructFormatException {
+    public void methodsTest() {
         VectorBuilder<Real> bld = new VectorBuilder<>(VectorBuilder.Type.Double, Real.class, 2.0, 4.0, 6.0, 8.0);
         Vector<Real> v1 = bld.create();
         v1.interchange(0, 2);
@@ -116,7 +114,7 @@ public class VectorTest {
         assertThat(v1).isEqualTo(bld.create());
         try {
             v1.interchange(1, 10);
-        } catch (OperationUndefinedException e) {
+        } catch (RuntimeException e) {
             assertWithMessage("Passed Exception test 1");
         }
         v1.pad(2);
@@ -150,7 +148,7 @@ public class VectorTest {
     }
 
     @Test
-    public void generalTest() throws ConstructFormatException {
+    public void generalTest() {
         double[] first = {2.0, 4.0, 6.0, 8.0};
         Vector<Real> v = (new VectorBuilder<>(VectorBuilder.Type.Double, Real.class, first)).create();
         assertThat(v.toString()).isEqualTo("[2.0, 4.0, 6.0, 8.0]");
