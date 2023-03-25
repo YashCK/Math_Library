@@ -13,16 +13,16 @@ public class Vector<E extends Field<E>> extends Vec<E, E> {
     }
 
     @Override
-    public void scale(E factor) throws OperationUndefinedException {
+    public void scale(E factor) {
         for (E datum : data) {
             datum.multiply(factor);
         }
     }
 
     @Override
-    public E dot(Vec<E, E> vector) throws OperationUndefinedException {
+    public E dot(Vec<E, E> vector) {
         if (data.length != vector.length()) {
-            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
+            throw new RuntimeException(OPER_DIFFERING_LENGTHS);
         }
         E sum = data[0].getZero();
         for (int i = 0; i < data.length; i++) {

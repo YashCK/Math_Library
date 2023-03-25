@@ -1,9 +1,8 @@
 package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.OperationUndefinedException;
 
-public class Matrix<E extends Field<E>, V extends  Vector<E>> extends Matx<E, E> {
+public class Matrix<E extends Field<E>> extends Matx<E, E> {
 
     public Matrix(Vector<E>... vectors){
         super(vectors);
@@ -22,9 +21,9 @@ public class Matrix<E extends Field<E>, V extends  Vector<E>> extends Matx<E, E>
     }
 
     @Override
-    public Matx<E, E> multiply(Matx<E, E> matrix) throws OperationUndefinedException {
+    public Matx<E, E> multiply(Matx<E, E> matrix) {
         if (this.ncols() != matrix.nrows()) {
-            throw new OperationUndefinedException("The columns of matrix 1 must equal the number of rows of matrix 2.");
+            throw new RuntimeException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         }
         E[][] newM = (E[][]) new Object[this.nrows()][matrix.ncols()];
         for (int row = 0; row < rData.length; row++) {
@@ -37,9 +36,9 @@ public class Matrix<E extends Field<E>, V extends  Vector<E>> extends Matx<E, E>
     }
 
     @Override
-    public Vec<E, E> multiply(Vec<E, E> v) throws OperationUndefinedException {
+    public Vec<E, E> multiply(Vec<E, E> v) {
         if (this.ncols() != v.length()) {
-            throw new OperationUndefinedException("The columns of the matrix must equal the length of the vector.");
+            throw new RuntimeException("The columns of the matrix must equal the length of the vector.");
         }
         E[] newV = (E[]) new Object[rData.length];
         for (int row = 0; row < rData.length; row++) {

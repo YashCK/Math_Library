@@ -26,9 +26,9 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
     /**
      * Adds the input vector to the current Vector
      */
-    public void add(Vec<T, S> vector) throws OperationUndefinedException {
+    public void add(Vec<T, S> vector) {
         if (data.length != vector.length()) {
-            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
+            throw new RuntimeException(OPER_DIFFERING_LENGTHS);
         }
         for (int i = 0; i < data.length; i++) {
             data[i].add(vector.get(i));
@@ -38,9 +38,9 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
     /**
      * Subtracts the input vector from the current Vector
      */
-    public void subtract(Vec<T, S> vector) throws OperationUndefinedException {
+    public void subtract(Vec<T, S> vector) {
         if (data.length != vector.length()) {
-            throw new OperationUndefinedException(OPER_DIFFERING_LENGTHS);
+            throw new RuntimeException(OPER_DIFFERING_LENGTHS);
         }
         for (int i = 0; i < data.length; i++) {
             data[i].subtract(vector.get(i));
@@ -53,7 +53,7 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      *
      * @param factor A scalar value
      */
-    public abstract void scale(S factor) throws OperationUndefinedException;
+    public abstract void scale(S factor);
 
     /**
      * Calculates the standard dot product between this and the input Vector
@@ -64,7 +64,7 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      * @return a scalar value (dot product)
      * @throws OperationUndefinedException
      */
-    public abstract S dot(Vec<T, S> vector) throws OperationUndefinedException;
+    public abstract S dot(Vec<T, S> vector);
 
     /**
      * Calculates the inner product between this and the input Vector.
@@ -85,9 +85,9 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      * @param pos2 The other index number
      * @throws OperationUndefinedException
      */
-    public void interchange(int pos1, int pos2) throws OperationUndefinedException {
+    public void interchange(int pos1, int pos2) {
         if (pos1 >= data.length || pos2 >= data.length) {
-            throw new OperationUndefinedException("A column is out of the vector's range");
+            throw new RuntimeException("A column is out of the vector's range");
         }
         T first = data[pos1];
         data[pos1] = data[pos2];
@@ -110,9 +110,9 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
     /**
      * Gets the element of the vector at a particular index
      */
-    public T get(int index) throws OperationUndefinedException {
+    public T get(int index) {
         if (index >= data.length || index < 0) {
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
+            throw new RuntimeException(INDEX_OUT_RANGE);
         }
         return data[index];
     }
@@ -153,9 +153,9 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      * @param value value to set the element to
      * @throws OperationUndefinedException
      */
-    public void set(int index, T value) throws OperationUndefinedException {
+    public void set(int index, T value) {
         if (index >= data.length) {
-            throw new OperationUndefinedException(INDEX_OUT_RANGE);
+            throw new RuntimeException(INDEX_OUT_RANGE);
         }
         data[index] = value;
     }
@@ -195,7 +195,7 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
                 return true;
             }
             return false;
-        } catch (OperationUndefinedException e) {
+        } catch (RuntimeException e) {
             return false;
         }
     }
@@ -240,7 +240,7 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
             currentPos++;
             try {
                 return get(currentPos - 1);
-            } catch (OperationUndefinedException e) {
+            } catch (RuntimeException e) {
                 throw new RuntimeException(e);
             }
         }

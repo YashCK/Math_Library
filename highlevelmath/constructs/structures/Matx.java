@@ -85,9 +85,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * - Each entry will be added to the corresponding entry in the input Matrix
      *
      * @param matrix Matrix object that should be added
-     * @throws OperationUndefinedException
      */
-    public void add(Matx<T, S> matrix) throws OperationUndefinedException {
+    public void add(Matx<T, S> matrix) {
         sameDimensions(matrix);
         for (int row = 0; row < rData.length; row++) {
             for (int col = 0; col < rData[0].length(); col++) {
@@ -101,9 +100,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * - Each entry will subtract the corresponding entry in the input Matrix
      *
      * @param matrix Matrix object that should be subtracted
-     * @throws OperationUndefinedException
      */
-    public void subtract(Matx<T, S> matrix) throws OperationUndefinedException {
+    public void subtract(Matx<T, S> matrix) {
         sameDimensions(matrix);
         for (int row = 0; row < rData.length; row++) {
             for (int col = 0; col < rData[0].length(); col++) {
@@ -117,18 +115,16 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param matrix Matrix object that should be multiplied
      * @return a new Matrix that is the product of the two previous matrices
-     * @throws OperationUndefinedException
      */
-    public abstract Matx<T, S> multiply(Matx<T, S> matrix) throws OperationUndefinedException;
+    public abstract Matx<T, S> multiply(Matx<T, S> matrix);
 
     /**
      * Operation to multiply a matrix by a vector
      *
      * @param v Vector object that should be multiplied
      * @return a new Vector that is the product of the matrix and vector parameter
-     * @throws OperationUndefinedException
      */
-    public abstract Vec<T, S> multiply(Vec<T, S> v) throws OperationUndefinedException;
+    public abstract Vec<T, S> multiply(Vec<T, S> v);
 
     //Manipulate Matrix
 
@@ -138,9 +134,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param row1 The row to be added to
      * @param row2 The row that will be added
-     * @throws OperationUndefinedException
      */
-    public void addRows(int row1, int row2) throws OperationUndefinedException {
+    public void addRows(int row1, int row2) {
         checkBounds("rData", row1, row2);
         //Row 1 = Row 1 + Row 2
         getRow(row1).add(getRow(row2));
@@ -155,9 +150,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param col1 The column to be added to
      * @param col2 The column that will be added
-     * @throws OperationUndefinedException
      */
-    public void addCols(int col1, int col2) throws OperationUndefinedException {
+    public void addCols(int col1, int col2)  {
         checkBounds("cData", col1, col2);
         //Col 1 = Col 1 + Col 2
         getCol(col1).add(getCol(col2));
@@ -172,9 +166,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param row1 The row that will be subtracted from
      * @param row2 The row that will be subtracted
-     * @throws OperationUndefinedException
      */
-    public void subtractRows(int row1, int row2) throws OperationUndefinedException {
+    public void subtractRows(int row1, int row2) {
         checkBounds("rData", row1, row2);
         //Row 1 = Row 1 - Row 2
         getRow(row1).subtract(getRow(row2));
@@ -189,9 +182,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param col1 The column that will be subtracted from
      * @param col2 The column that will be subtracted
-     * @throws OperationUndefinedException
      */
-    public void subtractCols(int col1, int col2) throws OperationUndefinedException {
+    public void subtractCols(int col1, int col2) {
         checkBounds("cData", col1, col2);
         //Col 1 = Col 1 - Col 2
         getCol(col1).subtract(getCol(col2));
@@ -206,9 +198,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param row1 A row number that will exchange positions with another row
      * @param row2 A row number that will exchange positions with another row
-     * @throws OperationUndefinedException
      */
-    public void interchangeRows(int row1, int row2) throws OperationUndefinedException {
+    public void interchangeRows(int row1, int row2)  {
         checkBounds("rData", row1, row2);
         Vec<T, S> firstRow = getRow(row1);
         setRow(row1, getRow(row2));
@@ -225,9 +216,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param col1 A column number that will exchange positions with another column
      * @param col2 A column number that will exchange positions with another column
-     * @throws OperationUndefinedException
      */
-    public void interchangeCols(int col1, int col2) throws OperationUndefinedException {
+    public void interchangeCols(int col1, int col2) {
         checkBounds("cData", col1, col2);
         Vec<T, S> firstCol = getCol(col1);
         Vec<T, S> secondCol = getCol(col2);
@@ -244,9 +234,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param rowNum The row number to be scaled (first row is 0)
      * @param factor The factor by which the row is scaled
-     * @throws OperationUndefinedException
      */
-    public void scaleRow(int rowNum, S factor) throws OperationUndefinedException {
+    public void scaleRow(int rowNum, S factor) {
         checkBounds("rData", rowNum);
         getRow(rowNum).scale(factor);
         for (Vec<T, S> c : cData) {
@@ -259,9 +248,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param colNum The column number (first column is 0)
      * @param factor The factor by which the column is scaled
-     * @throws OperationUndefinedException
      */
-    public void scaleColumn(int colNum, S factor) throws OperationUndefinedException {
+    public void scaleColumn(int colNum, S factor) {
         checkBounds("cData", colNum);
         getCol(colNum).scale(factor);
         for (int row = 0; row < rData.length; row++) {
@@ -278,9 +266,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param startCol The column to start sub-matrix entries
      * @param endCol   The column to end sub-matrix entries (inclusive)
      * @return Matrix that represents sub-matrix satisfying defined parameters
-     * @throws OperationUndefinedException
      */
-    public Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) throws OperationUndefinedException{
+    public Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) {
         checkBounds("rData", startRow, endRow);
         checkBounds("cData", startCol, endCol);
         T[][] sub = (T[][]) new Object[endRow - startRow + 1][endCol - startCol + 1];
@@ -292,7 +279,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         return new Matrix(sub);
     }
 
-    public void transpose() throws OperationUndefinedException {
+    public void transpose() {
         Matx<T, S> copy = copy();
         for (int row = 0; row < rData.length; row++) {
             for (int col = 0; col < cData.length; col++) {
@@ -348,11 +335,11 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         return cData[num];
     }
 
-    public Vec<T, S> copyRow(int num) throws OperationUndefinedException {
+    public Vec<T, S> copyRow(int num) {
         return rData[num].copy();
     }
 
-    public Vec<T, S> copyCol(int num) throws OperationUndefinedException {
+    public Vec<T, S> copyCol(int num) {
         return cData[num].copy();
     }
 
@@ -363,9 +350,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param row The row position of the index
      * @param col The column position of the index
      * @return The value at the index
-     * @throws OperationUndefinedException
      */
-    public T get(int row, int col) throws OperationUndefinedException {
+    public T get(int row, int col) {
         checkBounds("rData", row);
         checkBounds("cData", col);
         return rData[row].get(col);
@@ -402,11 +388,10 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param row    The row number that should be set to a new Vector (first row is 0)
      * @param newRow A Vector that represents the new row
-     * @throws OperationUndefinedException
      */
-    public void setRow(int row, Vec<T, S> newRow) throws OperationUndefinedException {
+    public void setRow(int row, Vec<T, S> newRow) {
         if (newRow.length() >= cData.length) {
-            throw new OperationUndefinedException("The vector length is out of range.");
+            throw new RuntimeException("The vector length is out of range.");
         }
         newRow.pad(cData.length - newRow.length());
         for (Vec<T, S> c : cData) {
@@ -420,11 +405,10 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      *
      * @param col    The column number that should be set to a new Vector (first column is 0)
      * @param newCol A Vector that represents the new column
-     * @throws OperationUndefinedException
      */
-    public void setCol(int col, Vec<T, S> newCol) throws OperationUndefinedException {
+    public void setCol(int col, Vec<T, S> newCol) {
         if (newCol.length() >= rData.length) {
-            throw new OperationUndefinedException("The vector length is out of range.");
+            throw new RuntimeException("The vector length is out of range.");
         }
         newCol.pad(rData.length - newCol.length());
         for (int row = 0; row < rData.length; row++) {
@@ -440,9 +424,8 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param row    The row position of the index
      * @param column The column position of the index
      * @param value  The value the position should be set to
-     * @throws OperationUndefinedException
      */
-    public void set(int row, int column, T value) throws OperationUndefinedException {
+    public void set(int row, int column, T value) {
         checkBounds("rData", row);
         checkBounds("cData", column);
         rData[row].set(column, value);
@@ -474,15 +457,15 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         }
     }
 
-    protected void sameDimensions(Matx<T, S> matrix) throws OperationUndefinedException {
+    protected void sameDimensions(Matx<T, S> matrix) {
         if (rData.length != matrix.nrows()) {
-            throw new OperationUndefinedException("This operation cannot be applied to matrices with different numbers of rows.");
+            throw new RuntimeException("This operation cannot be applied to matrices with different numbers of rows.");
         } else if (cData.length != matrix.ncols()) {
-            throw new OperationUndefinedException("This operation cannot be applied to matrices with different numbers of columns.");
+            throw new RuntimeException("This operation cannot be applied to matrices with different numbers of columns.");
         }
     }
 
-    protected void checkBounds(String dataType, int... positions) throws OperationUndefinedException {
+    protected void checkBounds(String dataType, int... positions) {
         Vec<T, S>[] data;
         String message;
         if (dataType.equals("rData")) {
@@ -496,7 +479,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         }
         for (int p : positions) {
             if (p >= data.length || p < 0) {
-                throw new OperationUndefinedException(message);
+                throw new RuntimeException(message);
             }
         }
     }
@@ -526,7 +509,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(rData);
+        return Objects.hash((Object[]) rData);
     }
 
     @Override
@@ -546,29 +529,21 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
     }
 
     protected void constructCData(Vec<T, S>[] emptyCData) {
-        try {
-            for (int col = 0; col < rData[0].length(); col++) {
-                for (int row = 0; row < rData.length; row++) {
-                    emptyCData[col].set(row, rData[row].get(col));
-                }
+        for (int col = 0; col < rData[0].length(); col++) {
+            for (int row = 0; row < rData.length; row++) {
+                emptyCData[col].set(row, rData[row].get(col));
             }
-            cData = emptyCData;
-        } catch (OperationUndefinedException e) {
-            throw new RuntimeException(e);
         }
+        cData = emptyCData;
     }
 
     protected void constructRData(Vec<T, S>[] emptyRData) {
-        try {
-            for (int row = 0; row < cData[0].length(); row++) {
-                for (int col = 0; col < cData.length; col++) {
-                    emptyRData[row].set(col, cData[col].get(row));
-                }
+        for (int row = 0; row < cData[0].length(); row++) {
+            for (int col = 0; col < cData.length; col++) {
+                emptyRData[row].set(col, cData[col].get(row));
             }
-            cData = emptyRData;
-        } catch (OperationUndefinedException e) {
-            throw new RuntimeException(e);
         }
+        cData = emptyRData;
     }
 
 }
