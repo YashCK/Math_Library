@@ -38,71 +38,107 @@ public class VectorBuilder<E extends Field<E>> {
     private static final Map<Class, VectorFactory[]> mapFactories = new HashMap<>();
 
     private Vector<E> v;
+    private Type s;
+    private Class<E> className;
 
-    public <T> VectorBuilder(Type s, Class<E> className, T... values) throws ConstructFormatException {
+    public VectorBuilder(){
+        initializeFactories();
+        s = null;
+        className = null;
+    }
+
+    public <T> VectorBuilder(Type s, Class<E> className, T... values) {
         initializeFactories();
         if (values.length >= 1) {
-            switch (s){
-                case Integer -> {
-                    Integer[] data;
-                    if(values.getClass().equals(int[][].class)){
-                        int[] numbers = (int[]) values[0];
-                        data = new Integer[numbers.length];
-                        for (int i = 0; i < numbers.length; i++) {
-                            data[i] = numbers[i];
-                        }
-                    } else if(values.getClass().equals(int[].class) || values.getClass().equals(Integer[].class)) {
-                        data = new Integer[values.length];
-                        for (int i = 0; i < values.length; i++) {
-                            data[i] = (Integer) values[i];
-                        }
-                    } else {
-                        throw new ConstructFormatException("Either an int[], Integer[], or ints in a var args format must be supplied.");
+            createVector(s, className, values);
+        }
+    }
+
+    public <T> Vector<E> construct(T... values) {
+        if(s == null || className == null){
+            throw new RuntimeException("The Type of Input and/or the className must be initialized to use this method.");
+        }
+        if (values.length >= 1) {
+            createVector(s, className, values);
+            return v;
+        }
+        throw new RuntimeException("The vector must contain at least one value.");
+    }
+
+    private <T> void createVector(Type s, Class<E> className, T[] values) {
+        switch (s){
+            case Integer -> {
+                Integer[] data;
+                if(values.getClass().equals(int[][].class)){
+                    int[] numbers = (int[]) values[0];
+                    data = new Integer[numbers.length];
+                    for (int i = 0; i < numbers.length; i++) {
+                        data[i] = numbers[i];
                     }
-                    v = (Vector<E>) s.create(className, data);
-                }
-                case Double -> {
-                    Double[] data;
-                    if(values.getClass().equals(double[][].class)){
-                        double[] numbers = (double[]) values[0];
-                        data = new Double[numbers.length];
-                        for (int i = 0; i < numbers.length; i++) {
-                            data[i] = numbers[i];
-                        }
-                    } else if(values.getClass().equals(double[].class) || values.getClass().equals(Double[].class)) {
-                        data = new Double[values.length];
-                        for (int i = 0; i < values.length; i++) {
-                            data[i] = (Double) values[i];
-                        }
-                    } else {
-                        throw new ConstructFormatException("Either an double[], Double[], or doubles in a var args format must be supplied.");
+                } else if(values.getClass().equals(int[].class) || values.getClass().equals(Integer[].class)) {
+                    data = new Integer[values.length];
+                    for (int i = 0; i < values.length; i++) {
+                        data[i] = (Integer) values[i];
                     }
-                    v = (Vector<E>) s.create(className, data);
+                } else {
+                    throw new RuntimeException("Either an int[], Integer[], or ints in a var args format must be supplied.");
                 }
-                case String -> {
-                    String[] data;
-                    if(values.getClass().equals(String[][].class)){
-                        String[] numbers = (String[]) values[0];
-                        data = new String[numbers.length];
-                        for (int i = 0; i < numbers.length; i++) {
-                            data[i] = numbers[i];
-                        }
-                    } else if(values.getClass().equals(String[].class)) {
-                        data = new String[values.length];
-                        for (int i = 0; i < values.length; i++) {
-                            data[i] = (String) values[i];
-                        }
-                    } else {
-                        throw new ConstructFormatException("Either an String[] or strings in a var args format must be supplied.");
+                v = (Vector<E>) s.create(className, data);
+            }
+            case Double -> {
+                Double[] data;
+                if(values.getClass().equals(double[][].class)){
+                    double[] numbers = (double[]) values[0];
+                    data = new Double[numbers.length];
+                    for (int i = 0; i < numbers.length; i++) {
+                        data[i] = numbers[i];
                     }
-                    v = (Vector<E>) s.create(className, data);
+                } else if(values.getClass().equals(double[].class) || values.getClass().equals(Double[].class)) {
+                    data = new Double[values.length];
+                    for (int i = 0; i < values.length; i++) {
+                        data[i] = (Double) values[i];
+                    }
+                } else {
+                    throw new RuntimeException("Either an double[], Double[], or doubles in a var args format must be supplied.");
                 }
+                v = (Vector<E>) s.create(className, data);
+            }
+            case String -> {
+                String[] data;
+                if(values.getClass().equals(String[][].class)){
+                    String[] numbers = (String[]) values[0];
+                    data = new String[numbers.length];
+                    for (int i = 0; i < numbers.length; i++) {
+                        data[i] = numbers[i];
+                    }
+                } else if(values.getClass().equals(String[].class)) {
+                    data = new String[values.length];
+                    for (int i = 0; i < values.length; i++) {
+                        data[i] = (String) values[i];
+                    }
+                } else {
+                    throw new RuntimeException("Either an String[] or strings in a var args format must be supplied.");
+                }
+                v = (Vector<E>) s.create(className, data);
             }
         }
     }
 
     public Vector<E> create() {
         return v;
+    }
+
+    public void set(Type s){
+        this.s = s;
+    }
+
+    public void set(Class<E> className){
+        this.className = className;
+    }
+
+    public void set(Type s, Class<E> className){
+        this.s = s;
+        this.className = className;
     }
 
     public void register(Class<?> className, Type t, VectorFactory factory) {
@@ -149,7 +185,7 @@ public class VectorBuilder<E extends Field<E>> {
         for (int i = 0; i < values.length; i++) {
             reals[i] = new Real(values[i]);
         }
-        return new Vector<Real>(reals);
+        return new Vector<>(reals);
     }
 
     private Vector<Real> realFromStrings(String[] values) throws UndefinedException {
