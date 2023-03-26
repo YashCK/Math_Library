@@ -42,7 +42,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
     /**
      * A constructor for Matrix class
      *
-     * @param vectors   An array of Vector objects that represent the rows of the matrix
+     * @param vectors  An array of Vector objects that represent the rows of the matrix
      * @param asColumn Whether to interpret each Vector as a column vector or not
      */
     public Matx(boolean asColumn, Vec<T, S>... vectors) {
@@ -154,7 +154,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param col1 The column to be added to
      * @param col2 The column that will be added
      */
-    public void addCols(int col1, int col2)  {
+    public void addCols(int col1, int col2) {
         checkBounds("cData", col1, col2);
         //Col 1 = Col 1 + Col 2
         getCol(col1).add(getCol(col2));
@@ -202,7 +202,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param row1 A row number that will exchange positions with another row
      * @param row2 A row number that will exchange positions with another row
      */
-    public void interchangeRows(int row1, int row2)  {
+    public void interchangeRows(int row1, int row2) {
         checkBounds("rData", row1, row2);
         Vec<T, S> firstRow = getRow(row1);
         setRow(row1, getRow(row2));
@@ -334,7 +334,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param num The column number to get (first column is 0)
      * @return A new Vector with the contents of the column chosen from the matrix
      */
-    public Vec<T, S> getCol(int num)  {
+    public Vec<T, S> getCol(int num) {
         return cData[num];
     }
 
@@ -499,7 +499,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
                 return false;
             }
             for (int row = 0; row < rData.length; row++) {
-                if(!rData[row].equals(oMatx.rData[row])){
+                if (!rData[row].equals(oMatx.rData[row])) {
                     return false;
                 }
             }

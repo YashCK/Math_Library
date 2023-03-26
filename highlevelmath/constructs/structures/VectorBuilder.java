@@ -28,7 +28,7 @@ public class VectorBuilder<E extends Field<E>> {
                     }
                 }
                 return null;
-            } catch (UndefinedException e){
+            } catch (UndefinedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -41,7 +41,7 @@ public class VectorBuilder<E extends Field<E>> {
     private Type s;
     private Class<E> className;
 
-    public VectorBuilder(){
+    public VectorBuilder() {
         initializeFactories();
         s = null;
         className = null;
@@ -55,7 +55,7 @@ public class VectorBuilder<E extends Field<E>> {
     }
 
     public <T> Vector<E> construct(T... values) {
-        if(s == null || className == null){
+        if (s == null || className == null) {
             throw new RuntimeException("The Type of Input and/or the className must be initialized to use this method.");
         }
         if (values.length >= 1) {
@@ -66,16 +66,16 @@ public class VectorBuilder<E extends Field<E>> {
     }
 
     private <T> void createVector(Type s, Class<E> className, T[] values) {
-        switch (s){
+        switch (s) {
             case Integer -> {
                 Integer[] data;
-                if(values.getClass().equals(int[][].class)){
+                if (values.getClass().equals(int[][].class)) {
                     int[] numbers = (int[]) values[0];
                     data = new Integer[numbers.length];
                     for (int i = 0; i < numbers.length; i++) {
                         data[i] = numbers[i];
                     }
-                } else if(values.getClass().equals(int[].class) || values.getClass().equals(Integer[].class)) {
+                } else if (values.getClass().equals(int[].class) || values.getClass().equals(Integer[].class)) {
                     data = new Integer[values.length];
                     for (int i = 0; i < values.length; i++) {
                         data[i] = (Integer) values[i];
@@ -87,13 +87,13 @@ public class VectorBuilder<E extends Field<E>> {
             }
             case Double -> {
                 Double[] data;
-                if(values.getClass().equals(double[][].class)){
+                if (values.getClass().equals(double[][].class)) {
                     double[] numbers = (double[]) values[0];
                     data = new Double[numbers.length];
                     for (int i = 0; i < numbers.length; i++) {
                         data[i] = numbers[i];
                     }
-                } else if(values.getClass().equals(double[].class) || values.getClass().equals(Double[].class)) {
+                } else if (values.getClass().equals(double[].class) || values.getClass().equals(Double[].class)) {
                     data = new Double[values.length];
                     for (int i = 0; i < values.length; i++) {
                         data[i] = (Double) values[i];
@@ -105,11 +105,11 @@ public class VectorBuilder<E extends Field<E>> {
             }
             case String -> {
                 String[] data;
-                if(values.getClass().equals(String[][].class)){
+                if (values.getClass().equals(String[][].class)) {
                     String[] numbers = (String[]) values[0];
                     data = new String[numbers.length];
                     System.arraycopy(numbers, 0, data, 0, numbers.length);
-                } else if(values.getClass().equals(String[].class)) {
+                } else if (values.getClass().equals(String[].class)) {
                     data = new String[values.length];
                     for (int i = 0; i < values.length; i++) {
                         data[i] = (String) values[i];
@@ -126,15 +126,15 @@ public class VectorBuilder<E extends Field<E>> {
         return v;
     }
 
-    public void set(Type s){
+    public void set(Type s) {
         this.s = s;
     }
 
-    public void set(Class<E> className){
+    public void set(Class<E> className) {
         this.className = className;
     }
 
-    public void set(Type s, Class<E> className){
+    public void set(Type s, Class<E> className) {
         this.s = s;
         this.className = className;
     }
@@ -178,7 +178,7 @@ public class VectorBuilder<E extends Field<E>> {
         return new Vector<>(reals);
     }
 
-    private Vector<Real> realFromInts(Integer[] values){
+    private Vector<Real> realFromInts(Integer[] values) {
         Real[] reals = new Real[values.length];
         for (int i = 0; i < values.length; i++) {
             reals[i] = new Real(values[i]);

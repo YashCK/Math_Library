@@ -62,7 +62,6 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      *
      * @param vector input vector
      * @return a scalar value (dot product)
-     * @throws OperationUndefinedException
      */
     public abstract S dot(Vec<T, S> vector);
 
@@ -83,7 +82,6 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      *
      * @param pos1 The first index number
      * @param pos2 The other index number
-     * @throws OperationUndefinedException
      */
     public void interchange(int pos1, int pos2) {
         if (pos1 >= data.length || pos2 >= data.length) {
@@ -151,7 +149,6 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
      *
      * @param index element to set value of
      * @param value value to set the element to
-     * @throws OperationUndefinedException
      */
     public void set(int index, T value) {
         if (index >= data.length) {

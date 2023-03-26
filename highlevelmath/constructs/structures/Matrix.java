@@ -4,19 +4,19 @@ import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 
 public class Matrix<E extends Field<E>> extends Matx<E, E> {
 
-    public Matrix(Vector<E>... vectors){
+    public Matrix(Vector<E>... vectors) {
         super(vectors);
     }
 
-    public Matrix(boolean asColumn, Vector<E>... vectors){
+    public Matrix(boolean asColumn, Vector<E>... vectors) {
         super(asColumn, vectors);
     }
 
-    public Matrix(E[][] matrix){
+    public Matrix(E[][] matrix) {
         super(matrix);
     }
 
-    public Matrix(boolean asColumn, E[][] matrix){
+    public Matrix(boolean asColumn, E[][] matrix) {
         super(asColumn, matrix);
     }
 
@@ -50,7 +50,7 @@ public class Matrix<E extends Field<E>> extends Matx<E, E> {
     @Override
     public Matx<E, E> copy() {
         Vector<E>[] copy = new Vector[rData.length];
-        for(int i = 0; i < rData.length; i++){
+        for (int i = 0; i < rData.length; i++) {
             copy[i] = (Vector<E>) rData[i].copy();
         }
         return new Matrix<>(copy);

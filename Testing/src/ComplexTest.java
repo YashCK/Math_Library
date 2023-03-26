@@ -52,7 +52,7 @@ public class ComplexTest {
     }
 
     @Test
-    public void operationTest() throws NotInvertibleException {
+    public void operationTest() {
         try {
             Complex c1 = new Complex(6, 4);
             Complex c2 = new Complex(3, 5);

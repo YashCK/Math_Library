@@ -28,20 +28,20 @@ public class MatrixBuilder<E extends Field<E>> {
                     }
                 }
                 return null;
-            } catch (UndefinedException e){
+            } catch (UndefinedException e) {
                 throw new RuntimeException(e);
             }
         }
 
     }
 
-    private static final Map<Class, MatrixFactory[]> mapFactories = new HashMap<>();
+    private static final Map<Class<?>, MatrixFactory[]> mapFactories = new HashMap<>();
 
     private Matrix<E> m;
     private Type s;
     private Class<E> className;
 
-    public MatrixBuilder(){
+    public MatrixBuilder() {
         initializeFactories();
         s = null;
         className = null;
@@ -55,7 +55,7 @@ public class MatrixBuilder<E extends Field<E>> {
     }
 
     public <T> Matrix<E> construct(T[][] values, boolean asColumn) {
-        if(s == null || className == null){
+        if (s == null || className == null) {
             throw new RuntimeException("The Type of Input and/or the className must be initialized to use this method.");
         }
         if (values.length >= 1) {
@@ -66,11 +66,11 @@ public class MatrixBuilder<E extends Field<E>> {
     }
 
     private <T> void createMatrix(Type s, Class<E> className, boolean asColumn, T[][] values) {
-        switch (s){
+        switch (s) {
             case Integer -> {
                 Integer[][] data = new Integer[values.length][values[0].length];
                 for (int i = 0; i < values.length; i++) {
-                    for(int j = 0; j < values[0].length; j++){
+                    for (int j = 0; j < values[0].length; j++) {
                         data[i][j] = (Integer) values[i][j];
                     }
                 }
@@ -79,7 +79,7 @@ public class MatrixBuilder<E extends Field<E>> {
             case Double -> {
                 Double[][] data = new Double[values.length][values[0].length];
                 for (int i = 0; i < values.length; i++) {
-                    for(int j = 0; j < values[0].length; j++){
+                    for (int j = 0; j < values[0].length; j++) {
                         data[i][j] = (Double) values[i][j];
                     }
                 }
@@ -88,7 +88,7 @@ public class MatrixBuilder<E extends Field<E>> {
             case String -> {
                 String[][] data = new String[values.length][values[0].length];
                 for (int i = 0; i < values.length; i++) {
-                    for(int j = 0; j < values[0].length; j++){
+                    for (int j = 0; j < values[0].length; j++) {
                         data[i][j] = (String) values[i][j];
                     }
                 }
@@ -101,15 +101,15 @@ public class MatrixBuilder<E extends Field<E>> {
         return m;
     }
 
-    public void set(Type s){
+    public void set(Type s) {
         this.s = s;
     }
 
-    public void set(Class<E> className){
+    public void set(Class<E> className) {
         this.className = className;
     }
 
-    public void set(Type s, Class<E> className){
+    public void set(Type s, Class<E> className) {
         this.s = s;
         this.className = className;
     }
@@ -148,17 +148,17 @@ public class MatrixBuilder<E extends Field<E>> {
     private Matrix<Real> realFromDoubles(Double[][] values, boolean asColumn) {
         Real[][] reals = new Real[values.length][values[0].length];
         for (int i = 0; i < values.length; i++) {
-            for(int j = 0; j < values[0].length; j++){
+            for (int j = 0; j < values[0].length; j++) {
                 reals[i][j] = new Real(values[i][j]);
             }
         }
         return new Matrix<>(asColumn, reals);
     }
 
-    private Matrix<Real> realFromInts(Integer[][] values, boolean asColumn){
+    private Matrix<Real> realFromInts(Integer[][] values, boolean asColumn) {
         Real[][] reals = new Real[values.length][values[0].length];
         for (int i = 0; i < values.length; i++) {
-            for(int j = 0; j < values[0].length; j++){
+            for (int j = 0; j < values[0].length; j++) {
                 reals[i][j] = new Real(values[i][j]);
             }
         }
@@ -172,7 +172,7 @@ public class MatrixBuilder<E extends Field<E>> {
     private Matrix<Complex> complexFromInts(Integer[][] values, boolean asColumn) {
         Complex[][] data = new Complex[values.length][values[0].length];
         for (int i = 0; i < values.length; i++) {
-            for(int j = 0; j < values[0].length; j++){
+            for (int j = 0; j < values[0].length; j++) {
                 data[i][j] = new Complex(values[i][j], 0);
             }
         }
@@ -193,7 +193,7 @@ public class MatrixBuilder<E extends Field<E>> {
         try {
             Complex[][] data = new Complex[values.length][values[0].length];
             for (int i = 0; i < values.length; i++) {
-                for(int j = 0; j < values[0].length; j++){
+                for (int j = 0; j < values[0].length; j++) {
                     data[i][j] = new Complex(values[i][j]);
                 }
             }

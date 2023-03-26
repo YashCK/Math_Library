@@ -21,7 +21,7 @@ public class PropertyProcessor extends AbstractProcessor {
         //Loop through the annotations
         for (TypeElement annotation : annotations) {
             //Decide what check to do depending on which annotation is being checked
-            switch(annotation.getSimpleName().toString()){
+            switch (annotation.getSimpleName().toString()) {
                 case "Commutative" -> {
                     return generalCheck(annotation, roundEnv, "Commutative", this::commutativity);
                 }
@@ -37,7 +37,7 @@ public class PropertyProcessor extends AbstractProcessor {
         return true;
     }
 
-    private boolean commutativity(Element e){
+    private boolean commutativity(Element e) {
         ExecutableElement method = (ExecutableElement) e;
         TypeMirror returnType = method.getReturnType();
         List<? extends TypeMirror> typeArgs = getTypeArguments(returnType);
@@ -53,18 +53,18 @@ public class PropertyProcessor extends AbstractProcessor {
         return true;
     }
 
-    private boolean associativity(Element e){
+    private boolean associativity(Element e) {
         return false;
     }
 
-    private boolean distributivity(Element e){
+    private boolean distributivity(Element e) {
         return false;
     }
 
-    private boolean generalCheck(TypeElement annotation, RoundEnvironment roundEnv, String name, PropertyCheck specificCheck){
+    private boolean generalCheck(TypeElement annotation, RoundEnvironment roundEnv, String name, PropertyCheck specificCheck) {
         //Receive all elements annotated with the current annotation.
         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
-        for(Element e : annotatedElements){
+        for (Element e : annotatedElements) {
             //Make sure that this annotation is only applied to methods
             if (e.getKind() != ElementKind.METHOD) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
@@ -72,7 +72,7 @@ public class PropertyProcessor extends AbstractProcessor {
                 continue;
             }
             //Perform check
-            if(!specificCheck.check(e)) {
+            if (!specificCheck.check(e)) {
                 //Commutativity -> Commutative
                 String trueName = name.substring(0, name.length() - 3) + "e";
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,

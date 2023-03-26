@@ -135,7 +135,7 @@ public class Complex implements Field<Complex> {
         this.real = real;
     }
 
-    public boolean isZero(){
+    public boolean isZero() {
         return this.equals(new Complex(0, 0));
     }
 
@@ -143,7 +143,7 @@ public class Complex implements Field<Complex> {
     public String toString() {
         StringBuilder bld = new StringBuilder();
         bld.append(truncateDecimal(this.real, 2));
-        if(this.imag < 0) {
+        if (this.imag < 0) {
             bld.append(" - ");
         } else {
             bld.append(" + ");
@@ -154,7 +154,7 @@ public class Complex implements Field<Complex> {
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof Complex c){
+        if (o instanceof Complex c) {
             return real == c.real() && imag == c.imag();
         }
         return false;
@@ -165,12 +165,12 @@ public class Complex implements Field<Complex> {
         return Objects.hash(real, imag);
     }
 
-    private void correctRounding(){
+    private void correctRounding() {
         double threshold = 1E-3;
-        if(Math.abs(Math.round(this.real) - this.real) < threshold){
+        if (Math.abs(Math.round(this.real) - this.real) < threshold) {
             this.real = Math.round(this.real);
         }
-        if(Math.abs(Math.round(this.imag) - this.imag) < threshold){
+        if (Math.abs(Math.round(this.imag) - this.imag) < threshold) {
             this.imag = Math.round(this.imag);
         }
     }
