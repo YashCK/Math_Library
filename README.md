@@ -5,8 +5,6 @@ This Library is designed to be a comprehenseive mathematical library for Java, d
 
 This project combines advanced numerical algorithms with abstract algebra concepts to solve a wide range of mathematical problems. With a focus on readability and modularity, my code allows users to easily incorporate their own data and algorithms.
 
-![](header.png)
-
 ## Installation
 
 OS X & Linux:
