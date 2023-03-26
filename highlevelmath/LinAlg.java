@@ -10,6 +10,7 @@ import highlevelmath.constructs.structures.Vector;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class LinAlg {
 
@@ -19,7 +20,7 @@ public class LinAlg {
     private static Object eObject;
     private static Object sObject;
 
-    //Utility
+    //Helper
 
     static {
         //Initialize Factory Maps
@@ -187,6 +188,48 @@ public class LinAlg {
             }
         }
         return createMatrix(false, im);
+    }
+
+    /**
+     * Returns the NxM Zero Matrix
+     * @param n The number of rows the matrix should have
+     * @param m The number of columns the matrix should have
+     * @return a Matrix with 0s in every position
+     */
+    public static <T extends Field<T>> Matx<?, ?> zeros(int n, int m){
+        T[][] data = (T[][]) Array.newInstance(eObject.getClass(), n, m);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                data[i][j] = eZero();
+            }
+        }
+        return createMatrix(false, data);
+    }
+
+    /**
+     * Returns the NxN Zero Matrix with values along its diagonal
+     * @param n The number of rows and cols the matrix should have
+     * @param value The value for each entry of the diagonal
+     */
+    public static <T extends Field<T>> Matx<?, ?> diagonal(int n, T value){
+        T[][] data = (T[][]) Array.newInstance(eObject.getClass(), n, n);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                data[i][j] = (i == j) ? value : eZero();
+            }
+        }
+        return createMatrix(false, data);
+    }
+
+    public static <T extends Field<T>> Matx<?, ?> transpose(Matx<T, ?> matrix){
+        Matx<T, ?> copy = matrix.copy();
+        T[][] transpose = (T[][]) Array.newInstance(eObject.getClass(), matrix.ncols(), matrix.nrows());
+        for (int row = 0; row < transpose.length; row++) {
+            for (int col = 0; col < transpose[0].length; col++) {
+                transpose[row][col] = copy.get(col, row);
+            }
+        }
+        return createMatrix(false, transpose);
     }
 
     //Miscellaneous Methods

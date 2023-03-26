@@ -145,8 +145,6 @@ public class MatrixTest {
         System.out.println("\n" + m1);
         assertThat(m1.contains(new Real(70.0))).isFalse();
         assertThat(m1.contains(new Real(3.0))).isTrue();
-        m1.transpose();
-        System.out.println("\n" + m1);
         m1.scaleColumn(1, new Real(0));
         m1.scaleRow(2, new Real(3));
         System.out.println("\n" + m1);

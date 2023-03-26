@@ -272,15 +272,6 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      */
     public abstract Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol);
 
-    public void transpose() {
-        Matx<T, S> copy = copy();
-        for (int row = 0; row < rData.length; row++) {
-            for (int col = 0; col < cData.length; col++) {
-                set(row, col, copy.get(col, row));
-            }
-        }
-    }
-
     /**
      * Copy the contents of the matrix into a new Matrix
      *
