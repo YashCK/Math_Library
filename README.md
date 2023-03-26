@@ -1,7 +1,7 @@
 # Math_Library
 > A Java Library for Higher-Level Mathematics from Scratch - Includes Linear Algebra, Multivariable Calculus, etc.
 
-This Library is designed to be a comprehenseive mathematical library for Java, designed for scientific computing and other mathematically-derived projects. Built with flexibility in mind, modules are easy to use and also have the flexibility to perform computations over abstract algebraic sturctues (Groups, Rings, Fields). 
+This Library is designed to be a comprehenseive mathematical library for Java, designed for scientific computing and other mathematically-derived projects. Built with flexibility in mind, modules are easy to use and are able to perform computations over abstract algebraic sturctues (Groups, Rings, Fields). 
 
 This project combines advanced numerical algorithms with abstract algebra concepts to solve a wide range of mathematical problems. With a focus on readability and modularity, my code allows users to easily incorporate their own data and algorithms.
 
