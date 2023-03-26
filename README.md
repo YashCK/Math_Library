@@ -25,7 +25,7 @@ TODO
 
 An example of how the LinAlg class can be used to support different matrices and types.
 
-<img width="753" alt="Screen Shot 2023-03-26 at 3 34 32 PM" src="https://user-images.githubusercontent.com/43621900/227808985-5936da4f-0db4-4ae5-886d-04eb399c00f0.png">
+<img width="766" alt="Screen Shot 2023-03-26 at 3 59 29 PM" src="https://user-images.githubusercontent.com/43621900/227810184-c7c851b9-289f-4632-b5e5-4e9ffa047aab.png">
 
 ## Current Scope
 
