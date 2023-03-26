@@ -1,6 +1,5 @@
 import highlevelmath.constructs.abstract_algebra.fields.Complex;
 import highlevelmath.constructs.util.ConstructFormatException;
-import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.UndefinedException;
 import org.junit.jupiter.api.Test;
 
