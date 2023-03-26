@@ -78,11 +78,7 @@ An example of how the LinAlg class can be used to support different matrices and
 
 ## Release History
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
-
-Distributed under the XYZ license. See ``LICENSE`` for more information.
-
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+Nothing so Far
 
 ## Liscence
 
