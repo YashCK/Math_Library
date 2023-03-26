@@ -6,24 +6,25 @@ import highlevelmath.constructs.structures.Vector;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
+
 public class MatrixTest {
 
     @Test
-    public void builderTesT(){
+    public void builderTesT() {
         //Test Double[][]
         MatrixBuilder<Real> bld = new MatrixBuilder<>();
         bld.set(MatrixBuilder.Type.Double, Real.class);
-        Double[][] mat = {  {0.0, 3.0, -6.0, 6.0, 4.0, -5.0},
+        Double[][] mat = {{0.0, 3.0, -6.0, 6.0, 4.0, -5.0},
                 {3.0, -7.0, 8.0, -5.0, 8.0, 9.0},
-                {3.0, - 9.0, 12.0, -9.0, 6.0, 15.0}};
+                {3.0, -9.0, 12.0, -9.0, 6.0, 15.0}};
         Matrix<Real> m1 = bld.construct(mat, false);
         MatrixBuilder<Complex> bld2 = new MatrixBuilder<>();
         bld2.set(MatrixBuilder.Type.Double, Complex.class);
         Matrix<Complex> c1 = bld2.construct(mat, false);
-        System.out.println("Integer test: asColumn: false" );
+        System.out.println("Integer test: asColumn: false");
         System.out.println(m1);
         System.out.println(c1);
-        System.out.println("Integer test: asColumn: true" );
+        System.out.println("Integer test: asColumn: true");
         m1 = bld.construct(mat, true);
         c1 = bld2.construct(mat, true);
         System.out.println(m1);
@@ -62,7 +63,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void creationTest(){
+    public void creationTest() {
         //First and Third constructor
         Vector<Real> v1 = new Vector<>(new Real(1), new Real(2), new Real(3));
         Vector<Real> v2 = new Vector<>(new Real(4), new Real(5), new Real(6));
@@ -74,9 +75,9 @@ public class MatrixTest {
         System.out.println(m1);
         //Second and Fourth constructor
         Real[][] data = new Real[4][5];
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 5; j++){
-                data[i][j] = new Real(i*j);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                data[i][j] = new Real(i * j);
             }
         }
         m1 = new Matrix<>(data);
@@ -88,14 +89,14 @@ public class MatrixTest {
     }
 
     @Test
-    public void basicOperations(){
+    public void basicOperations() {
         MatrixBuilder<Real> bld = new MatrixBuilder<>();
         bld.set(MatrixBuilder.Type.Double, Real.class);
-        Double[][] mat = {  {0.0, 3.0, -6.0},
+        Double[][] mat = {{0.0, 3.0, -6.0},
                 {2.0, -4.0, 8.0},
-                {5.0, - 10.0, 15.0}};
+                {5.0, -10.0, 15.0}};
         Matrix<Real> m1 = bld.construct(mat, false);
-        Double[][] mat2 = {  {1.0, 1.0, 1.0},
+        Double[][] mat2 = {{1.0, 1.0, 1.0},
                 {-1.0, -1.0, -1.0},
                 {2.0, 0.0, -2.0}};
         Matrix<Real> m2 = bld.construct(mat2, false);
@@ -118,12 +119,12 @@ public class MatrixTest {
     }
 
     @Test
-    public void otherOperations(){
+    public void otherOperations() {
         MatrixBuilder<Real> bld = new MatrixBuilder<>();
         bld.set(MatrixBuilder.Type.Double, Real.class);
-        Double[][] mat = {  {0.0, 3.0, -6.0},
-                            {2.0, -4.0, 8.0},
-                            {5.0, - 10.0, 15.0}};
+        Double[][] mat = {{0.0, 3.0, -6.0},
+                {2.0, -4.0, 8.0},
+                {5.0, -10.0, 15.0}};
         Matrix<Real> m1 = bld.construct(mat, false);
         System.out.println("Original");
         System.out.println(m1);
@@ -150,6 +151,5 @@ public class MatrixTest {
         m1.scaleRow(2, new Real(3));
         System.out.println("\n" + m1);
     }
-
 
 }

@@ -3,13 +3,14 @@ import highlevelmath.constructs.util.ConstructFormatException;
 import highlevelmath.constructs.util.NotInvertibleException;
 import highlevelmath.constructs.util.UndefinedException;
 import org.junit.jupiter.api.Test;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ComplexTest {
 
     @Test
-    public void creationTest(){
+    public void creationTest() {
         try {
             Complex c = new Complex(5, 43);
             Complex c2 = new Complex(" 4.5    + 3.558  i");
@@ -75,14 +76,14 @@ public class ComplexTest {
             assertThat(c1.conjugate().toString()).isEqualTo("1.0 + 0.0i");
             c1 = new Complex(6, 4);
             assertThat(c1.conjugate().toString()).isEqualTo("6.0 - 4.0i");
-        } catch(UndefinedException e) {
+        } catch (UndefinedException e) {
             assertThat(1).isEqualTo(2);
             System.out.println("A UndefinedException was found");
         }
     }
 
     @Test
-    public void generalTest(){
+    public void generalTest() {
         Complex c = new Complex(5, 6);
         assertThat(c).isEqualTo(new Complex(5, 6));
         c.setReal(4);

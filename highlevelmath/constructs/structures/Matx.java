@@ -436,7 +436,6 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
     }
 
     //Miscellaneous
-
     protected void recorrectMatrix(Vec<T, S>[] matrix) {
         //Find maximum row length
         int maxRowLength = 0;
