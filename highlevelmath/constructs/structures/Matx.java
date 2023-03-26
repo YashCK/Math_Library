@@ -270,17 +270,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param endCol   The column to end sub-matrix entries (inclusive)
      * @return Matrix that represents sub-matrix satisfying defined parameters
      */
-    public Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol) {
-        checkBounds("rData", startRow, endRow);
-        checkBounds("cData", startCol, endCol);
-        T[][] sub = (T[][]) new Object[endRow - startRow + 1][endCol - startCol + 1];
-        for (int i = startRow; i <= endRow; i++) {
-            for (int j = startCol; j <= endCol; j++) {
-                sub[i][j] = this.get(i, j);
-            }
-        }
-        return new Matrix(sub);
-    }
+    public abstract Matx<T, S> subMatrix(int startRow, int endRow, int startCol, int endCol);
 
     public void transpose() {
         Matx<T, S> copy = copy();
@@ -393,7 +383,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param newRow A Vector that represents the new row
      */
     public void setRow(int row, Vec<T, S> newRow) {
-        if (newRow.length() >= cData.length) {
+        if (newRow.length() > cData.length) {
             throw new RuntimeException("The vector length is out of range.");
         }
         newRow.pad(cData.length - newRow.length());
@@ -410,7 +400,7 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      * @param newCol A Vector that represents the new column
      */
     public void setCol(int col, Vec<T, S> newCol) {
-        if (newCol.length() >= rData.length) {
+        if (newCol.length() > rData.length) {
             throw new RuntimeException("The vector length is out of range.");
         }
         newCol.pad(rData.length - newCol.length());

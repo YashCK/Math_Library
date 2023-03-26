@@ -2,6 +2,8 @@ package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
 
+import java.lang.reflect.Array;
+
 public class Matrix<E extends Field<E>> extends Matx<E, E> {
 
     public Matrix(Vector<E>... vectors) {
@@ -25,7 +27,7 @@ public class Matrix<E extends Field<E>> extends Matx<E, E> {
         if (this.ncols() != matrix.nrows()) {
             throw new RuntimeException("The columns of matrix 1 must equal the number of rows of matrix 2.");
         }
-        E[][] newM = (E[][]) new Object[this.nrows()][matrix.ncols()];
+        E[][] newM = (E[][]) Array.newInstance(rData[0].get(0).getClass(), this.nrows(), matrix.ncols());
         for (int row = 0; row < rData.length; row++) {
             Vec<E, E> v = this.getRow(row);
             for (int col = 0; col < matrix.ncols(); col++) {
@@ -40,11 +42,24 @@ public class Matrix<E extends Field<E>> extends Matx<E, E> {
         if (this.ncols() != v.length()) {
             throw new RuntimeException("The columns of the matrix must equal the length of the vector.");
         }
-        E[] newV = (E[]) new Object[rData.length];
+        E[] newV = (E[]) Array.newInstance(rData[0].get(0).getClass(), rData.length);
         for (int row = 0; row < rData.length; row++) {
             newV[row] = rData[row].dot(v);
         }
         return new Vector(newV);
+    }
+
+    @Override
+    public Matx<E, E> subMatrix(int startRow, int endRow, int startCol, int endCol) {
+        checkBounds("rData", startRow, endRow);
+        checkBounds("cData", startCol, endCol);
+        E[][] sub = (E[][]) Array.newInstance(rData[0].get(0).getClass(), endRow - startRow + 1, endCol - startCol + 1);
+        for (int i = startRow; i <= endRow; i++) {
+            for (int j = startCol; j <= endCol; j++) {
+                sub[i][j] = this.get(i, j);
+            }
+        }
+        return new Matrix<>(sub);
     }
 
     @Override
