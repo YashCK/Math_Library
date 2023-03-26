@@ -17,7 +17,7 @@ public class Matrix<E extends Field<E>> extends Matx<E, E> {
     }
 
     public Matrix(boolean asColumn, E[][] matrix){
-        super(matrix);
+        super(asColumn, matrix);
     }
 
     @Override
@@ -61,8 +61,4 @@ public class Matrix<E extends Field<E>> extends Matx<E, E> {
         return new Vector<>(values);
     }
 
-    @Override
-    protected Vec<E, E>[] createVecArray(int length) {
-        return new Vector[length];
-    }
 }

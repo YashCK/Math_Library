@@ -148,7 +148,7 @@ public class Complex implements Field<Complex> {
         } else {
             bld.append(" + ");
         }
-        bld.append(truncateDecimal(Math.abs(this.imag), 2) + "i");
+        bld.append(truncateDecimal(Math.abs(this.imag), 2)).append("i");
         return bld.toString();
     }
 

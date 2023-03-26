@@ -108,9 +108,7 @@ public class VectorBuilder<E extends Field<E>> {
                 if(values.getClass().equals(String[][].class)){
                     String[] numbers = (String[]) values[0];
                     data = new String[numbers.length];
-                    for (int i = 0; i < numbers.length; i++) {
-                        data[i] = numbers[i];
-                    }
+                    System.arraycopy(numbers, 0, data, 0, numbers.length);
                 } else if(values.getClass().equals(String[].class)) {
                     data = new String[values.length];
                     for (int i = 0; i < values.length; i++) {

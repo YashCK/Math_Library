@@ -1,8 +1,8 @@
 package highlevelmath.constructs.structures;
 
 import highlevelmath.constructs.abstract_algebra.alg_structures.Field;
-import highlevelmath.constructs.util.OperationUndefinedException;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,15 +27,16 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         }
         rData = Arrays.copyOf(vectors, vectors.length);
         recorrectMatrix(rData);
-        constructCData(new Vector[rData[0].length()]);
+        constructCData(new Vec[rData[0].length()]);
     }
 
     public Matx(T[][] matrix) {
+        rData = new Vec[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            rData[i] = new Vector(matrix[i]);
+            rData[i] = createVec(matrix[i]);
         }
         recorrectMatrix(rData);
-        constructCData(new Vector[rData[0].length()]);
+        constructCData(new Vec[rData[0].length()]);
     }
 
     /**
@@ -64,17 +65,19 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
      */
     public Matx(boolean asColumn, T[][] matrix) {
         if (asColumn) {
+            cData = new Vec[matrix.length];
             for (int i = 0; i < matrix.length; i++) {
                 cData[i] = createVec(matrix[i]);
             }
             recorrectMatrix(cData);
-            constructRData(createVecArray(cData[0].length()));
+            constructRData(new Vec[cData[0].length()]);
         } else {
+            rData = new Vec[matrix.length];
             for (int i = 0; i < matrix.length; i++) {
                 rData[i] = createVec(matrix[i]);
             }
             recorrectMatrix(rData);
-            constructCData(createVecArray(rData[0].length()));
+            constructCData(new Vec[rData[0].length()]);
         }
     }
 
@@ -486,8 +489,6 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
 
     protected abstract Vec<T, S> createVec(T[] values);
 
-    protected abstract Vec<T, S>[] createVecArray(int length);
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -528,22 +529,26 @@ public abstract class Matx<T extends Field<T>, S extends Field<S>> {
         return bld.toString();
     }
 
-    protected void constructCData(Vec<T, S>[] emptyCData) {
+    protected void constructCData(Vec[] emptyCData) {
         for (int col = 0; col < rData[0].length(); col++) {
+            T[] vals = (T[]) Array.newInstance(rData[0].get(0).getClass(), rData.length);
             for (int row = 0; row < rData.length; row++) {
-                emptyCData[col].set(row, rData[row].get(col));
+                vals[row] = rData[row].get(col);
             }
+            emptyCData[col] = createVec(vals);
         }
         cData = emptyCData;
     }
 
-    protected void constructRData(Vec<T, S>[] emptyRData) {
+    protected void constructRData(Vec[] emptyRData) {
         for (int row = 0; row < cData[0].length(); row++) {
+            T[] vals = (T[]) Array.newInstance(cData[0].get(0).getClass(), cData.length);
             for (int col = 0; col < cData.length; col++) {
-                emptyRData[row].set(col, cData[col].get(row));
+                vals[col] = cData[col].get(row);
             }
+            emptyRData[row] = createVec(vals);
         }
-        cData = emptyRData;
+        rData = emptyRData;
     }
 
 }

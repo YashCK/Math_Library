@@ -161,7 +161,7 @@ public abstract class Vec<T extends Field<T>, S extends Field<S>> implements Ite
     }
 
     public void setInnerProduct() {
-        return;
+        //TODO
     }
 
     //Other Methods
