@@ -6,7 +6,7 @@ import highlevelmath.constructs.util.OperationUndefinedException;
 
 import java.util.Arrays;
 
-public class Vector<E extends Field<E>> extends Vec<E, E> {
+public class Vector<E extends Field<E>> extends Vec<E, E>{
 
     public Vector(E... values) {
         super(values);
